@@ -22,6 +22,46 @@ curl -fLO https://github.com/XiONDiGiTaL/Trinity/releases/download/v0.2.0/SHA256
 sha256sum -c SHA256SUMS
 ```
 
+## Drop-in install: launcher root or plugins/
+
+Launchers that include the discovery integration accept a payload beside their
+own executable. Place the DLL in either place:
+
+```text
+<launcher>\Trinity.dll
+<launcher>\plugins\Trinity.dll
+```
+
+A package folder also works:
+
+```text
+<launcher>\TrinityCore\exefs\Trinity.dll
+<launcher>\TrinityCore\plugin.json
+<launcher>\plugins\TrinityCore\exefs\Trinity.dll
+<launcher>\plugins\TrinityCore\plugin.json
+```
+
+The launcher stages the payload into the game runtime's existing mods folder
+and never loads the DLL itself. The runtime loads it on Play through its normal
+code-mod loader.
+
+| Host | Drop-in locations | Staged to |
+| --- | --- | --- |
+| EmblemWeave | `E:\EmblemWeave\Trinity.dll`, `E:\EmblemWeave\plugins\Trinity.dll` | `data\play\mods\TrinityCore\exefs\Trinity.dll` |
+| fefw-recomp | `<install>\Trinity.dll`, `<install>\plugins\Trinity.dll` | `<install>\mods\TrinityCore\exefs\Trinity.dll` |
+| ObeliskChamber | `<install>\Trinity.dll`, `<install>\plugins\Trinity.dll` | `<install>\mods\TrinityCore\exefs\Trinity.dll` |
+
+A bare DLL is enough; `plugin.json` is copied when supplied. An installed newer
+version is not downgraded by an older package, and `.nxp-settings.ini` is
+preserved. Launcher maintainers can use the prepared module and patches in
+[integrations/launcher-plugins](../integrations/launcher-plugins/README.md).
+
+This path was verified on all three hosts on 25 November 2026: root and
+`plugins/` placements (including a nested `TrinityCore/exefs` package) restored
+the 0.2.0 payload, and each game runtime logged `Trinity Core 0.2.0 on
+<host>`. The same EmblemWeave build at `X:\EmblemWeave` staged a root DLL as
+well; that copy has no game INI, so its runtime was not started.
+
 ## fefw-recomp and ObeliskChamber
 
 The public helper is dependency-free Python 3 and installs only
@@ -50,8 +90,11 @@ result in either host.
 
 ## EmblemWeave
 
-EmblemWeave builds that contain this integration embed the Windows payload. On
-first start the launcher writes:
+EmblemWeave builds that contain this integration first look for a drop-in
+package beside `EmblemWeave.exe` or under `plugins/`. If one is present, it is
+staged into the same runtime folder and takes precedence over the embedded
+release. Otherwise the launcher embeds the Windows payload. On first start it
+writes:
 
 ```text
 %APPDATA%\EmblemWeave\play\mods\TrinityCore\exefs\Trinity.dll
@@ -67,7 +110,9 @@ starts it on Play. No other mod folder, hook site or loader path is changed.
 
 Manual installation is the same folder copied under `data/play/mods`. Use the
 canonical `Trinity.dll` name; Windows is case-insensitive, but release packages
-must not rely on that.
+must not rely on that. A drop-in DLL is version-checked the same way: an older
+package does not replace a newer installed copy, and the settings file is left
+alone.
 
 ## Bundled distribution for host maintainers
 
@@ -97,9 +142,11 @@ gameplay. Lua/Python hosts are not supported by this binary.
 
 ## Known limits
 
-- The Windows plugin was loaded by the EmblemWeave development runtime and the
-  prepared fefw-recomp 0.2.13 runtime with `Quicksave` 1.0.0 and
-  `Turn Control` 0.3.0; that proves loading and initialization, not gameplay.
+- The Windows plugin was loaded by the installed EmblemWeave 0.1.43 runtime at
+  `E:\EmblemWeave` and the prepared fefw-recomp 0.2.13 runtime with `Quicksave`
+  1.0.0 and `Turn Control` 0.3.0; that proves loading and initialization, not
+  gameplay. The EmblemWeave payload was supplied as a drop-in beside the
+  launcher and staged by the launcher, not embedded at build time.
 - Those two mods target `NxModApi` directly. They do not load through Trinity's
   NXP adapter; they coexist with Trinity under the same host loader.
 - The fefw-recomp run was headless on API 3, so Trinity had no panel and no

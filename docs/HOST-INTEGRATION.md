@@ -71,6 +71,51 @@ Copy the staged `vendor/trinity/TrinityCore` into the host's bundled mods locati
 
 A folder whose name begins with `_` or `-` is disabled by the shared runtime lineage. Use that existing convention rather than inventing a second enabled flag.
 
+### 5a. Drop-in discovery beside the launcher
+
+A launcher can also recognise a package that the player placed beside its own executable, without using the installer or an embedded payload. The launcher stages the payload into the runtime mods folder above; it still never loads the DLL itself.
+
+The prepared implementation is [integrations/launcher-plugins/plugin_discovery.rs](../integrations/launcher-plugins/plugin_discovery.rs), with adaptation notes in [integrations/launcher-plugins/README.md](../integrations/launcher-plugins/README.md). It is standard-library-only Rust, so a host can copy one file into `src-tauri/src/` and add `mod plugin_discovery;`.
+
+Search order, first match wins:
+
+| Priority | Path relative to the launcher |
+| --- | --- |
+| 1 | `plugins/TrinityCore/exefs/Trinity.dll` |
+| 2 | `plugins/TrinityCore/lib/Trinity.dll` |
+| 3 | `plugins/TrinityCore/Trinity.dll` |
+| 4 | `plugins/Trinity.dll` |
+| 5 | `TrinityCore/exefs/Trinity.dll` |
+| 6 | `TrinityCore/lib/Trinity.dll` |
+| 7 | `TrinityCore/Trinity.dll` |
+| 8 | `Trinity.dll` |
+
+On Linux, `libTrinity.so` takes the DLL's place. A package may include `plugin.json` beside the payload; a bare DLL is still staged, because placing it beside the launcher is an explicit request to use it.
+
+For a Tauri launcher, stage during setup and again before Play:
+
+```rust
+mod plugin_discovery;
+
+.setup(|_app| {
+    let root = exe_dir();
+    if let Err(error) = plugin_discovery::stage(&root, &root.join("mods")) {
+        eprintln!("[trinity] {error}");
+    }
+    Ok(())
+})
+```
+
+```rust
+plugin_discovery::stage(&exe_dir(), &p.mods())?;
+```
+
+EmblemWeave already checks for an external DLL before its embedded payload in `trinity_bundle::ensure_installed()`. The external lookup uses the launcher's own `exe_dir()`, then stages to `data/play/mods/TrinityCore`.
+
+The staging rule is version-aware but not surprising: a package with a manifest newer than the installed copy replaces it; an older package leaves a newer install alone; a bare DLL is staged and receives a minimal manifest if none is installed. `.nxp-settings.ini` is never touched, and the copy goes through a temporary file so a failed write cannot leave a truncated payload.
+
+This path was verified on 25 November 2026 against EmblemWeave 0.1.43 at `E:\EmblemWeave`, fefw-recomp 0.2.13 at `X:\fefw-recomp-0.2.13` and ObeliskChamber 0.3.2 at `X:\ObeliskChamber-0.3.2`. Root and `plugins/` placements (flat and nested package) all restored hash `f873124e...bd81cfd` into the host's mods folder, and each runtime then logged `Trinity Core 0.2.0 on <host>`.
+
 ## 6. Loading and initialization
 
 Two entry points are possible:
@@ -139,11 +184,13 @@ Use the same evidence levels as [COMPATIBILITY.md](COMPATIBILITY.md):
 6. **Observed:** the panel is drawn, a setting persists, or the frame callback runs.
 7. **Gameplay:** a save, turn or other game action is exercised. Trinity does not currently change game state; this step is for the mod being tested.
 
+For a drop-in package, add a discovery check before load: put the payload beside the launcher and under `plugins/`, launch the host, and confirm the staged `TrinityCore/exefs/Trinity.dll` matches the supplied hash. A launcher-level copy alone is not a load result; the runtime log must still show `Trinity Core 0.2.0 on <host>`.
+
 Do not promote a host's status on a successful build alone. Record the exact host version, API version, artifact hash and log line.
 
 ## 12. Current host notes
 
-- **EmblemWeave:** API 4; `add_panel` and `panel_visible` are present. The development runtime loaded the compatibility adapter, registered the Trinity panel and persisted settings. The installed player runtime from November 2026 lacked the code-mod loader; a release must include the newer runtime.
+- **EmblemWeave:** API 4; `add_panel` and `panel_visible` are present. The installed 0.1.43 runtime at `E:\EmblemWeave` loaded the drop-in 0.2.0 payload, registered the Trinity panel and logged the host identity. The older packaged runtime at `X:\EmblemWeave` was not used for this run.
 - **fefw-recomp 0.2.13:** API 3; `add_panel` is absent. The plugin runs headless with settings, files and frame. API 4 is planned upstream and should expose the panel when it arrives.
 - **ObeliskChamber 0.3.2:** API 5; the packaged table's `open_list` slot overlaps the other ports' `add_panel`. The adapter's panel registration was observed headless. A native adapter should expose the list screen as an explicit `obeliskchamber.list` interface rather than infer it from the version.
 

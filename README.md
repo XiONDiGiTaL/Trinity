@@ -71,7 +71,9 @@ python tools/install_trinity.py --host-dir "C:\path\to\fefw-recomp" --version 0.
 python tools/install_trinity.py --host-dir "C:\path\to\ObeliskChamber" --version 0.2.0
 ```
 
-For EmblemWeave, builds that include the integration embed the Windows payload and install `TrinityCore` under `data/play/mods` (or `%APPDATA%\EmblemWeave\play\mods`) on first start. Existing settings are preserved across updates.
+Launcher builds with drop-in discovery also accept a payload beside their own executable or under `plugins/`. For example, either `E:\EmblemWeave\Trinity.dll` or `E:\EmblemWeave\plugins\Trinity.dll` is staged into `data/play/mods`; the same root/`plugins` layouts work for fefw-recomp and ObeliskChamber. The launcher stages the DLL and the game runtime loads it, so no loader change is needed. The prepared module and host patches are in [integrations/launcher-plugins](integrations/launcher-plugins/README.md).
+
+For EmblemWeave, a drop-in DLL takes precedence over the embedded Windows payload. Without one, builds that include the integration embed the payload and install `TrinityCore` under `data/play/mods` (or `%APPDATA%\EmblemWeave\play\mods`) on first start. Existing settings are preserved across updates.
 
 Release archives, offline installation, host bundles and checksum verification are documented in [docs/INSTALL.md](docs/INSTALL.md).
 
@@ -104,20 +106,21 @@ Steam Deck and Proton compatibility have not been validated. The Linux result is
 Other launcher projects can consume Trinity without building it:
 
 1. Bundle a verified release payload, or download an official release and verify it against `SHA256SUMS`.
-2. Place `TrinityCore` where the host's existing mod loader already scans (`mods/` for fefw-recomp and ObeliskChamber; `data/play/mods/` for EmblemWeave).
+2. Place `TrinityCore` where the host's existing mod loader already scans (`mods/` for fefw-recomp and ObeliskChamber; `data/play/mods/` for EmblemWeave), or let the launcher stage a root/`plugins` drop-in into that folder.
 3. Let the existing loader call `nxmod_init`, or resolve `nxp_get_plugin` from a native adapter.
 4. Validate `plugin.json`, the NXP descriptor and the host's capability set before enabling UI.
 5. Preserve the launcher's current pages, navigation and visual language; add Trinity as one entry rather than replacing the shell.
 6. Report a missing or incompatible plugin as a disabled entry with a useful reason, not as a launcher crash.
 
-The practical guide, including version checks, update handling, error messages and host-specific load paths, is [docs/HOST-INTEGRATION.md](docs/HOST-INTEGRATION.md). It requires no build step in the host project beyond its normal packaging.
+The practical guide, including version checks, update handling, error messages and host-specific load paths, is [docs/HOST-INTEGRATION.md](docs/HOST-INTEGRATION.md). The drop-in module, tested launcher hookup and prepared patches are in [integrations/launcher-plugins](integrations/launcher-plugins/README.md). It requires no build step in the host project beyond its normal packaging.
 
 ## Documentation
 
 | Document | Purpose |
 | --- | --- |
 | [Launcher integration](docs/HOST-INTEGRATION.md) | Bundling, downloading, verifying, loading, version checks, updates and error handling for host maintainers. |
-| [Install and release assets](docs/INSTALL.md) | End-user installation, offline bundles and platform artifacts. |
+| [Install and release assets](docs/INSTALL.md) | End-user installation, root/`plugins` drop-in, offline bundles and platform artifacts. |
+| [Launcher drop-in module](integrations/launcher-plugins/README.md) | Prepared Rust discovery/staging code and host hookup for root or `plugins/` packages. |
 | [Compatibility matrix](docs/COMPATIBILITY.md) | Exact host and platform status with evidence levels. |
 | [Architecture](docs/ARCHITECTURE.md) | Layers, lifecycle, threading and the launcher/runtime split. |
 | [NXP ABI guide](docs/NXP.md) | The public plugin contract, interfaces and rules for native adapters. |

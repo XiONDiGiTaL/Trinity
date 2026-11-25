@@ -112,6 +112,32 @@ EmblemWeave's launcher is egui/Rust. The native page lives in the host tree as a
 
 The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were integrated with one Trinity page and built as Tauri release executables. Both were installed in their target folders and captured from their actual windows at 1180 x 1000. This verifies the page, host styling, catalog rendering and navigation in the real launcher process. The change has not been merged into either host repository.
 
+### 4a. Drop-in discovery
+
+Each launcher was rebuilt with the prepared discovery module. A copy of
+`Trinity.dll` beside the launcher, under `plugins/`, or in a nested
+`plugins/TrinityCore/exefs/` package is staged into the runtime's existing mods
+folder. The launcher does not load the DLL. Before every run the staged payload
+was replaced with a stale marker, so a matching hash after launch proves the
+staging path, not a pre-existing file.
+
+| Check | EmblemWeave 0.1.43 | fefw-recomp 0.2.13 | ObeliskChamber 0.3.2 |
+| --- | --- | --- | --- |
+| Root DLL recognised | V, `E:\EmblemWeave\Trinity.dll` and `X:\EmblemWeave\Trinity.dll` | V, root DLL | V, root DLL |
+| `plugins/` DLL recognised | V, flat `plugins\Trinity.dll` | V, nested `plugins\TrinityCore\exefs\Trinity.dll` | V, flat `plugins\Trinity.dll` |
+| Staged hash after launch | `f873124e...bd81cfd` | `f873124e...bd81cfd` | `f873124e...bd81cfd` |
+| Manifest after staging | `0.2.0` | `0.2.0` | `0.2.0` |
+| Runtime loaded after staging | L, `Trinity Core 0.2.0 on emblemweave (nxmod-api-4)` | L, `Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3)` | L, `Trinity Core 0.2.0 on obelisk-chamber (nxmod-api-5)` |
+| Settings preserved | Unit test; no settings file in the fresh install | Existing `.nxp-settings.ini` remained | Existing `.nxp-settings.ini` remained |
+
+Evidence: [emblemweave-dropin-runtime.log](evidence/emblemweave-dropin-runtime.log),
+[fefw-dropin-runtime.log](evidence/fefw-dropin-runtime.log) and
+[obelisk-dropin-runtime.log](evidence/obelisk-dropin-runtime.log). The staging
+source and adaptation notes are in
+[integrations/launcher-plugins](../integrations/launcher-plugins/README.md).
+The runtime runs were headless and ended at the `--max-seconds` deadline; they
+prove staging, loading and initialization, not panel drawing or gameplay.
+
 ## 5. Verification ledger
 
 | Claim | Level | Evidence |
@@ -138,6 +164,9 @@ The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were int
 | Launcher page builds in both upstream Tauri sources | C | Vite and Tauri production builds, 25 November 2026 |
 | Trinity page renders in both launcher windows | V | Actual 0.2.13 and 0.3.2 Tauri captures in `docs/evidence/` |
 | Launcher navigation opens the Trinity page | V | Actual window captures, 25 November 2026 |
+| Launcher recognises a root `Trinity.dll` and stages it | C, R | Root-dropin runs in all three installed launchers, 25 November 2026 |
+| Launcher recognises `plugins/Trinity.dll` (flat and nested) and stages it | C, R | Plugins-dropin runs in all three installed launchers, 25 November 2026 |
+| Staged drop-in loads in the game runtime | L | `emblemweave-dropin-runtime.log`, `fefw-dropin-runtime.log`, `obelisk-dropin-runtime.log` |
 | Launcher change is merged into either host repository | N | Local checkouts only |
 | Native EmblemWeave page | V | `emblemweave-trinity.png`, EmblemWeave 0.1.43 |
 | Linux `.so` builds, exports both entry points and loads | C, L, R | ELF/readelf/nm output; CTest 5/5; native harness PASS |
@@ -146,9 +175,14 @@ The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were int
 
 ## 6. Unknowns that matter
 
-### EmblemWeave installed versus development executable
+### EmblemWeave installed runtime
 
-The installed `%APPDATA%\EmblemWeave\play\fefw.exe` inspected earlier is 220,880,384 bytes and lacks `nxmod_init`. The development executable at `engine/fefw-recomp/game-build/fefw/build/release/fefw.exe` supports code mods. The `X:\EmblemWeave` launcher was rebuilt for the native page capture; its packaged game runtime is unchanged. A release of EmblemWeave must include the newer runtime before players can use any code plugin.
+The installed EmblemWeave 0.1.43 runtime at `E:\EmblemWeave\data\play\fefw.exe`
+loads code mods and was used for the drop-in run: it staged and loaded the 0.2.0
+payload, identified `emblemweave` / `nxmod-api-4`, registered the panel and ran
+the prefix classifier. The older packaged runtime at `X:\EmblemWeave` was not
+used for this run and is not a load result. A future EmblemWeave release must
+keep a runtime with `nxmod_init`; the launcher package alone is not the loader.
 
 ### fefw-recomp API 4
 

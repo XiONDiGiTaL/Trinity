@@ -1,0 +1,16 @@
+# fefw-recomp 0.2.13, X:\fefw-recomp-0.2.13
+# Trinity.dll supplied as X:\fefw-recomp-0.2.13\plugins\TrinityCore\exefs\Trinity.dll
+# Launcher staged it to mods\TrinityCore\exefs\Trinity.dll
+# SHA-256 f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd
+125:[  0.300687 I t37940 -] mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+310:[  3.592544 W t37940 main] mods: TrinityCore/Trinity.dll: host has no NXP UI capability (nxmod API below 4); plugin will run headless
+311:[  3.594541 I t37940 main] mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3), host prefix fefw-recomp., capabilities 0x00000073
+312:[  3.594558 I t37940 main] mods: TrinityCore/Trinity.dll: prefix accepted: trinity.core.panel -> trinity.
+313:[  3.594562 I t37940 main] mods: TrinityCore/Trinity.dll: prefix accepted: nxp.ui -> nxp.
+314:[  3.594565 I t37940 main] mods: TrinityCore/Trinity.dll: prefix accepted: emblemweave.ui.panel -> emblemweave.
+315:[  3.594568 I t37940 main] mods: TrinityCore/Trinity.dll: prefix accepted: fefw-recomp.ui.panel -> fefw-recomp.
+316:[  3.594572 I t37940 main] mods: TrinityCore/Trinity.dll: prefix accepted: obeliskchamber.ui.panel -> obeliskchamber.
+317:[  3.594574 W t37940 main] mods: TrinityCore/Trinity.dll: prefix rejected: other.ui.panel
+318:[  3.594619 I t37940 main] mods: TrinityCore/Trinity.dll: 5 names accepted, 1 rejected.
+319:[  3.594629 W t37940 main] mods: TrinityCore/Trinity.dll: host has no nxp.ui interface; Trinity runs headless
+320:[  3.594658 I t37940 main] mods: TrinityCore/Trinity.dll: code mod started (0 hooks)

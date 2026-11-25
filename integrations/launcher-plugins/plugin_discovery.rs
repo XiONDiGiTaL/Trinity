@@ -1,0 +1,265 @@
+//! Find a Trinity package beside a launcher or in its `plugins/` folder, then
+//! stage it where the game runtime already looks for code mods.
+//!
+//! This module is deliberately dependency-free (std only) so each launcher can
+//! copy it into its own `src-tauri/src/` tree. The launcher never loads the
+//! DLL: the game runtime does, through the host's existing `mods` loader. The
+//! launcher only recognises the package and keeps `mods/TrinityCore` current.
+//!
+//! Search order, first match wins:
+//!
+//! ```text
+//! <launcher>/plugins/TrinityCore/exefs/Trinity.dll
+//! <launcher>/plugins/TrinityCore/Trinity.dll
+//! <launcher>/plugins/Trinity.dll
+//! <launcher>/TrinityCore/exefs/Trinity.dll
+//! <launcher>/TrinityCore/Trinity.dll
+//! <launcher>/Trinity.dll
+//! ```
+//!
+//! The `lib/` and `libTrinity.so` equivalents are used on Linux. A package may
+//! carry `plugin.json`; without one the staged copy receives a minimal
+//! manifest, and the DLL alone is enough for the runtime to load it.
+
+use std::fs;
+use std::path::{Path, PathBuf};
+
+pub const MOD_FOLDER: &str = "TrinityCore";
+pub const DLL_NAME: &str = if cfg!(windows) { "Trinity.dll" } else { "libTrinity.so" };
+pub const MANIFEST: &str = "plugin.json";
+
+const MINIMAL_MANIFEST: &str = r#"{
+  "schema": 1,
+  "id": "org.xion.trinity.core",
+  "name": "Trinity Core",
+  "version": "0.0.0-external",
+  "description": "Trinity staged by the launcher from its root or plugins folder.",
+  "authors": ["XiONDiGiTaL"],
+  "license": "GPL-3.0-or-later",
+  "abi": { "min": 1, "max": 1 },
+  "hosts": ["emblemweave", "fefw-recomp", "obelisk-chamber"],
+  "entry": { "windows": "Trinity.dll", "linux": "libTrinity.so" },
+  "capabilities": [],
+  "dependencies": []
+}
+"#;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Package {
+    /// The payload to load.
+    pub dll: PathBuf,
+    /// `plugin.json` beside or above the payload, when the package has one.
+    pub manifest: Option<PathBuf>,
+    /// The package folder the manifest belongs to.
+    pub root: PathBuf,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Staged {
+    pub source: PathBuf,
+    pub destination: PathBuf,
+    pub version: Option<String>,
+    /// False when a newer install was kept instead of the discovered package.
+    pub installed: bool,
+}
+
+fn candidates(root: &Path) -> Vec<PathBuf> {
+    let mut out = Vec::new();
+    for base in [root.join("plugins"), root.to_path_buf()] {
+        for package in [base.join(MOD_FOLDER), base] {
+            out.push(package.join("exefs").join(DLL_NAME));
+            out.push(package.join("lib").join(DLL_NAME));
+            out.push(package.join(DLL_NAME));
+        }
+    }
+    out
+}
+
+fn package_of(dll: &Path) -> Package {
+    let parent = dll.parent().unwrap_or_else(|| Path::new("."));
+    let root = match parent.file_name().and_then(|n| n.to_str()) {
+        Some("exefs") | Some("lib") => parent.parent().unwrap_or(parent),
+        _ => parent,
+    };
+    let manifest = root.join(MANIFEST);
+    Package {
+        dll: dll.to_path_buf(),
+        manifest: manifest.is_file().then_some(manifest),
+        root: root.to_path_buf(),
+    }
+}
+
+/// The first Trinity payload found beside the launcher or under `plugins/`.
+pub fn find(root: &Path) -> Option<Package> {
+    candidates(root)
+        .into_iter()
+        .find(|path| path.is_file())
+        .map(|path| package_of(&path))
+}
+
+fn manifest_version(path: &Path) -> Option<String> {
+    let text = fs::read_to_string(path).ok()?;
+    let key = text.find("\"version\"")?;
+    let after = &text[key + "\"version\"".len()..];
+    let start = after.find('"')? + 1;
+    let end = after[start..].find('"')? + start;
+    Some(after[start..end].to_string())
+}
+
+fn version_tuple(value: &str) -> (u64, u64, u64) {
+    let mut parts = value.split('.');
+    let mut next = || {
+        parts
+            .next()
+            .and_then(|part| part.trim().parse::<u64>().ok())
+            .unwrap_or(0)
+    };
+    (next(), next(), next())
+}
+
+fn copy_atomic(source: &Path, destination: &Path) -> Result<(), String> {
+    let name = destination
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("payload");
+    let temporary = destination.with_file_name(format!(".{name}.tmp"));
+    fs::copy(source, &temporary)
+        .map_err(|e| format!("copying {} to {}: {e}", source.display(), temporary.display()))?;
+    if destination.exists() {
+        fs::remove_file(destination)
+            .map_err(|e| format!("replacing {}: {e}", destination.display()))?;
+    }
+    fs::rename(&temporary, destination)
+        .map_err(|e| format!("moving {} into {}: {e}", temporary.display(), destination.display()))
+}
+
+/// Recognise a package under `root` and keep `<mods>/TrinityCore` current.
+///
+/// A package with a `plugin.json` newer than the installed one is staged; an
+/// older package leaves a newer install alone. A payload without a manifest is
+/// still staged, because dropping a DLL in the launcher root is an explicit
+/// request to use it. `.nxp-settings.ini` is never touched.
+pub fn stage(root: &Path, mods: &Path) -> Result<Option<Staged>, String> {
+    let Some(package) = find(root) else {
+        return Ok(None);
+    };
+    let target = mods.join(MOD_FOLDER);
+    let exefs = target.join("exefs");
+    let destination = exefs.join(DLL_NAME);
+    let installed_manifest = target.join(MANIFEST);
+
+    let external_version = package
+        .manifest
+        .as_deref()
+        .and_then(manifest_version);
+    let installed_version = manifest_version(&installed_manifest);
+
+    if let (Some(external), Some(installed)) = (&external_version, &installed_version) {
+        if version_tuple(installed) > version_tuple(external) {
+            return Ok(Some(Staged {
+                source: package.dll,
+                destination,
+                version: Some(installed.clone()),
+                installed: false,
+            }));
+        }
+    }
+
+    fs::create_dir_all(&exefs)
+        .map_err(|e| format!("creating {}: {e}", exefs.display()))?;
+    copy_atomic(&package.dll, &destination)?;
+
+    if let Some(manifest) = &package.manifest {
+        copy_atomic(manifest, &installed_manifest)?;
+    } else if !installed_manifest.is_file() {
+        fs::write(&installed_manifest, MINIMAL_MANIFEST)
+            .map_err(|e| format!("writing {}: {e}", installed_manifest.display()))?;
+    }
+
+    Ok(Some(Staged {
+        source: package.dll,
+        destination,
+        version: external_version.or(installed_version),
+        installed: true,
+    }))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn temp(name: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!(
+            "trinity-plugin-{name}-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    #[test]
+    fn finds_a_flat_dll_in_plugins_and_stages_it() {
+        let root = temp("flat");
+        let mods = root.join("mods");
+        fs::create_dir_all(root.join("plugins")).unwrap();
+        fs::write(root.join("plugins").join(DLL_NAME), b"payload").unwrap();
+
+        let staged = stage(&root, &mods).unwrap().unwrap();
+        assert!(staged.installed);
+        assert_eq!(fs::read(mods.join(MOD_FOLDER).join("exefs").join(DLL_NAME)).unwrap(), b"payload");
+        assert!(mods.join(MOD_FOLDER).join(MANIFEST).is_file());
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn prefers_a_manifest_from_a_package_folder() {
+        let root = temp("package");
+        let mods = root.join("mods");
+        let package = root.join("plugins").join(MOD_FOLDER);
+        fs::create_dir_all(package.join("exefs")).unwrap();
+        fs::write(package.join("exefs").join(DLL_NAME), b"payload").unwrap();
+        fs::write(package.join(MANIFEST), r#"{"version":"9.9.9"}"#).unwrap();
+
+        let staged = stage(&root, &mods).unwrap().unwrap();
+        assert_eq!(staged.version.as_deref(), Some("9.9.9"));
+        assert_eq!(fs::read_to_string(mods.join(MOD_FOLDER).join(MANIFEST)).unwrap(), r#"{"version":"9.9.9"}"#);
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn keeps_a_newer_install() {
+        let root = temp("newer");
+        let mods = root.join("mods");
+        let installed = mods.join(MOD_FOLDER);
+        fs::create_dir_all(installed.join("exefs")).unwrap();
+        fs::write(installed.join(MANIFEST), r#"{"version":"9.9.9"}"#).unwrap();
+        fs::write(installed.join("exefs").join(DLL_NAME), b"installed").unwrap();
+        fs::create_dir_all(root.join("plugins")).unwrap();
+        fs::write(root.join("plugins").join(DLL_NAME), b"external").unwrap();
+        fs::write(root.join("plugins").join(MANIFEST), r#"{"version":"0.2.0"}"#).unwrap();
+
+        let staged = stage(&root, &mods).unwrap().unwrap();
+        assert!(!staged.installed);
+        assert_eq!(fs::read(installed.join("exefs").join(DLL_NAME)).unwrap(), b"installed");
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn preserves_settings_and_finds_a_root_dll() {
+        let root = temp("settings");
+        let mods = root.join("mods");
+        fs::write(root.join(DLL_NAME), b"payload").unwrap();
+        let settings = mods.join(MOD_FOLDER).join(".nxp-settings.ini");
+        fs::create_dir_all(settings.parent().unwrap()).unwrap();
+        fs::write(&settings, "trinity.enabled=0\n").unwrap();
+
+        stage(&root, &mods).unwrap().unwrap();
+        assert_eq!(fs::read_to_string(settings).unwrap(), "trinity.enabled=0\n");
+        let _ = fs::remove_dir_all(root);
+    }
+}
