@@ -101,7 +101,7 @@ function prefixRows() {
   return [
     ...prefixes.neutral.map((entry) => ({ ...entry, id: entry.owner, kind: entry.prefix === 'nxp.' ? 'ABI' : 'Portable' })),
     ...prefixes.hosts.map((entry) => ({ ...entry, owner: labelForHost(entry.id), kind: 'Host' }))
-  ].map((entry) => `<div class="trinity-prefix-row">
+  ].map((entry) => `<div class="trinity-prefix-row"${entry.accent ? ` style="--prefix-accent:${esc(entry.accent)}"` : ''}>
     <code>${esc(entry.prefix)}</code>
     <span>${esc(entry.owner)}</span>
     <span class="trinity-kind">${esc(entry.kind)}</span>
@@ -119,7 +119,7 @@ export function renderTrinity(view, options = {}) {
   const validation = validateRegistry(prefixes);
   const total = catalog.listings.length;
 
-  view.innerHTML = `<div class="page trinity-page" data-trinity-host="${esc(hostId)}">
+  view.innerHTML = `<div class="page trinity-page" data-trinity-host="${esc(hostId)}"${current ? ` style="--t-host-accent:${esc(current.accent)}"` : ''}>
     <section class="trinity-hero">
       <div class="trinity-hero-copy">
         <div class="trinity-eyebrow"><i></i>${esc(copy.kicker)} <span>/</span> NXP LAYER ${esc(catalog.version)}</div>

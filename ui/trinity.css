@@ -88,8 +88,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--t-teal);
-  box-shadow: 0 0 0 4px rgba(47, 196, 189, .12), 0 0 14px rgba(47, 196, 189, .6);
+  background: var(--t-host-accent, var(--t-teal));
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .06), 0 0 14px var(--t-host-accent, var(--t-teal));
 }
 .trinity-eyebrow span { color: var(--t-faint); }
 .trinity-wordmark {
@@ -387,7 +387,8 @@
 .trinity-panel-copy code { color: var(--t-gold-soft); font-size: 10px; }
 .trinity-prefix-table { display: flex; flex-direction: column; margin-top: 12px; border-top: 1px solid var(--t-line); }
 .trinity-prefix-row { display: grid; grid-template-columns: 128px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--t-line); }
-.trinity-prefix-row code { color: var(--t-gold-soft); font-size: 10px; }
+.trinity-prefix-row code { display: inline-flex; align-items: center; gap: 6px; color: var(--prefix-accent, var(--t-gold-soft)); font-size: 10px; }
+.trinity-prefix-row code::before { content: ""; width: 5px; height: 5px; flex: none; border-radius: 50%; background: var(--prefix-accent, var(--t-gold)); box-shadow: 0 0 8px var(--prefix-accent, var(--t-gold)); }
 .trinity-prefix-row > span:not(.trinity-kind) { color: var(--t-dim); font-size: 10.5px; }
 .trinity-checker { margin-top: 13px; padding: 11px; border: 1px dashed var(--t-line-strong); border-radius: 6px; background: var(--t-sunken); }
 .trinity-checker label { display: block; margin-bottom: 6px; color: var(--t-faint); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
@@ -436,9 +437,7 @@
 .trinity-page[data-trinity-host="obelisk-chamber"] .trinity-filters button { border-radius: 0; }
 .trinity-page[data-trinity-host="obelisk-chamber"] .trinity-monogram { border-radius: 0; }
 
-/* fefw-recomp keeps its softer, cool surface and its own accent. */
-.trinity-page[data-trinity-host="fefw-recomp"] .trinity-house[data-tone="ok"] .trinity-house-note,
-.trinity-page[data-trinity-host="fefw-recomp"] .trinity-eyebrow i { color: #40ccba; }
+/* fefw-recomp keeps its softer, cool surface; its accent arrives from the catalog. */
 
 @media (max-width: 920px) {
   .trinity-hero { grid-template-columns: minmax(0, 1fr) 180px; padding: 22px; }

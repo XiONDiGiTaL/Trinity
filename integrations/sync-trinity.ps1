@@ -1,7 +1,7 @@
 param(
     [string]$FefwRoot = "",
     [string]$ObeliskRoot = "",
-    [string]$TrinityRoot = (Split-Path -Parent (Split-Path -Parent $PSScriptRoot))
+    [string]$TrinityRoot = (Split-Path -Parent $PSScriptRoot)
 )
 
 $ErrorActionPreference = "Stop"
