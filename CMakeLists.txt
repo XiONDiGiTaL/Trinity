@@ -53,4 +53,16 @@ if(TRINITY_BUILD_TESTS)
         add_test(NAME hello_panel_host_test
             COMMAND nxp_host_test "$<TARGET_FILE:nxp_demo>" demo)
     endif()
+
+    # The adapter is linked into a DLL in normal use. Linking it into this
+    # executable with a probe plugin exercises the same code without a host.
+    add_executable(nxmod_adapter_test
+        tests/compat_adapter_test.cpp
+        tests/compat_probe_plugin.cpp
+        hosts/compat/nxmod_adapter.cpp)
+    target_include_directories(nxmod_adapter_test PRIVATE ${TRINITY_HOST_INCLUDES})
+    target_compile_definitions(nxmod_adapter_test PRIVATE _CRT_SECURE_NO_WARNINGS)
+    add_test(NAME nxmod_adapter_api3 COMMAND nxmod_adapter_test 3)
+    add_test(NAME nxmod_adapter_api4 COMMAND nxmod_adapter_test 4)
+    add_test(NAME nxmod_adapter_api5 COMMAND nxmod_adapter_test 5)
 endif()

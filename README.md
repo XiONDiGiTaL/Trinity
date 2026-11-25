@@ -102,6 +102,7 @@ Outputs:
 - `Trinity/build/trinity.dll`
 - `Trinity/build/nxp_demo.dll`
 - `Trinity/build/nxp_host_test.exe`
+- `Trinity/build/nxmod_adapter_test.exe`
 
 The compatibility adapter compiles against the public `nxrt/mod_api.h` and `nxrecomp/ctx.h` headers from an EmblemWeave checkout. Pass `-DNXP_NXMOD_ROOT=<checkout>/engine/fefw-recomp` if the checkout is elsewhere.
 
@@ -116,7 +117,7 @@ python Trinity/tools/validate_plugin.py Trinity/plugins/trinity_core/plugin.json
 python -m unittest discover -s Trinity/tests -p "test_*.py"
 ```
 
-The C++ harness loads the plugin DLL, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush.
+The C++ harness loads the plugin DLL, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables and check the interface and capability mapping.
 
 The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md). The installed executable on this machine predates code-mod support; the current development build is the test target.
 

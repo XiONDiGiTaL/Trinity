@@ -174,6 +174,13 @@ On `NxModApi` v3 it exposes settings, files and frame, but no UI. On v4 and v5 i
 
 The adapter does not unload. It installs an `atexit` shutdown hook.
 
+`tests/compat_adapter_test.cpp` links the adapter and a probe plugin into one
+executable and runs it with simulated API 3, 4 and 5 tables. It checks that v3
+exposes settings, files and frame but no UI; that v4 and v5 expose the panel;
+that settings and files round-trip through the host callbacks; and that panel
+and frame callbacks cross the trampolines. These are mapping tests, not a game
+runtime test.
+
 The path-derived host id is a known limitation. A native adapter must pass the true identity. A future adapter could accept an injected host id or probe a host-provided interface.
 
 ## 11. Reference plugin

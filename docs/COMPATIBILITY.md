@@ -66,6 +66,8 @@ Both Tauri launchers were built from local clones of the upstream source after a
 | NXP header compiles | C | Build output |
 | Demo and Trinity Core can be built | C | `tools/build-windows.ps1`, 25 November 2026 |
 | Host harness exercises discovery, panel, settings, frame and shutdown | C, R | CTest 2/2 passed |
+| Compatibility adapter maps simulated API 3, 4 and 5 tables | C, R | `nxmod_adapter_api3`, `api4`, `api5` passed |
+| Adapter settings and file callbacks round-trip through fake host | C, R | `nxmod_adapter_test` |
 | Compatibility adapter links against `NxModApi` v4 | C | Build output |
 | EmblemWeave development build loads `nxmod_init` | L | Runtime log in `docs/evidence/` |
 | Trinity Core loads, identifies the host and registers a panel in EmblemWeave | L | `docs/evidence/trinity-core-runtime.log` |
