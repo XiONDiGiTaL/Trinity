@@ -42,6 +42,16 @@ The compatibility adapter is the bridge that makes current hosts work without a 
 
 The launcher and the game runtime are separate processes. Trinity's launcher surface presents the shared catalog and prefix registry; the runtime plugin provides the interfaces. A launcher page does not prove that a plugin loads, and a plugin load does not prove gameplay.
 
+## Trinity in each launcher
+
+These are current captures of the installed launcher builds with the shared Trinity page open. The host styling, navigation, catalog and prefix registry are rendered by each launcher itself.
+
+| EmblemWeave | fefw-recomp | ObeliskChamber |
+| --- | --- | --- |
+| <a href="docs/evidence/emblemweave-trinity.png"><img src="docs/evidence/emblemweave-trinity.png" width="280" alt="Trinity page in EmblemWeave"></a> | <a href="docs/evidence/launcher-fefw-trinity.png"><img src="docs/evidence/launcher-fefw-trinity.png" width="280" alt="Trinity page in fefw-recomp"></a> | <a href="docs/evidence/launcher-obelisk-trinity.png"><img src="docs/evidence/launcher-obelisk-trinity.png" width="280" alt="Trinity page in ObeliskChamber"></a> |
+
+These show the launcher surface, not the in-game Trinity panel. Runtime loading and its limits are recorded below and in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
+
 ## Compatibility status
 
 | Host | Verified | Not yet verified |
