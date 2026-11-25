@@ -1,0 +1,394 @@
+[  0.000488 I t37568 -] runtime: nxrt starting (ABI recomp/include/nxrecomp/ctx.h, ABI version 3)
+[  0.414329 I t37568 -] runtime: host symbols: 193512 from the linker map C:\Users\xiond\.config\freebuff-desktop\local-projects\413b2383-4be0-4b3c-b36e-5f485402a327\EmblemWeave\engine\fefw-recomp\game-build\fefw\build\release\fefw.map
+[  0.414756 I t37568 -] mem: init: stack 7c00000000 (+100000000), kernel 7e00000000 (+100000000), default heap 12288 MiB, regions reserved
+[  0.414775 I t37568 -] svc: 57 SVC handlers registered
+[  0.414803 I t37568 -] sched: the guest's WFE and YIELD hand the host processor to another ready thread (debug note 420)
+[  0.414917 I t37568 -] sched: starvation guard on: a guest thread ready for 100 ms without running (polled every 50 ms, every starvation_idle_poll_ms while nothing is ready: [sched] starvation_lean) is boosted to top priority on the whole processor pool for 450 ms (debug note 422)
+[  0.415715 I t37568 -] services: language en-US (from Windows)
+[  0.416400 I t37568 -] fs: fsp-srv: RomFS from 'E:/FEFW/romfs', save data in 'C:/Users/xiond/AppData/Roaming/EmblemWeave/play/nxp-save', 0 add-on content(s) in 'game/dlc'
+[  0.416492 I t37568 -] net: network services: [net] offline=true (no connection, no friends, no BCAT data in either mode)
+[  0.416660 I t37568 -] kernel: [kernel] wait_spin = auto: on (8 physical cores)
+[  0.416687 I t37568 -] kernel: ArbitrateLock polls the mutex word 30 us before queueing ([kernel] lock_spin_us), threads: main
+[  0.416690 I t37568 -] kernel: waits spin 30 us before sleeping ([kernel] spin_us), threads: main,Basic_Worker
+[  0.416748 I t37568 -] sched: nn::os::LockBusyMutex runs as host code that yields while waiting (debug note 240)
+[  0.416754 I t37568 -] movie: Switch 2: movie:: stays in subsdk0 (nn::movie demuxer, nn::codec decoders on the host); [media] movie is ignored
+[  0.416864 I t37568 -] vcodec: nn::codec VP9/VP8 decoders on the host (libvpx v1.16.0, 4 threads): 49 imports routed
+[  0.416892 I t37568 -] vcodec: [media] movie_trace: 8 nn::movie extractor calls logged (rate-limited)
+[  0.416988 I t37568 -] movie: movie::VideoDecoder on the host: AV1 through dav1d 1.5.1 with x86-64 assembly (8 threads at above normal priority, 30 pictures ahead), 24 imports routed
+[  0.417052 I t37568 -] switch2: Switch 2 platform: graphics system boot answered on the host
+[  0.417171 I t37568 -] watchdog: started: threshold 10.0 s, poll 250 ms, report file C:\Users\xiond\.config\freebuff-desktop\local-projects\413b2383-4be0-4b3c-b36e-5f485402a327\EmblemWeave\engine\fefw-recomp\game-build\fefw\build\release\fefw_freeze.txt
+[  0.417181 I t37568 -] config: [account] nickname = Player (default)
+[  0.417182 I t37568 -] config: [account] uid =  (default)
+[  0.417184 I t37568 -] config: [am] operation_mode = docked (default)
+[  0.417185 I t37568 -] config: [aoc] dir = game/dlc (default)
+[  0.417187 I t37568 -] config: [diag] trace_sites =  (default)
+[  0.417188 I t37568 -] config: [diag] watchdog_seconds = 10 (default)
+[  0.417190 I t37568 -] config: [fs] romfs = E:/FEFW/romfs (ini)
+[  0.417191 I t37568 -] config: [fs] save_dir = C:/Users/xiond/AppData/Roaming/EmblemWeave/play/nxp-save (ini)
+[  0.417193 I t37568 -] config: [kernel] lock_spin_threads = main (default)
+[  0.417194 I t37568 -] config: [kernel] lock_spin_us = 30 (default)
+[  0.417196 I t37568 -] config: [kernel] occupancy = 0 (default)
+[  0.417197 I t37568 -] config: [kernel] spin_threads = main,Basic_Worker (default)
+[  0.417199 I t37568 -] config: [kernel] spin_us = 30 (default)
+[  0.417200 I t37568 -] config: [kernel] thread_log = false (default)
+[  0.417201 I t37568 -] config: [kernel] wait_spin = auto (default)
+[  0.417203 I t37568 -] config: [kernel] wait_stats = 0 (default)
+[  0.417204 I t37568 -] config: [log] level =  (default)
+[  0.417206 I t37568 -] config: [log] path = C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/unified-plugin-sdk/build/final-run.log (ini)
+[  0.417207 I t37568 -] config: [media] movie_decoder = dav1d (default)
+[  0.417208 I t37568 -] config: [media] movie_trace = true (default)
+[  0.417354 I t37568 -] config: [media] movies = host (default)
+[  0.417359 I t37568 -] config: [media] video_decode_ahead = 30 (default)
+[  0.417362 I t37568 -] config: [media] video_decoder = host (default)
+[  0.417364 I t37568 -] config: [media] video_decoder_log = false (default)
+[  0.417366 I t37568 -] config: [media] video_decoder_priority = above (default)
+[  0.417368 I t37568 -] config: [media] video_decoder_threads = 0 (default)
+[  0.417370 I t37568 -] config: [memory] heap_gb = 12 (default)
+[  0.417372 I t37568 -] config: [memory] limit_gb = 16 (default)
+[  0.417374 I t37568 -] config: [memory] poll_ms = 250 (default)
+[  0.417376 I t37568 -] config: [net] offline = true (default)
+[  0.417378 I t37568 -] config: [play] controls = controls.ini (default)
+[  0.417380 I t37568 -] config: [process] program_id =  (default)
+[  0.417382 I t37568 -] config: [sched] busy_mutex_hle = true (default)
+[  0.417384 I t37568 -] config: [sched] core_number_at =  (default)
+[  0.417386 I t37568 -] config: [sched] place_log = false (default)
+[  0.417387 I t37568 -] config: [sched] render_place = off (default)
+[  0.417389 I t37568 -] config: [sched] spin_yield = true (default)
+[  0.417391 I t37568 -] config: [sched] starvation_guard = true (default)
+[  0.417393 I t37568 -] config: [sched] starvation_idle_poll_ms = 200 (default)
+[  0.417395 I t37568 -] config: [sched] starvation_lean = true (default)
+[  0.417397 I t37568 -] config: [sched] starvation_ms = 100 (default)
+[  0.417398 I t37568 -] config: [sched] starvation_poll_ms = 50 (default)
+[  0.417400 I t37568 -] config: [system] firmware = 23.0.0 (default)
+[  0.417402 I t37568 -] config: [system] language =  (default)
+[  0.417404 I t37568 -] config: [system] nickname = nxrt (default)
+[  0.417406 I t37568 -] config: [system] region =  (default)
+[  0.417408 I t37568 -] config: [test] crash_kind =  (default)
+[  0.417410 I t37568 -] config: [title] account_save_journal = 67108864 (default)
+[  0.417412 I t37568 -] config: [title] account_save_size = 67108864 (default)
+[  0.417413 I t37568 -] config: [title] cache_save_journal = 0 (default)
+[  0.417416 I t37568 -] config: [title] cache_save_size = 0 (default)
+[  0.417418 I t37568 -] config: [title] device_save_journal = 67108864 (default)
+[  0.417420 I t37568 -] config: [title] device_save_size = 67108864 (default)
+[  0.417422 I t37568 -] config: [title] display_version = 131072 (default)
+[  0.417424 I t37568 -] config: [title] main_thread_core = 0 (default)
+[  0.417426 I t37568 -] config: [title] main_thread_priority = 44 (default)
+[  0.417427 I t37568 -] config: [title] main_thread_stack = 1048576 (default)
+[  0.417429 I t37568 -] config: [title] name = Fire Emblem: Fortune's Weave (default)
+[  0.417431 I t37568 -] config: [title] program_id = 288369945938157568 (default)
+[  0.417433 I t37568 -] config: [title] save_owner_id = 288369945938157568 (default)
+[  0.417435 I t37568 -] config: [title] supported_languages =  (default)
+[  0.417437 I t37568 -] config: [title] system_resource_size = 0 (default)
+[  0.417538 I t37568 -] diag: hitch log: frame summary every 10 s, frames over 50 ms logged (at most one line per second)
+[  0.417703 I t37568 -] timestep: the game lists no frame-step sites: the retail step stays
+[  0.417715 I t37568 -] timestep: mode real (host clock), rate 0, clamp 30..480 Hz, smooth 4, pace 1, fixes: friction 1 render_timings 1 streaming 1 budget 1 stuck_tracker 1 movie 1, 0 hooks at base 0x7100000000
+[  0.417744 I t37568 -] boot: fefw.exe build: FMA3
+[  0.417750 I t37568 -] boot: Fire Emblem: Fortune's Weave (update 131072): exefs 'C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs', main '', romfs 'E:/FEFW/romfs'
+[  0.418402 I t37568 -] nvn: NVN shell installed: 544 entry points (2 implemented, 542 logging stubs), 37 object sizes
+[  0.419261 I t37568 -] play: settings loaded from controls.ini (35 bindings)
+[  0.545881 I t37568 -] platform: SDL 3.4.18 initialised (gamepads on)
+[  0.613882 I t37568 -] platform: window 1280x720, pixels 1280x720, density 1.00
+[  0.752373 I t37568 -] gfx: GPU 0: AMD Radeon RX 7900 XT (discrete, vendor 0x1002, device 0x744c, Vulkan 1.4.359, driver 2.0.416 [0x008001a0], 20.0 GiB)
+[  0.752384 I t37568 -] gfx: using GPU 0: AMD Radeon RX 7900 XT (default rule)
+[  0.752490 I t37568 -] gfx: pipeline libraries: fast linking 1, independent interpolation decoration 1
+[  0.752495 I t37568 -] gfx: texture compression on this GPU: BC yes, ASTC-LDR no, ETC2 no
+[  0.752502 I t37568 -] gfx: features: geometry 1 float64 1 int64 1 dualSrc 1 logicOp 1 multiViewport 1 drawParams 1 descIndexing 1 interlock 1 depthClipControl 1 customBorder 1 hostMemImport 1 pushDesc 1 uboRobustness 3 (core)
+[  0.752507 I t37568 -] gfx: subgroup: native 64, range 32..64, required stages 0xf0, size control 1, full compute 1, max workgroup subgroups 4294967295
+[  0.792989 I t37568 -] gfx: device extensions enabled (23): VK_EXT_fragment_shader_interlock, VK_EXT_shader_atomic_float, VK_EXT_depth_clip_control, VK_EXT_depth_clip_enable, VK_EXT_custom_border_color, VK_EXT_extended_dynamic_state3, VK_EXT_vertex_input_dynamic_state, VK_EXT_dynamic_rendering_unused_attachments, VK_EXT_transform_feedback, VK_EXT_index_type_uint8, VK_EXT_graphics_pipeline_library, VK_KHR_pipeline_library, VK_EXT_hdr_metadata, VK_AMD_anti_lag, VK_EXT_memory_budget, VK_EXT_memory_priority, VK_EXT_pageable_device_local_memory, VK_EXT_external_memory_host, VK_KHR_push_descriptor, VK_KHR_compute_shader_derivatives, VK_KHR_swapchain, VK_EXT_full_screen_exclusive, VK_AMD_memory_overallocation_behavior
+[  0.794464 I t37568 -] gfx: memory limits: maxMemoryAllocationCount 4294967295, minImportedHostPointerAlignment 4096, external host 1, memory budget 1, overallocation allowed 1
+[  0.794473 I t37568 -] gfx: memory heap 0: 15.96 GiB, types (index:flags) 1:0x6 3:0xe 5:0xc6 7:0xce 9:0x6 11:0xe 13:0xc6 15:0xce
+[  0.794478 I t37568 -] gfx: memory heap 1: 19.98 GiB device-local, types (index:flags) 0:0x1 2:0x7 4:0xc1 6:0xc7 8:0x1 10:0x7 12:0xc1 14:0xc7
+[  0.794504 I t37568 -] gfx: video memory over the budget: memory priority 1, pageable device-local memory 1 ([gfx] pageable_memory = 1)
+[  0.794508 I t37568 -] gfx: video memory budget: from the OS (VK_EXT_memory_budget)
+[  0.794599 I t37568 -] gfx: device ready: AMD Radeon RX 7900 XT (vendor 0x1002, device 0x744c, Vulkan 1.4.359, driver 2.0.416 [0x008001a0]), queue family 0, validation off, window surface
+[  0.795112 I t37568 -] gfx: HDR: surface offers HDR10 no, scRGB no; display \\.\DISPLAY1: hdr off, peak 456 nits, SDR white 80 nits (CCD ok: adv sup=1 on=0; DXGI ok: colour space 0)
+[  0.795122 I t37568 -] gfx: HDR: mode 1, scene SDR, wanted output sdr8, paper white 203 nits, peak 456 nits, peak ratio 1.00
+[  0.795136 I t37568 -] lowlat: frame pacing: limiter in the present call (frames_ahead 1)
+[  0.795137 I t37568 -] lowlat: low latency: off (mode 0, backend none)
+[  0.942372 I t37568 -] gfx: swapchain 1280x720, 4 images, format 44, color space 0 (sdr8), present mode immediate
+[  0.942476 I t37568 -] nvn.gpu: submit_batch 1 (auto, not Wine)
+[  1.005823 I t37568 -] nvn.cmdq: [nvn] replay_threads = 2 (auto: 8+ logical processors): the render thread's Vulkan calls are made by a worker thread (nvn-rec), 32 MB queue
+[  1.005846 I t37568 -] nvn.renderprep: background render preparation is off
+[  1.011476 I t37568 -] nvn.gpu: NVN back end up on AMD Radeon RX 7900 XT (36 submission slots, timeline semaphore, host-memory import available)
+[  1.012208 W t37568 -] nvn: no shader cache: set [nvn] shader_cache (NXRT_NVN_SHADER_CACHE) to a folder with results.tsv
+[  1.012242 I t37568 -] nvn: NVN back end installed: 544 of 544 entry points implemented
+[  1.012244 I t37568 -] boot: NVN back end running on AMD Radeon RX 7900 XT (window)
+[  1.012279 I t37568 -] sched: process priority class: high
+[  1.040588 I t37568 -] gfx: swapchain 1280x720, 4 images, format 44, color space 0 (sdr8), present mode immediate
+[  1.040920 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 8x8 decode of 688 random blocks: 0 of 174244 bytes differ from the CPU decoder (largest difference 0)
+[  1.041177 I t37568 -] overlay: UI font: C:\Users\xiond\.config\freebuff-desktop\local-projects\413b2383-4be0-4b3c-b36e-5f485402a327\EmblemWeave\engine\fefw-recomp\game-build\fefw\build\release\fonts\Sora.ttf ([gfx] ui_language auto)
+[  1.041369 I t37568 -] overlay: overlay ready (toggle key F1)
+[  1.042774 I t37568 -] display: display snapshot: 1 monitor(s), saved to C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/unified-plugin-sdk/build/final-test.ini.display-state
+[  1.042900 I t37568 -] fefw: hub NPCs x1.00 ([display] npc_distance; 1 = the game's own): model limit x1.00, display distance x1.00, budget x1.00
+[  1.043299 I t37568 -] mods: this build's hook sites: 106 (fefw.sites)
+[  1.043734 I t37568 -] fefw: frame-rate fixes ([fefw] frame_fixes = 1): 61 hooks, 62 sites checked
+[  1.043872 I t37568 -] fefw: gameplay at 30 (the game's own) fps ([fefw] fps60 = 0, fps120 = 0, smooth_step = 0), game clock log every 10 s
+[  1.043907 I t37568 -] fefw.prompts: the left / right position glyphs of these font sizes show a D-pad with a pad: small ([fefw] pager_dpad)
+[  1.044672 I t37568 -] mods: mods folder C:\Users\xiond\AppData\Roaming\EmblemWeave\play\mods: 1 installed
+[  1.045784 I t37568 -] mods: mods folder C:\Users\xiond\AppData\Roaming\EmblemWeave\play\mods: 1 installed
+[  1.049261 I t37568 -] mods: NXPluginDemo/nxp_demo.dll: loaded, starts at the first frame
+[  1.049301 I t37568 -] play: play mode started (window, overlay on, base 0x7100000000, game fefw, frame hook 1)
+[  1.050018 I t37568 -] loader: NSO rtld: text 0x2740 ro 0x9e4 data 0xc008 bss 0xfff8, flags 0x3f, dynamic at 0x4008
+[  1.050082 I t37568 -] loader: mapped rtld at 0x7700000000 (+0x20000 bytes, 3 segments, 3 symbols, entry 0x0)
+[  1.050137 I t37568 -] loader: registered lifted module rtld (index 5): 44 of 44 functions, 3 dynamic symbols, 0 resume pads, unwind tables yes
+[  1.050141 I t37568 -] boot: module rtld at 0x7700000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\rtld)
+[  1.051782 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 8x8 sRGB decode of 688 random blocks: 0 of 174244 bytes differ from the CPU decoder (largest difference 0)
+[  1.058991 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 6x6 decode of 496 random blocks: 0 of 70300 bytes differ from the CPU decoder (largest difference 0)
+[  1.062968 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 4x4 sRGB decode of 208 random blocks: 0 of 12852 bytes differ from the CPU decoder (largest difference 0)
+[  1.068572 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 5x5 decode of 336 random blocks: 0 of 32864 bytes differ from the CPU decoder (largest difference 0)
+[  1.085774 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: ASTC 10x10 decode of 848 random blocks: 0 of 336444 bytes differ from the CPU decoder (largest difference 0)
+[  1.090423 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: BC7 encode of a 126x62 image: 48.1 dB against the source
+[  1.090864 I t12604 nvn-astcgpu-init] nvn.astcgpu: self-test: BC1 encode of a 126x62 image: 41.5 dB against the source
+[  1.090873 I t12604 nvn-astcgpu-init] nvn.astcgpu: ASTC textures are decoded and encoded on the GPU ([gfx] astc_gpu = auto): pipelines built in 2 ms, self-test passed after 79 ms; up to 8.0 ms of GPU time per present, results stored in [nvn] bc7_cache only if this GPU turns out slow, CPU re-encode off
+[  1.090877 I t12604 nvn-astcgpu-init] nvn.astcgpu: BC7/BC1 entries of [nvn] bc7_cache are not read while this GPU is fast ([gfx] astc_gpu_cache_read = auto)
+[  1.112766 I t37568 -] loader: NSO main: text 0x1a452f0 ro 0x546c58 data 0x2292d0 bss 0x109d30, flags 0x38, dynamic at 0x2169d88
+[  1.118816 I t37568 -] loader: mapped main at 0x7100000000 (+0x22c0000 bytes, 3 segments, 932 symbols, entry 0x0)
+[  1.142273 I t37568 -] loader: registered lifted module main (index 0): 90556 of 90556 functions, 932 dynamic symbols, 56 resume pads, unwind tables yes
+[  1.142285 I t37568 -] boot: module main at 0x7100000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\main)
+[  1.221867 I t37568 -] loader: NSO subsdk0: text 0xe3a50 ro 0x8673d0 data 0x221eb70 bss 0x25490, flags 0x3f, dynamic at 0x950f38
+[  1.229375 I t37568 -] loader: mapped subsdk0 at 0x7600000000 (+0x2b90000 bytes, 3 segments, 219 symbols, entry 0x0)
+[  1.233372 I t37568 -] loader: registered lifted module subsdk0 (index 2): 1894 of 1894 functions, 219 dynamic symbols, 452 resume pads, unwind tables yes
+[  1.233383 I t37568 -] boot: module subsdk0 at 0x7600000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\subsdk0)
+[  1.268635 I t37568 -] loader: NSO subsdk1: text 0x25dd60 ro 0x11b1b74 data 0x223a8 bss 0x1dc58, flags 0x3f, dynamic at 0x1421e48
+[  1.271970 I t37568 -] loader: mapped subsdk1 at 0x7640000000 (+0x1450000 bytes, 3 segments, 907 symbols, entry 0x0)
+[  1.274517 I t37568 -] loader: registered lifted module subsdk1 (index 3): 9796 of 9796 functions, 907 dynamic symbols, 0 resume pads, unwind tables yes
+[  1.274523 I t37568 -] boot: module subsdk1 at 0x7640000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\subsdk1)
+[  1.276315 I t37568 -] loader: NSO subsdk2: text 0x84770 ro 0x39434 data 0x11010 bss 0xfff0, flags 0x3f, dynamic at 0xc06e8
+[  1.276735 I t37568 -] loader: mapped subsdk2 at 0x7680000000 (+0xe0000 bytes, 3 segments, 1083 symbols, entry 0x0)
+[  1.276997 I t37568 -] loader: registered lifted module subsdk2 (index 4): 1545 of 1545 functions, 1083 dynamic symbols, 0 resume pads, unwind tables yes
+[  1.277001 I t37568 -] boot: module subsdk2 at 0x7680000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\subsdk2)
+[  1.311870 I t37568 -] loader: NSO sdk: text 0x87d630 ro 0x5cdebc data 0x5d4f8 bss 0x1c6b08, flags 0x3f, dynamic at 0xe86710
+[  1.319535 I t37568 -] loader: mapped sdk at 0x7500000000 (+0x1070000 bytes, 3 segments, 28673 symbols, entry 0x0)
+[  1.331293 I t37568 -] loader: registered lifted module sdk (index 1): 45806 of 45806 functions, 28673 dynamic symbols, 1465 resume pads, unwind tables yes
+[  1.331303 I t37568 -] boot: module sdk at 0x7500000000 (C:/Users/xiond/.config/freebuff-desktop/local-projects/413b2383-4be0-4b3c-b36e-5f485402a327/EmblemWeave/engine/fefw-recomp/game/dump/exefs\sdk)
+[  1.334874 I t37568 main] thread: host thread 37568 is now the guest main thread (stack 0x7e00000000..0x7e00100000)
+[  1.334879 I t37568 main] boot: entering rtld at 0x7700000000 (x1 = main thread handle 0x10000)
+[  1.349128 I t37568 main] ipc: ConnectToNamedPort(sm:) -> handle 0x10001
+[  1.349168 I t37568 main] sm: sm: GetServiceHandle(lm)
+[  1.349226 I t37568 main] lm: OpenLogger for pid 5711486074732150784
+[  1.349294 I t37568 main] sm: sm: GetServiceHandle(appletOE)
+[  1.349719 I t37568 main] sched: console cores: slot 0 of 2, the 1-th to 6-th fastest physical cores (mask 7e); other nxrt processes take other slots
+[  1.349731 I t37568 main] sched: console core model ON, affinity soft: ideal processors (as masks) 40 20 10 8 4 2 for cores 0..5, every guest thread may run on processors fffe (15 of them)
+[  1.349828 I t37568 main] sm: sm: GetServiceHandle(aoc:u)
+[  1.349853 I t37568 main] sm: sm: GetServiceHandle(ectx:aw)
+[  1.349898 I t37568 main] sm: sm: GetServiceHandle(pctl)
+[  1.349996 I t37568 main] net: pctl cmd 1 CreateServiceWithoutInitialize: answered offline (first use)
+[  1.350020 I t37568 main] sm: sm: GetServiceHandle(pctl:s)
+[  1.350060 I t37568 main] sm: sm: GetServiceHandle(pctl:a)
+[  1.350089 I t37568 main] sm: sm: GetServiceHandle(pctl:r)
+[  1.350139 I t37568 main] sm: sm: GetServiceHandle(time:u)
+[  1.352211 I t37568 main] mem: heap: section of 12288 MiB, primary view at 7800000000
+[  1.473910 I t37568 main] sm: sm: GetServiceHandle(fsp-srv)
+[  1.479896 I t37568 main] sm: sm: GetServiceHandle(csrng)
+[  1.496823 I t37568 main] threads: guest-82 is "Basic_Worker1": nn prio 16, ideal core 1, core mask 0x2, spins before sleeping
+[  1.497202 I t37568 main] threads: guest-83 is "Basic_Worker2": nn prio 16, ideal core 2, core mask 0x4, spins before sleeping
+[  1.497475 I t37568 main] threads: guest-84 is "Basic_Worker3": nn prio 16, ideal core 3, core mask 0x8, spins before sleeping
+[  1.497778 I t37568 main] threads: guest-85 is "Basic_Worker4": nn prio 16, ideal core 4, core mask 0x10, spins before sleeping
+[  1.500998 I t37568 main] threads: guest-86 is "SYS_Notification": nn prio 0, ideal core 0, core mask 0x1
+[  1.502713 I t37568 main] mods: mods folder C:\Users\xiond\AppData\Roaming\EmblemWeave\play\mods: 1 installed
+[  3.552406 I t37568 main] fs: RomFS image from E:/FEFW/romfs: 252686 files, 21466 directories, 29037945728 bytes of data, image size 29057014828
+[  3.563024 I t37568 main] threads: guest-87 is "FS_Load": nn prio 19, ideal core 3, core mask 0x8
+[  3.563181 I t37568 main] threads: guest-88 is "FS_Decode1": nn prio 19, ideal core 1, core mask 0x2
+[  3.563326 I t37568 main] threads: guest-89 is "FS_Decode2": nn prio 19, ideal core 2, core mask 0x4
+[  3.563441 I t37568 main] threads: guest-90 is "FS_Decode3": nn prio 19, ideal core 4, core mask 0x10
+[  3.563556 I t37568 main] threads: guest-91 is "FS_DecodeExt": nn prio 20, ideal core 0, core mask 0x29
+[  3.563682 I t37568 main] threads: guest-92 is "FS_PostProcAsync": nn prio 19, ideal core 3, core mask 0x38
+[  3.563808 I t37568 main] threads: guest-93 is "FS_BGGC": nn prio 19, ideal core 1, core mask 0x1e
+[  3.570540 I t37568 main] aoc: CountAddOnContent: 0
+[  3.570598 I t37568 main] switch2: nv driver pointer at 750103b058 set to a host stand-in
+[  3.570604 I t37568 main] switch2: nv::InitializeGraphics(0, 0): GPU driver boot skipped (NVN runs on the host); gs initialized flag at 7500f39b38
+[  3.570839 I t37568 main] switch2: nn::vi::OpenDefaultDisplay -> host display
+[  3.570844 I t37568 main] switch2: nn::vi::CreateLayer -> host layer
+[  3.570847 I t37568 main] switch2: nn::vi::GetNativeWindow -> host window handle
+[  3.570859 I t37568 main] switch2: nn::vi::QueryDisplayBufferMaxResolution -> 3 (2160p)
+[  3.570904 I t37568 main] nvn: NVN functions the game asks for by name that the table does not have get a logging stub; a call to one is logged as UNKNOWN NVN PROC (names at trace level)
+[  3.572202 I t37568 main] nvn: nvnQueueBuilderSetPrimaryQueue: recorded as a no-op, one queue replays everything in order (first)
+[  3.572856 I t37568 main] fefw: render-target pool (1008 MiB, flags 0xa1): what its allocator cannot place goes to offsets 1024 to 4096 MiB, with GPU memory of its own ([fefw] rt_pool_overflow_mb = 3072)
+[  3.572994 I t37568 main] nvn: nvnCommandBufferSetRecordingMode(0): kept on the buffer, the replay records the same commands in every mode (first)
+[  3.573676 I t37568 main] nvn.texprep: background texture preparation: 5 threads, budget 1024 MB, textures from 8 KB
+[  3.573765 I t37568 main] nvn.dlss: network 1: output 3840x2160, method 2 (1x (DLAA)), preset 5, flags 0x2000000a, 2 evaluation entries, texture ids 259.., storage 65536 bytes; NGX optimal 3840x2160, dynamic 3802x2138 .. 3840x2160
+[  3.575205 I t37568 main] threads: guest-94 is "GFX_Worker0": nn prio 16, ideal core 0, core mask 0x1
+[  3.575994 I t37568 main] threads: guest-95 is "GFX_Worker1": nn prio 16, ideal core 1, core mask 0x2
+[  3.576793 I t37568 main] threads: guest-96 is "GFX_Worker2": nn prio 16, ideal core 2, core mask 0x4
+[  3.577624 I t37568 main] threads: guest-97 is "GFX_Worker3": nn prio 16, ideal core 3, core mask 0x8
+[  3.578456 I t37568 main] threads: guest-98 is "GFX_Worker4": nn prio 16, ideal core 4, core mask 0x10
+[  3.578515 I t37568 main] nvn: nvnCommandBufferSetRecordingMode(1): kept on the buffer, the replay records the same commands in every mode (first)
+[  3.607353 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^4, depth 2^0, width 2^0 GOBs; target 1, 512x512x1 format 73
+[  3.607369 I t37568 main] nvn: nvnTextureInitialize: 512x512 texture (format 73, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607378 I t37568 main] nvn: nvnTextureInitialize: 512x512 texture (format 73, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607382 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^3, depth 2^0, width 2^0 GOBs; target 1, 256x256x1 format 72
+[  3.607386 I t37568 main] nvn: nvnTextureInitialize: 256x256 texture (format 72, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607390 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^0, depth 2^0, width 2^0 GOBs; target 1, 8x8x1 format 70
+[  3.607394 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 70, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607398 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 77, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607403 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 66, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607408 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 75, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607412 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^0, depth 2^0, width 2^0 GOBs; target 4, 8x8x6 format 56
+[  3.607415 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 56, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607419 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 37, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607423 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 37, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607430 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 66, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607434 I t37568 main] nvn: nvnTextureInitialize: 8x8 texture (format 75, flags 0x4) in a CPU_NO_ACCESS pool is not a render target: uploaded from the pool
+[  3.607512 I t37568 main] nvn.tex: ASTC storage: BC7 ([gfx] astc_bc = auto; discrete GPU, video memory heap 20.0 GiB)
+[  3.607721 I t24984 nvn-texprep] nvn.texprep: scheduled 7, used 0 (waited for 0), stale 0, taken back by the render thread 0, stand-in while queued or running 0, no job 0, failed 0, crashed 0, over budget 0, evicted 0, held 7.0 MB
+[  3.629193 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^2, depth 2^0, width 2^0 GOBs; target 1, 256x256x1 format 142
+[  3.629204 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^0, depth 2^1, width 2^0 GOBs; target 2, 256x8x2 format 77
+[  3.629266 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^1, depth 2^0, width 2^0 GOBs; target 1, 256x64x1 format 77
+[  3.633675 I t37568 main] sm: sm: GetServiceHandle(hid)
+[  3.633826 I t37568 main] hid: CreateAppletResource
+[  3.635446 I t37568 main] threads: guest-99 is "HID_VibrationNode": nn prio 1, ideal core 1, core mask 0x36
+[  3.639281 I t37568 main] threads: guest-100 is "SAVE_Worker": nn prio 31, ideal core 0, core mask 0x3f
+[  3.639506 I t37568 main] sm: sm: GetServiceHandle(acc:u0)
+[  3.641293 I t20688 guest-99] hid: SendVibrationValues2 (214): 2 values, first handle 4, routed to the pad rumble
+[  3.641471 I t37568 main] sm: sm: GetServiceHandle(aud:u)
+[  3.641936 I t37568 main] audren: audio renderer manager up (host sink, 2 channels)
+[  3.641942 I t37568 main] AudioRenderer: Registered new renderer (0)
+[  3.641995 I t37568 main] AudioRenderer: Initializing with REV16
+[  3.642243 I t24796 -] AudioRenderer: Starting audio processor
+[  3.642281 I t37568 main] audren: OpenAudioRenderer: rate 48000, samples 240, mixbuffers 30, voices 64, sinks 1, effects 14, revision REV16, voice drop on (host sheds voices only when its own processor falls behind)
+[  3.642425 I t17228 -] AudioRenderer: Starting audio renderer
+[  3.643505 I t37568 main] AudioRenderer: device sink: 6 inputs, downmix parameter off
+[  3.643614 I t37568 main] AudioRenderer: Starting renderer id 0
+[  3.644214 I t37568 main] threads: guest-101 is "nn::atk::detail::TaskThread": nn prio 0, ideal core 5, core mask 0x20
+[  3.644735 I t37568 main] threads: guest-102 is "nn::atk::detail::driver::SoundThread": nn prio 0, ideal core 4, core mask 0x10
+[  3.658857 I t24796 -] audio: xaudio2: output device (default): Speakers (Realtek High Definition Audio) [{0.0.0.00000000}.{1e9592b9-c961-4e37-99f6-8978a4349f5f}]
+[  3.658862 I t24796 -] audio: xaudio2: output device: 1 - XG27ACS (AMD High Definition Audio Device) [{0.0.0.00000000}.{8cbfcd80-f547-438a-b573-27623a68342a}]
+[  3.718458 I t24796 -] audio: xaudio2: opened 48000 Hz, 2 channels, volume 1.00
+[  3.718472 I t24796 -] audio: sink xaudio2: written 0, accepted 0, dropped 0, underruns 0, queued peak 0 buffers, queue 0..0 frames
+[  3.725410 I t24796 -] audio: host audio sink: xaudio2
+[  3.730716 I t24796 -] audio: xaudio2: output device (default): Speakers (Realtek High Definition Audio) [{0.0.0.00000000}.{1e9592b9-c961-4e37-99f6-8978a4349f5f}]
+[  3.730721 I t24796 -] audio: xaudio2: output device: 1 - XG27ACS (AMD High Definition Audio Device) [{0.0.0.00000000}.{8cbfcd80-f547-438a-b573-27623a68342a}]
+[  3.778572 I t24796 -] audio: xaudio2: opened 48000 Hz, 2 channels, volume 1.00
+[  3.782470 W t24796 -] AudioRenderer: slow DSP frame: 134.1 ms
+[  3.782519 W t17228 -] AudioRenderer: slow frame: generating the commands took 0.0 ms, rendering and waiting 134.1 ms
+[  3.789497 I t37568 main] threads: guest-103 is "SND_PlayerUpdate": nn prio 1, ideal core 5, core mask 0x20
+[  3.789832 I t37568 main] threads: guest-104 is "SND_PlayerTask": nn prio 2, ideal core 5, core mask 0x20
+[  3.790056 I t37568 main] threads: guest-105 is "SND_Load": nn prio 30, ideal core 5, core mask 0x20
+[  3.790355 I t37568 main] threads: guest-106 is "SND_Update": nn prio 10, ideal core 5, core mask 0x20
+[  3.847529 I t37568 main] threads: guest-107 is "sndSetup": nn prio 16, ideal core 0, core mask 0x1
+[  3.873360 I t37244 guest-107] sm: sm: GetServiceHandle(hwopus)
+[  3.873395 I t37244 guest-107] hwopus: game asked for the Opus work buffer size (cmd 8); reporting 32768
+[  3.912253 I t37568 main] threads: guest-108 is "AS_Build": nn prio 29, ideal core 1, core mask 0x16
+[  3.912986 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block 4f4382857294f0d8; program not linked (every draw that uses it is skipped)
+[  3.913023 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block 6834d4ce5782a14e; program not linked (every draw that uses it is skipped)
+[  3.913064 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block 450faf9860072fd4; program not linked (every draw that uses it is skipped)
+[  3.913089 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block ee967cbf722c4851; program not linked (every draw that uses it is skipped)
+[  3.913127 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block 12c233c054ae6132; program not linked (every draw that uses it is skipped)
+[  3.913154 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block d3f3a49a3395a73a; program not linked (every draw that uses it is skipped)
+[  3.913267 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block 78e756776b3f3088; program not linked (every draw that uses it is skipped)
+[  3.913369 W t37568 main] nvn: nvnProgramSetShaders: no translated shader for block a3922176636a5f3a; program not linked (every draw that uses it is skipped)
+[  3.913439 E t37568 main] nvn: more programs than this log lists have no translated shader. Every draw they belong to is skipped, so the window shows only what the last clear left (black) while the audio plays. The build's shader step writes the SPIR-V to <the shader cache has no folder>, which is where these programs were looked for: run Build the game, which translates the blocks that are missing.
+[  3.916227 I t37568 main] threads: guest-109 is "MOCull_Worker1": nn prio 17, ideal core 2, core mask 0x4
+[  3.916852 I t37568 main] threads: guest-110 is "MOCull_Worker2": nn prio 17, ideal core 4, core mask 0x10
+[  3.917738 I t37568 main] threads: guest-111 is "MOCull_Leader": nn prio 17, ideal core 1, core mask 0x2
+[  3.918609 I t37568 main] threads: guest-112 is "PX_Executor": nn prio 17, ideal core 2, core mask 0x4
+[  3.919369 I t37568 main] hid: InitializeNmouse(pointer type 0, range 1920x1080, size c000) -> block 7802668000
+[  3.919398 I t37568 main] hid: Joy-Con 2 mouse: listed a merged mouse and a Joy-Con 2 (R) mouse for player 1 (mode auto, pointer range 1920x1080)
+[  4.020507 I t37568 main] nvn.tex: packaged texture layout (first of this kind): block height 2^4, depth 2^0, width 2^0 GOBs; target 4, 1024x1024x23 format 73
+[  4.024479 I t37568 main] nvn.dlss: network 2: output 2560x1440, method 0 (up to 2x), preset 5, flags 0x2000000a, 2 evaluation entries, texture ids 259.., storage 65536 bytes; NGX optimal 1485x835, dynamic 1280x720 .. 2560x1440
+[  4.660097 I t37568 main] hid: SetNmousePointerPosition(960, 540, handle 4e4d0002)
+[  4.663833 I t37960 nvn-render] nvn.resid: texture residency ([gfx] residency = auto): the pool shaders mark what they sample; idle textures are demoted near the budget
+[  4.664358 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst: 1024x1024 x1 BC4 sheet, cells 49x53 (20 x 18), 300 codes
+[  4.664777 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst: 256x1024 x1 BC4 sheet, cells 25x27 (9 x 36), 300 codes
+[  4.666756 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst: 1024x1024 x4 BC4 sheet, cells 101x106 (10 x 9), 300 codes
+[  4.668255 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst: the game's glyph sheet is texture #104
+[  4.668735 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst: the game's glyph sheet is texture #107
+[  4.670919 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst: the game's glyph sheet is texture #110
+[  4.670933 I t37568 main] fefw.prompts: button glyphs: switch
+[  4.670961 I t37568 main] fefw: game mouse controls: enabled 1, allowed 1; on after 30.00 frames on the surface (or a move whose square is over 12000), off 120.00 frames after it is lifted (six-axis: -0.80, after 20.00 frames); switch at once: 1
+[  4.671051 I t37568 main] host: handheld: no (not a known handheld (board 'ms-7c91' / 'to be filled by o.e.m.'))
+[  4.671056 I t37568 main] prompts: button prompts: keyboard
+[  4.671706 I t37568 main] mods: NXPluginDemo/nxp_demo.dll: Unified Plugin Demo 0.1.0 on emblemweave (nxmod-api-4), capabilities 0x0000007f
+[  4.672887 I t37960 nvn-render] nvn.pool: pool 0000007A4CD03000, 496 MiB (flags 0x22): imported in 8 chunks of 80 MiB (16 MiB overlapping the next) as they are first used
+[  4.674705 I t37568 main] mods: NXPluginDemo/nxp_demo.dll: panel registered with the host
+[  4.674715 I t37568 main] mods: NXPluginDemo/nxp_demo.dll: code mod started (0 hooks)
+[  4.756105 I t37960 nvn-render] nvn.pool: slow pool import: 0000007A4CD03000, 80 MiB (flags 0x22, chunk 0 of 8, through a private view): 82.7 ms (host pointer properties 0.1, vkAllocateMemory 82.4, buffer and bind 0.3) on the render thread
+[  4.756118 W t37960 nvn-render] nvn.gpu: not implemented, skipped: statistics counters other than samples passed, primitives generated and feedback primitives written are reported as non-zero
+[  4.760895 I t37960 nvn-render] nvn.replay: [nvn] lean_barriers = auto: off (not an NVIDIA GPU)
+[  4.760921 W t37960 nvn-render] nvn.replay: draw without a vertex shader skipped
+[  4.761130 I t37960 nvn-render] nvn: present interval 1: the game's frame rate is 60.00 fps
+[  4.762531 I t37960 nvn-render] perf: adaptive controller: on, mode Automatic, target 60 fps, stability on, scene profiles on, mip bias off (max 0.75)
+[  4.784105 I t37960 nvn-render] gfx: first frame presented: 1280x720, format 44, present mode immediate, frame 1
+[  4.784257 I t37568 main] hid: SetNmousePointerPosition(960, 540, handle 4e4d0002)
+[  4.786522 I t37568 main] fefw.prompts: button glyphs: keyboard
+[  4.787901 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E0 -> kbm/return
+[  4.791357 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E1 -> kbm/escape
+[  4.792692 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E2 -> kbm/r
+[  4.793401 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E3 -> kbm/f
+[  4.794844 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E4 -> kbm/q
+[  4.795616 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E5 -> kbm/e
+[  4.796249 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E6 -> kbm/z
+[  4.797675 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0E7 -> kbm/c
+[  4.798637 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0EF -> kbm/tab
+[  4.799497 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0F0 -> kbm/m
+[  4.800529 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0AB -> kbm/return
+[  4.804581 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0AC -> kbm/escape
+[  4.806146 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0AD -> kbm/r
+[  4.807064 I t37568 main] fefw.prompts: __nintendo_ext_003.bffnt.zst #104: U+E0AE -> kbm/f
+[  4.807459 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E0 -> kbm/return
+[  4.808625 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E1 -> kbm/escape
+[  4.809019 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E2 -> kbm/r
+[  4.809274 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E3 -> kbm/f
+[  4.809712 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E4 -> kbm/q
+[  4.809966 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E5 -> kbm/e
+[  4.810237 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E6 -> kbm/z
+[  4.810677 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0E7 -> kbm/c
+[  4.810986 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0EF -> kbm/tab
+[  4.811286 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0F0 -> kbm/m
+[  4.811575 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0AB -> kbm/return
+[  4.812465 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0AC -> kbm/escape
+[  4.812812 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0AD -> kbm/r
+[  4.813048 I t37568 main] fefw.prompts: __nintendo_ext_003_Small.bffnt.zst #107: U+E0AE -> kbm/f
+[  4.816442 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E0 -> kbm/return
+[  4.829343 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E1 -> kbm/escape
+[  4.833881 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E2 -> kbm/r
+[  4.836199 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E3 -> kbm/f
+[  4.841971 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E4 -> kbm/q
+[  4.844601 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E5 -> kbm/e
+[  4.847287 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E6 -> kbm/z
+[  4.852530 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0E7 -> kbm/c
+[  4.856318 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0EF -> kbm/tab
+[  4.859421 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0F0 -> kbm/m
+[  4.862423 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0AB -> kbm/return
+[  4.875878 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0AC -> kbm/escape
+[  4.881552 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0AD -> kbm/r
+[  4.883842 I t37568 main] fefw.prompts: __nintendo_ext_003_Large.bffnt.zst #110: U+E0AE -> kbm/f
+[  4.883929 I t37568 main] hid: SetNmousePointerPosition(960, 540, handle 4e4d0002)
+[  4.902599 I t37960 nvn-render] nvn.replay: pacing off: loading (present 3, 1 draws)
+[  4.902631 I t37960 nvn-render] nvn.census: load start 1: game pools: all 248 / 1898 MiB (+248 / +1898), virtual 0 / 0 MiB (+0 / +0), shader code 204 / 42 MiB (+204 / +42), gpu only 29 / 1256 MiB (+29 / +1256), cpu uncached 12 / 599 MiB (+12 / +599), cpu cached 3 / 1 MiB (+3 / +1), overlapping 0 / 0 MiB (+0 / +0)
+[  4.902639 I t37960 nvn-render] nvn.census: load start 1: pool imports: 10 pools; host imports 113 MiB, in shared 16 MiB slabs 5 MiB (2 slabs); copy buffers 0 MiB; not imported 0 MiB; mirrors 0, 0 MiB of video memory
+[  4.902690 I t37960 nvn-render] nvn.census: load start 1: textures 141 registered: astc 0 / 0 MiB (+0 / +0), compressed 0 / 0 MiB (+0 / +0), plain 4 / 91 MiB (+4 / +91), depth 0 / 0 MiB (+0 / +0), never sampled 4 / 91 MiB (+4 / +91), idle 10 s 0 / 0 MiB (+0 / +0), idle 60 s 0 / 0 MiB (+0 / +0), storage in no pool 0 / 0 MiB (+0 / +0), storage reused by a newer texture 0 / 0 MiB (+0 / +0), orphan images 0 / 0 MiB (+0 / +0), shared images 0 / 0 MiB (+0 / +0), in no texture pool 4 / 91 MiB (+4 / +91), of those CPU-filled, not rendered 0 / 0 MiB (+0 / +0), pooled, not registered again for 60 s 0 / 0 MiB (+0 / +0), pooled, registered before the previous census 0 / 0 MiB (+0 / +0), duplicate copies (same shape and bytes) 0 / 0 MiB (+0 / +0)
+[  4.902696 I t37960 nvn-render] nvn.census: load start 1: video memory: images 4 / 94 MiB, buffers 60 / 288 MiB (device-local), driver allocations 19 / 913 MiB
+[  4.933680 W t12876 hitch] hitch: frame 2 took 122.8 ms (t=4.5 s); during it: pools_imported +3, rt_images +2, texprep_staged_kb +4096; render thread ms: idle 88.8, replay 11.0 (submit 0.3, image creation 7.4), present 23.0 (acquire 0.8, end/queue present 21.6), other 0.0; game ms: longest gap between presents 209.2, presenting thread on the CPU 98.7, page faults +20332; any thread ms: memory pool imports 26.4
+[  5.549136 I t32784 guest-92] nvn.tex: packaged texture layout (first of this kind): block height 2^1, depth 2^0, width 2^0 GOBs; target 4, 16x16x6 format 13
+[  5.565769 I t37960 nvn-render] nvn.dlss: network 2: first evaluation, taau (built-in temporal): colour R11G11B10F 1280x720 region 0,0 1280x720 -> output R11G11B10F 2560x1440 region 0,0 2560x1440; depth DEPTH32F, motion RG16F (scale 1280 720), mask none, jitter +0.000 -0.167, reset 1, index 0, pre-exposure 1
+[  5.581705 I t37960 nvn-render] nvn: present interval 2: the game's frame rate is 30.00 fps
+[  5.582301 I t37960 nvn-render] nvn.replay: pacing on (present 8, 35 draws)
+[  5.582307 I t37960 nvn-render] nvn.replay: first frame with 16+ draws (present 8, 35 draws)
+[  5.650292 I t37960 nvn-render] nvn.replay: pacing off: loading (present 11, 3 draws)
+[  5.650332 I t37960 nvn-render] nvn.census: load start 1: game pools: all 319 / 1951 MiB (+71 / +54), virtual 0 / 0 MiB (+0 / +0), shader code 206 / 42 MiB (+2 / +0), gpu only 63 / 1277 MiB (+34 / +21), cpu uncached 14 / 599 MiB (+2 / +0), cpu cached 36 / 33 MiB (+33 / +32), overlapping 0 / 0 MiB (+0 / +0)
+[  5.650340 I t37960 nvn-render] nvn.census: load start 1: pool imports: 13 pools; host imports 113 MiB, in shared 16 MiB slabs 5 MiB (3 slabs); copy buffers 0 MiB; not imported 0 MiB; mirrors 0, 0 MiB of video memory
+[  5.650411 I t37960 nvn-render] nvn.census: load start 1: textures 336 registered: astc 0 / 0 MiB (+0 / +0), compressed 0 / 0 MiB (+0 / +0), plain 38 / 240 MiB (+34 / +149), depth 10 / 105 MiB (+10 / +105), never sampled 45 / 335 MiB (+41 / +244), idle 10 s 0 / 0 MiB (+0 / +0), idle 60 s 0 / 0 MiB (+0 / +0), storage in no pool 0 / 0 MiB (+0 / +0), storage reused by a newer texture 0 / 0 MiB (+0 / +0), orphan images 0 / 0 MiB (+0 / +0), shared images 0 / 0 MiB (+0 / +0), in no texture pool 48 / 346 MiB (+44 / +254), of those CPU-filled, not rendered 0 / 0 MiB (+0 / +0), pooled, not registered again for 60 s 0 / 0 MiB (+0 / +0), pooled, registered before the previous census 0 / 0 MiB (+0 / +0), duplicate copies (same shape and bytes) 0 / 0 MiB (+0 / +0)
+[  5.650419 I t37960 nvn-render] nvn.census: load start 1: video memory: images 50 / 422 MiB, buffers 66 / 288 MiB (device-local), driver allocations 22 / 1441 MiB
+[  5.784376 I t37960 nvn-render] gfx: fps 75.0, present pass GPU 0.027 ms avg
+[  5.938076 W t12876 hitch] hitch: frame 8 took 657.9 ms (t=5.2 s); during it: pools_imported +1, rt_images +44, texprep_staged_kb +2730; render thread ms: idle 626.0, replay 30.4 (submit 0.3, image creation 26.2), present 1.4 (acquire 0.1, end/queue present 1.4), other 0.0; game ms: longest gap between presents 627.8, GPU sync waits (all threads) 8.4, presenting thread in system calls 16.5 (IPC 16.0, waits 0.4), presenting thread on the CPU 555.7, page faults +38702; any thread ms: memory pool imports 34.8
+[  6.100092 I t37960 nvn-render] nvn.replay: pacing on (present 133, 36 draws)
+[  6.103479 I t4192 nvn-pool-import] nvn.pool: slow pool import: 00000079F8E03000, 64 MiB (flags 0x22, whole 0 of 1, through a private view): 158.6 ms (host pointer properties 0.0, vkAllocateMemory 158.3, buffer and bind 0.3) on the import worker
+[  6.112420 I t37472 guest-100] fs: save data opened: account/0100000000000000706d635257464546 at 'C:/Users/xiond/AppData/Roaming/EmblemWeave/play/nxp-save\account/0100000000000000706d635257464546' (0 files in 000, meta present)
+[  6.207900 I t37472 guest-100] fs: save data opened: account/0100000000000000706d635257464546 at 'C:/Users/xiond/AppData/Roaming/EmblemWeave/play/nxp-save\account/0100000000000000706d635257464546' (0 files in 000, meta present)
+[  6.801570 I t37960 nvn-render] gfx: fps 77.7, present pass GPU 0.034 ms avg
+[  6.940893 W t12876 hitch] hitch: frame 133 took 189.7 ms (t=5.7 s); during it: rt_images +32, texprep_staged_kb +44322; render thread ms: idle 49.5, replay 139.6 (submit 0.6, image creation 0.4), present 0.5 (end/queue present 0.4), other 0.0; game ms: longest gap between presents 51.0, presenting thread in system calls 1.5 (waits 1.3), presenting thread on the CPU 55.4, page faults +80609 (+1 more slow frames in the last second)
+[  7.834693 I t37960 nvn-render] gfx: fps 30.0, present pass GPU 0.035 ms avg
+[  8.834773 I t37960 nvn-render] gfx: fps 30.0, present pass GPU 0.035 ms avg
+[  9.867933 I t37960 nvn-render] gfx: fps 30.0, present pass GPU 0.036 ms avg
+[ 10.458299 I t12876 hitch] hitch: 265 frames in 5.7 s: mean 46.5 fps, 1% low 8.1 fps, worst 657.9 ms, 3 over 2x the median (32.5 ms)
+[ 10.867976 I t37960 nvn-render] gfx: fps 30.0, present pass GPU 0.036 ms avg
+[ 11.335227 W t11964 -] boot: max_seconds reached: the guest is still running; ending the run through the end-of-run teardown
+[ 11.335276 I t11964 -] boot: nvn back end at the deadline: submits 1750 lists 1751 draws 0 (skipped 8333) presents 291 pipelines 0 textures 85 (failed 0) unsupported 12837
+[ 11.335281 I t11964 -] boot: nvn unsupported operations: statistics counters other than samples passed, primitives generated and feedback primitives written are reported as non-zero: 12837
+[ 11.335649 I t11964 -] boot: state at the deadline: svc: 102964 calls, 27 distinct, 0 unknown (most: SleepThread x39589 WaitProcessWideKeyAtomic x17505 ArbitrateLock x17436) IAddOnContentManager: 2 requests, 0 unhandled commands IApplicationFunctions: 6 requests, 0 unhandled commands IApplicationProxy: 10 requests, 0 unhandled commands ICommonStateGetter: 10 requests, 0 unhandled commands IGraphicsScalingParametersFunctions: 2 requests, 0 unhandled commands IHardwareOpusDecoderManager: 1 requests, 0 unhandled commands ISelfController: 12 requests, 0 unhandled commands IStorage: 2 requests, 0 unhandled commands IStorageAccessor: 2 requests, 0 unhandled commands IWindowController: 2 requests, 0 unhandled commands acc:u0: 4 requests, 0 unhandled commands appletOE: 1 requests, 0 unhandled commands aud:u: 1 requests, 0 unhandled commands audren:u: 7 requests, 0 unhandled commands csrng: 1 requests, 0 unhandled commands fsp-srv: 6 requests, 0 unhandled commands lm: 1 requests, 0 unhandled commands nn::audio::detail::IAudioDevice: 4 requests, 0 unhandled commands nn::audio::detail::IAudioRenderer: 1150 requests, 0 unhandled commands nn::fssrv::sf::IFileSystem: 2 requests, 0 unhandled commands nn::fssrv::sf::IStorage: 941 requests, 0 unhandled commands nn::hid::IActiveVibrationDeviceList: 4 requests, 0 unhandled commands nn::hid::IAppletResource: 1 requests, 0 unhandled commands nn::hid::IHidServer: 1853 requests, 0 unhandled commands nn::pctl::detail::ipc::IParentalControlService: 1 requests, 0 unhandled commands nn::pctl::detail::ipc::IParentalControlServiceFactory: 4 requests, 0 unhandled commands sm:: 16 requests, 0 unhandled commands time:u: 2 requests, 0 unhandled commandsaudio: sink xaudio2: written 364560, accepted 364560, dropped 0, underruns 0, queued peak 9 buffers, queue 0..2160 frames hle: 860 thunks, 0 logging stubs (0 called) lifted modules: 6, imports through the registry: 34664653, site hooks: 70 (calls: inline 8100, mid 0, entry 292) c++ exceptions: 0 raised, 0 resumed, 0 caught, 0 cl...
+[ 11.398277 I t22408 -] runtime: end-of-run summary: svc: 103526 calls, 27 distinct, 0 unknown (most: SleepThread x39631 WaitProcessWideKeyAtomic x17661 ArbitrateLock x17593) IAddOnContentManager: 2 requests, 0 unhandled commands IApplicationFunctions: 6 requests, 0 unhandled commands IApplicationProxy: 10 requests, 0 unhandled commands ICommonStateGetter: 10 requests, 0 unhandled commands IGraphicsScalingParametersFunctions: 2 requests, 0 unhandled commands IHardwareOpusDecoderManager: 1 requests, 0 unhandled commands ISelfController: 12 requests, 0 unhandled commands IStorage: 2 requests, 0 unhandled commands IStorageAccessor: 2 requests, 0 unhandled commands IWindowController: 2 requests, 0 unhandled commands acc:u0: 4 requests, 0 unhandled commands appletOE: 1 requests, 0 unhandled commands aud:u: 1 requests, 0 unhandled commands audren:u: 7 requests, 0 unhandled commands csrng: 1 requests, 0 unhandled commands fsp-srv: 6 requests, 0 unhandled commands lm: 1 requests, 0 unhandled commands nn::audio::detail::IAudioDevice: 4 requests, 0 unhandled commands nn::audio::detail::IAudioRenderer: 1162 requests, 0 unhandled commands nn::fssrv::sf::IFileSystem: 2 requests, 0 unhandled commands nn::fssrv::sf::IStorage: 941 requests, 0 unhandled commands nn::hid::IActiveVibrationDeviceList: 4 requests, 0 unhandled commands nn::hid::IAppletResource: 1 requests, 0 unhandled commands nn::hid::IHidServer: 1867 requests, 0 unhandled commands nn::pctl::detail::ipc::IParentalControlService: 1 requests, 0 unhandled commands nn::pctl::detail::ipc::IParentalControlServiceFactory: 4 requests, 0 unhandled commands sm:: 16 requests, 0 unhandled commands time:u: 2 requests, 0 unhandled commandsaudio: sink xaudio2: written 367920, accepted 367920, dropped 0, underruns 0, queued peak 9 buffers, queue 0..2160 frames hle: 860 thunks, 0 logging stubs (0 called) lifted modules: 6, imports through the registry: 34683403, site hooks: 70 (calls: inline 8152, mid 0, entry 294) c++ exceptions: 0 raised, 0 resumed, 0 caught, 0 clean...
+[ 11.398287 I t22408 -] timestep: end of run: 0 frames, step last 0.000 ms, elapsed min/mean/max 0.000/0.000/0.000 ms, 0 paced waits, 0 clamped, 0 smoothing restarts, movie 0.000 s in 0 calls
+[ 11.404477 I t22408 -] services: language en-US (from Windows)
+[ 11.406532 I t20688 guest-99] hid: SendVibrationValues2 (214): 2 values, first handle 3, routed to the pad rumble
+[ 11.462602 I t22408 -] boot: end-of-run teardown returned: runtime down, host threads 77 -> 72 (the runtime's workers stopped; the game's threads are still running)

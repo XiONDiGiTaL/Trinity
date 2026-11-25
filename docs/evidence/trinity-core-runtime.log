@@ -1,0 +1,21 @@
+# Trinity Core in the EmblemWeave development runtime
+
+Excerpt from `build/trinity-runtime.log`, 25 November 2026. The full log is local build output; this excerpt records the plugin load, host identity, panel registration and prefix classification.
+
+```text
+mods: NXPluginDemo/nxp_demo.dll: loaded, starts at the first frame
+mods: TrinityCore/trinity.dll: loaded, starts at the first frame
+mods: NXPluginDemo/nxp_demo.dll: Unified Plugin Demo 0.1.0 on emblemweave (nxmod-api-4), capabilities 0x0000007f
+mods: NXPluginDemo/nxp_demo.dll: panel registered with the host
+mods: NXPluginDemo/nxp_demo.dll: code mod started (0 hooks)
+mods: TrinityCore/trinity.dll: Trinity Core 0.1.0 on emblemweave (nxmod-api-4), house prefix emblemweave., capabilities 0x0000007f
+mods: TrinityCore/trinity.dll: prefix accepted: trinity.core.panel -> trinity.
+mods: TrinityCore/trinity.dll: prefix accepted: nxp.ui -> nxp.
+mods: TrinityCore/trinity.dll: prefix accepted: emblemweave.ui.panel -> emblemweave.
+mods: TrinityCore/trinity.dll: prefix accepted: fefw-recomp.ui.panel -> fefw-recomp.
+mods: TrinityCore/trinity.dll: prefix accepted: obeliskchamber.ui.panel -> obeliskchamber.
+mods: TrinityCore/trinity.dll: prefix rejected: other.ui.panel
+mods: TrinityCore/trinity.dll: 5 names accepted, 1 rejected.
+mods: TrinityCore/trinity.dll: panel registered
+mods: TrinityCore/trinity.dll: code mod started (0 hooks)
+```

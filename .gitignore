@@ -1,0 +1,32 @@
+# Build output
+build/
+out/
+dist/
+target/
+
+# Windows binaries
+*.dll
+*.lib
+*.exe
+*.pdb
+*.ilk
+
+# Linux binaries
+*.so
+*.so.*
+*.a
+*.o
+
+# Test and tool output
+*.log
+!docs/evidence/*.log
+.nxp-settings.ini
+__pycache__/
+*.pyc
+
+# Local editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
