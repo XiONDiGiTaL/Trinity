@@ -5,8 +5,9 @@ The adapter is `trinity.js`. It mounts the shared surface with the host id
 
 ## Apply to an upstream checkout
 
-Tested against fefw-recomp launcher 0.3.0 at commit
-`0cb62fd1dc1aab96ee40de35759e4d8f79545569`.
+Tested against fefw-recomp launcher 0.2.13 at tag `v0.2.13`, commit
+`bab923d981d867c72883be132410f9fc16d17c67`. The same patch applies to the
+current 0.3.0 source because the patched lines are unchanged.
 
 From the Trinity repository root:
 
@@ -15,7 +16,7 @@ git -C ../fefw-recomp apply integrations/patches/fefw-launcher.patch
 powershell -NoProfile -ExecutionPolicy Bypass -File integrations/sync-trinity.ps1 -FefwRoot ../fefw-recomp
 cd ../fefw-recomp/launcher
 npm ci
-npm run build
+npm run tauri build -- --no-bundle
 ```
 
 The patch adds the CSS import, the page import, the `PAGES` entry and the
@@ -28,10 +29,11 @@ same lines, apply the changes by hand rather than forcing the patch.
 
 ## What was verified
 
-`npm run build` passed and the built page rendered in the launcher shell with a
-mock Tauri bridge. The screenshot is
-`docs/evidence/launcher-fefw-trinity.png`. The Tauri window was not run, the
-change is not merged upstream, and the game runtime was not loaded.
+`npm run tauri build -- --no-bundle` passed. The resulting 0.2.13 executable
+was installed in `X:\fefw-recomp-0.2.13`, launched, and its actual Tauri window
+opened the Trinity page. The screenshot is
+`docs/evidence/launcher-fefw-trinity.png`. The change is not merged upstream,
+and the game runtime was not loaded.
 
 ## Rollback
 

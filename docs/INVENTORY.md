@@ -89,7 +89,7 @@ The launcher UI is deliberately not on the critical path for the ABI. It consume
 ## 7. Preservation record
 
 - The consolidation itself copied no host source. The EmblemWeave native page is a separate host-tree change; the `.tmp` launcher checkouts carry local Trinity integrations used for the captures.
-- No host branch, worktree or stash was changed.
+- No host branch or stash was changed. A separate worktree was created at the fefw-recomp v0.2.13 tag for the build.
 - The untracked `engine/fefw-recomp/runtime/build_full/` directory was left in place.
 - The source assessment and proposal were retained verbatim apart from a migration banner and path corrections.
 - The historical F1 menu, mod panel and runtime logs were preserved. The three launcher page images were replaced with actual window captures.
