@@ -26,7 +26,7 @@ The launcher surface was informed by the public Tauri launcher source of fefw-re
 
 ## Brand
 
-The Trinity mark and lockup are vector redraws derived from a logo supplied by the project owner. The original raster is not committed. The fonts referenced by the SVGs are system fonts and are not distributed.
+The Trinity logo is the artwork supplied by the project owner, committed as `assets/brand/trinity.png`. It is used without redrawing or recolouring. No third-party font or asset is included with it.
 
 ## Evidence
 

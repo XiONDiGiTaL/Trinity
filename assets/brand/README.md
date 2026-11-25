@@ -1,8 +1,7 @@
 # Trinity brand assets
 
-- `trinity-mark.svg`: scalable wrench and three-strand knot. Derived from the supplied Trinity logo, redrawn as vectors so it can sit on light or dark launcher chrome.
-- `trinity-lockup.svg`: horizontal mark and wordmark for repository and documentation headers.
+- `trinity.png`: the authoritative Trinity logo supplied by the project owner. It is a 1200 x 896 RGBA image with a transparent background and SHA-256 `1088aacdf32b25099a15e45629fd56db4bb42a48d96e2dd83e8dd264ae01a9db`.
 
-The supplied raster logo is not committed because its original resolution and provenance are not established. The SVGs preserve the identity rather than copying the original pixels.
+Use this artwork without redrawing, recolouring, cropping or substituting a different mark. Keep its aspect ratio. The transparent margin is part of the supplied image.
 
-Use the mark at 24 px or larger. Do not recolour the three loops to a single hue; the violet, blue and teal strands identify the three houses. Gold is the connecting metal and the wordmark rule.
+The logo is small and centered when it appears in a launcher. It should sit at the top of the Trinity page or section, not as a full-width banner.

@@ -11,7 +11,7 @@ Every claim uses one of these labels:
 | C | Compiled successfully in this workspace |
 | L | Loaded by a host and reported as loaded |
 | R | Observed at runtime through logs, settings or UI |
-| V | Visually inspected in a host window, or in a host shell rendered in a browser |
+| V | Visually inspected in a host window |
 | N | Not tested, or not testable with the available packages |
 
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
@@ -20,7 +20,7 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 
 | Area | EmblemWeave | fefw-recomp 0.2.13 | ObeliskChamber 0.3.2 |
 | --- | --- | --- | --- |
-| Source inspected | S, full checkout at `c302f0a` | S, upstream clone newer than package | S, upstream clone newer than package |
+| Source inspected | S, full checkout at `c302f0a` | S, v0.2.13 tag and current master | S, current 0.3.2 source |
 | Package inspected | S, development build | P | P |
 | `NXMOD_API_VERSION` | 4 | 3 in package; 4 planned upstream | 5 |
 | `nxmod_init` | Present, S and L | Present, P | Present, P |
@@ -33,8 +33,8 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | Native NXP adapter | Not implemented | Not implemented | Not implemented |
 | Panel in NXP | Rendered in F1 > Advanced > Mods | Unavailable on API 3 | Capability exists in source lineage, not run |
 | Settings persistence through NXP | Checkbox and slider changed file, R | Not run, N | Not run, N |
-| Launcher adapter source | Design only | Tauri page source in this repo | Tauri page source in this repo |
-| Launcher build verified | N/A | Built and rendered in a local upstream clone | Built and rendered in a local upstream clone |
+| Launcher adapter source | Native page in the host tree | Tauri page source in this repo | Tauri page source in this repo |
+| Launcher window verified | Native page captured from the release launcher | Actual 0.2.13 Tauri window built from the tag | Actual 0.3.2 Tauri window built from current source |
 | Gameplay effect | None; the demo changes no game state | None | None |
 
 ## 3. What the compatibility adapter exposes
@@ -55,9 +55,9 @@ The adapter detects `host_id` from the module path. A renamed executable can fal
 
 The two Tauri launchers use a `PAGES` map. The Trinity adapter adds one page module and one navigation entry without changing the host's existing pages. The shared page reads `shared/catalog.json` and `shared/prefixes.json`.
 
-EmblemWeave's launcher is egui/Rust. It needs a native page and an additional navigation group. The existing tests require every page to belong to exactly one group. No EmblemWeave source has been changed in this repository.
+EmblemWeave's launcher is egui/Rust. The native page lives in the host tree as a separate uncommitted change, and its release frame is captured in `docs/evidence/`. No other EmblemWeave behavior is changed by this repository.
 
-Both Tauri launchers were built from local clones of the upstream source after adding the Trinity page. The built pages were then rendered in a browser with a mock Tauri bridge, and both screenshots are in `docs/evidence/`. This verifies the page, host styling and catalog rendering. It does not verify a packaged Tauri window, and the change has not been merged into either host repository.
+The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were integrated with one Trinity page and built as Tauri release executables. Both were installed in their target folders and captured from their actual windows at 1180 x 1000. This verifies the page, host styling, catalog rendering and navigation in the real launcher process. The change has not been merged into either host repository.
 
 ## 5. Verification ledger
 
@@ -78,11 +78,12 @@ Both Tauri launchers were built from local clones of the upstream source after a
 | Checkbox and slider persist through the adapter | R | Settings file read back, recorded in evidence README |
 | Same DLL loads in fefw-recomp | N | No prepared runtime |
 | Same DLL loads in ObeliskChamber | N | No prepared runtime |
-| Launcher page builds in both upstream Tauri sources | C | Vite production builds, 25 November 2026 |
-| Trinity page renders in both launcher shells | V | `docs/evidence/launcher-fefw-trinity.png`, `docs/evidence/launcher-obelisk-trinity.png` |
-| Launcher change is merged into either host repository | N | Local clones only |
-| Packaged Tauri window | N | Browser shell with a mock bridge |
-| Native EmblemWeave page | N | Design only |
+| Launcher page builds in both upstream Tauri sources | C | Vite and Tauri production builds, 25 November 2026 |
+| Trinity page renders in both launcher windows | V | Actual 0.2.13 and 0.3.2 Tauri captures in `docs/evidence/` |
+| Launcher navigation opens the Trinity page | V | Actual window captures, 25 November 2026 |
+| Launcher change is merged into either host repository | N | Local checkouts only |
+| Packaged Tauri window | V | `launcher-fefw-trinity.png`, `launcher-obelisk-trinity.png` |
+| Native EmblemWeave page | V | `emblemweave-trinity.png`, EmblemWeave 0.1.43 |
 | Linux `.so` builds and loads | N | No Linux build |
 | Gameplay changes | N | No gameplay interface |
 
@@ -90,7 +91,7 @@ Both Tauri launchers were built from local clones of the upstream source after a
 
 ### EmblemWeave installed versus development executable
 
-The installed `%APPDATA%\EmblemWeave\play\fefw.exe` inspected earlier is 220,880,384 bytes and lacks `nxmod_init`. The development executable at `engine/fefw-recomp/game-build/fefw/build/release/fefw.exe` supports code mods. A release of EmblemWeave must include the newer runtime before players can use any code plugin.
+The installed `%APPDATA%\EmblemWeave\play\fefw.exe` inspected earlier is 220,880,384 bytes and lacks `nxmod_init`. The development executable at `engine/fefw-recomp/game-build/fefw/build/release/fefw.exe` supports code mods. The `X:\EmblemWeave` launcher was rebuilt for the native page capture; its packaged game runtime is unchanged. A release of EmblemWeave must include the newer runtime before players can use any code plugin.
 
 ### fefw-recomp API 4
 
@@ -108,11 +109,9 @@ A Windows x64 plugin built against this header and the compatibility adapter loa
 
 1. Build `trinity.dll` after migration and run the host harness.
 2. Load `trinity.dll` in the EmblemWeave development runtime and capture the panel.
-3. Build the Tauri launcher page in an upstream checkout and inspect the rendered route.
-4. Obtain a fefw-recomp source build at API 4, then load the same DLL.
-5. Obtain an ObeliskChamber source build and record the v5 table layout before calling it.
-6. Add a native EmblemWeave adapter that calls `nxp_get_plugin` directly.
-7. Build on Linux and test `dlopen` in one host before claiming Linux support.
+3. Run the same DLL in the fefw-recomp and ObeliskChamber game runtimes.
+4. Add a native EmblemWeave adapter that calls `nxp_get_plugin` directly.
+5. Build on Linux and test `dlopen` in one host before claiming Linux support.
 
 ## 8. Reporting rule
 

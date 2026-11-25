@@ -9,11 +9,11 @@ This is the audit that established Trinity as the central development home. It r
 | Workspace | What it contains | State |
 | --- | --- | --- |
 | `unified-plugin-sdk/` in the development workspace | Phase 0 NXP header, compatibility adapter, demo plugin, harness, build scripts, assessment, proposal and runtime evidence | Not a Git repository. All useful files migrated here. |
-| `EmblemWeave/` | The GPL-3.0-or-later EmblemWeave checkout, its egui launcher and the fefw-recomp runtime subtree | Branch `main`, commit `c302f0abc73c4d1afa13f75ae1462bbe4cacb058`. One untracked build directory, preserved. Other worktrees and a stash exist and were not touched. |
-| `X:\fefw-recomp-0.2.13` | Packaged Windows release, no source or Git metadata | Inspected only. No files changed. |
-| `X:\ObeliskChamber-0.3.2` | Packaged Windows release, no source or Git metadata | Inspected only. No files changed. |
-| `.tmp/upstream-fefw/` | Shallow clone of metrist38/fefw-recomp, current `master` | Used to inspect the Tauri launcher source. Not the packaged 0.2.13 source. |
-| `.tmp/upstream-oc/` | Shallow clone of xinthefreefallxai/ObeliskChamber, current `master` | Used to inspect the Tauri launcher and mod API source. Not the packaged 0.3.2 source. |
+| `EmblemWeave/` | The GPL-3.0-or-later EmblemWeave checkout, its egui launcher and the fefw-recomp runtime subtree | Branch `main`, commit `c302f0abc73c4d1afa13f75ae1462bbe4cacb058`. Native Trinity page added in the host tree; launcher rebuilt for the capture. One untracked build directory, preserved. Other worktrees and a stash exist and were not touched. |
+| `X:\fefw-recomp-0.2.13` | Packaged Windows release, no source or Git metadata | Launcher replaced with a 0.2.13 build carrying Trinity; game runtime and data untouched. |
+| `X:\ObeliskChamber-0.3.2` | Packaged Windows release, no source or Git metadata | Launcher replaced with a 0.3.2 build carrying Trinity; game runtime and data untouched. |
+| `.tmp/upstream-fefw/` | Shallow clone of metrist38/fefw-recomp, current `master` | Used to inspect and integrate the Tauri launcher. A separate `v0.2.13` worktree was built with Trinity for the actual window. |
+| `.tmp/upstream-oc/` | Shallow clone of xinthefreefallxai/ObeliskChamber, current `master` | Used to inspect, integrate and build the actual 0.3.2 Tauri window. |
 | `X:\FCC Desktop` | Electron application used as visual reference | Design tokens and model-library layout inspected. No code copied. |
 
 The host repositories keep their own branches, worktrees, stashes and recovery folders. No reset, clean, checkout or history rewrite was performed.
@@ -31,7 +31,7 @@ The host repositories keep their own branches, worktrees, stashes and recovery f
 | `unified-plugin-sdk/PROPOSAL.md` | `docs/PROPOSAL.md` | Maintainer-facing proposal. Not posted, not accepted. |
 | `unified-plugin-sdk/docs/evidence/` | `docs/evidence/` | Real EmblemWeave F1 menu, panel capture and runtime log. |
 | Launcher page prototype from the earlier Trinity work | `ui/`, `shared/`, `hosts/launchers/` | Shared catalog, prefix registry, host-specific launcher presentation. |
-| Trinity brand work | `assets/brand/` | Vector mark and lockup derived from the supplied logo. |
+| Trinity brand work | `assets/brand/` | Authoritative logo supplied by the project owner. |
 
 The migrated NXP files keep their `GPL-3.0-or-later` SPDX identifiers. The top-level repository license remains the MIT license established by the repository owner. See `THIRD_PARTY.md`.
 
@@ -41,7 +41,7 @@ The migrated NXP files keep their `GPL-3.0-or-later` SPDX identifiers. The top-l
 | --- | --- |
 | The full EmblemWeave, fefw-recomp or ObeliskChamber repositories | Trinity is a shared framework, not a fork or replacement. Copying a host would duplicate its history, assets and unrelated changes. |
 | Host game dumps, saves, logs, build products and binaries | Not source, potentially large or private, and not needed by the framework. |
-| The packaged launchers from `X:\fefw-recomp-0.2.13` and `X:\ObeliskChamber-0.3.2` | Binary artifacts, not source. Their exact API layouts are not established. |
+| The packaged launchers from `X:\fefw-recomp-0.2.13` and `X:\ObeliskChamber-0.3.2` | Binary artifacts, not source. Their launcher executables were replaced for the page captures; game runtimes and data were not copied. |
 | Generated files under `EmblemWeave/target/` and `_recovery/` | Build output and preserve-only working material. |
 | FCC Desktop application code | Only its visual language informed the launcher surface. No code or assets were copied. |
 
@@ -61,7 +61,7 @@ The migrated NXP files keep their `GPL-3.0-or-later` SPDX identifiers. The top-l
 | Unload | No; DLL stays mapped | Same | Same |
 | NXP runtime evidence | Loaded, panel rendered, settings persisted | None | None |
 
-The upstream launcher clones are newer than the packaged releases. They prove that each launcher is a Tauri 2 + Vite application with an existing `PAGES` table, not that the packaged 0.2.13 or 0.3.2 binary has the same source.
+The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were built with Trinity and installed as launchers. The game runtimes and their API layouts were left unchanged.
 
 ## 5. Current repository components
 
@@ -74,8 +74,8 @@ The upstream launcher clones are newer than the packaged releases. They prove th
 | Manifest validator | Implemented | Python unit tests |
 | Prefix classifier | Implemented in JavaScript | Node tests |
 | Prefix classifier in C++ | Implemented inside Trinity Core | Registry check logs on init |
-| Launcher catalog surface | Implemented for fefw-recomp and ObeliskChamber | Vite builds still need to be run in a host checkout |
-| EmblemWeave native page | Design only | egui integration belongs in the EmblemWeave tree |
+| Launcher catalog surface | Implemented and captured in actual fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 windows | Tauri builds pass; captures are in `docs/evidence/` |
+| EmblemWeave native page | Implemented in the host tree | Captured from the 0.1.43 release launcher; drift tests pass |
 | Native NXP host adapter | Design only | Requires host source changes and maintainer review |
 | Gameplay interface | Not designed beyond a boundary note | No gameplay claim |
 | Linux binary | None | Not built |
@@ -88,9 +88,9 @@ The launcher UI is deliberately not on the critical path for the ABI. It consume
 
 ## 7. Preservation record
 
-- No host source file was modified.
+- The consolidation itself copied no host source. The EmblemWeave native page is a separate host-tree change; the `.tmp` launcher checkouts carry local Trinity integrations used for the captures.
 - No host branch, worktree or stash was changed.
 - The untracked `engine/fefw-recomp/runtime/build_full/` directory was left in place.
 - The source assessment and proposal were retained verbatim apart from a migration banner and path corrections.
-- Runtime evidence images and the log were copied byte for byte.
-- The supplied logo was not committed as a raster because its original resolution and provenance are not established; the vector mark preserves the identity.
+- The historical F1 menu, mod panel and runtime logs were preserved. The three launcher page images were replaced with actual window captures.
+- The supplied logo is committed as `assets/brand/trinity.png` and is the only Trinity brand artwork used by the repository.

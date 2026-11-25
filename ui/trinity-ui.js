@@ -11,17 +11,14 @@ import { classifyInterface, validateRegistry } from './prefix-core.mjs';
 
 const HOST_COPY = {
   'fefw-recomp': {
-    kicker: 'HOUSE OF RECOMPILATION',
     intro: 'Cool surfaces, soft corners and the existing fefw-recomp navigation. Trinity adds a room, not a second launcher.',
     note: 'Built from the upstream launcher source. The packaged 0.2.13 runtime was not rebuilt for this test.'
   },
   'obelisk-chamber': {
-    kicker: 'HOUSE OF THE OBELISK',
     intro: 'A framed panel in the manner of ObeliskChamber: title-screen navigation, angular controls and gold rules around the same shared catalog.',
     note: 'Built from the upstream launcher source. The packaged 0.3.2 runtime was not rebuilt for this test.'
   },
   emblemweave: {
-    kicker: 'HOUSE OF WEAVING',
     intro: 'A native egui page in the existing EmblemWeave rail. The shared registry is read by the page, while the launcher keeps its own widgets and themes.',
     note: 'The NXP proof panel was loaded by the EmblemWeave development build.'
   }
@@ -42,27 +39,8 @@ const ICONS = {
 const icon = (name) => `<svg class="trinity-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${ICONS[name] ?? ICONS.cube}</svg>`;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
 const labelForHost = (id) => catalog.houses.find((house) => house.id === id)?.name ?? id;
-
-function mark(size = 128, className = 'trinity-mark') {
-  return `<svg class="${className}" width="${size}" height="${size}" viewBox="0 0 256 256" aria-hidden="true">
-    <defs>
-      <linearGradient id="trinity-gold-${size}" x1="38" y1="24" x2="214" y2="232" gradientUnits="userSpaceOnUse"><stop stop-color="#f7e3a1"/><stop offset=".5" stop-color="#d9b45a"/><stop offset="1" stop-color="#9b6f22"/></linearGradient>
-      <linearGradient id="trinity-violet-${size}" x1="46" y1="72" x2="210" y2="188" gradientUnits="userSpaceOnUse"><stop stop-color="#54218f"/><stop offset="1" stop-color="#9a68ee"/></linearGradient>
-      <linearGradient id="trinity-blue-${size}" x1="52" y1="184" x2="210" y2="70" gradientUnits="userSpaceOnUse"><stop stop-color="#2a6cff"/><stop offset="1" stop-color="#8bc2ff"/></linearGradient>
-      <linearGradient id="trinity-teal-${size}" x1="42" y1="128" x2="214" y2="128" gradientUnits="userSpaceOnUse"><stop stop-color="#0f6f78"/><stop offset="1" stop-color="#39d0c8"/></linearGradient>
-    </defs>
-    <path d="M147.5 45.7a37 37 0 0 0-52.3 45.4l-47.7 47.7a18.7 18.7 0 1 0 26.5 26.5l47.7-47.7a37 37 0 0 0 45.4-52.3l-24.8 24.8-19.6-4.9-4.9-19.6 24.7-24.9Z" fill="none" stroke="url(#trinity-gold-${size})" stroke-width="12" stroke-linejoin="round"/>
-    <g fill="none" stroke-linecap="round">
-      <ellipse cx="128" cy="128" rx="79" ry="34" stroke="#8a6420" stroke-width="13"/>
-      <ellipse cx="128" cy="128" rx="79" ry="34" transform="rotate(60 128 128)" stroke="#8a6420" stroke-width="13"/>
-      <ellipse cx="128" cy="128" rx="79" ry="34" transform="rotate(120 128 128)" stroke="#8a6420" stroke-width="13"/>
-      <ellipse cx="128" cy="128" rx="79" ry="34" stroke="url(#trinity-violet-${size})" stroke-width="7"/>
-      <ellipse cx="128" cy="128" rx="79" ry="34" transform="rotate(60 128 128)" stroke="url(#trinity-blue-${size})" stroke-width="7"/>
-      <ellipse cx="128" cy="128" rx="79" ry="34" transform="rotate(120 128 128)" stroke="url(#trinity-teal-${size})" stroke-width="7"/>
-    </g>
-    <circle cx="128" cy="128" r="10" fill="#08090c" stroke="url(#trinity-gold-${size})" stroke-width="3"/>
-  </svg>`;
-}
+// Synced next to this file by integrations/sync-trinity.ps1.
+const logoUrl = new URL('./trinity.png', import.meta.url).href;
 
 function hostCard(house) {
   return `<article class="trinity-house" data-tone="${esc(house.tone)}" style="--house-accent:${esc(house.accent)}">
@@ -71,7 +49,6 @@ function hostCard(house) {
       <span class="trinity-status"><i></i>${esc(house.status)}</span>
     </div>
     <div class="trinity-house-name">${esc(house.name)}</div>
-    <div class="trinity-house-note">${esc(house.house)}</div>
     <dl class="trinity-house-meta">
       <div><dt>Prefix</dt><dd><code>${esc(house.prefix)}</code></dd></div>
       <div><dt>Host API</dt><dd>${esc(house.host_api)}</dd></div>
@@ -111,7 +88,6 @@ function prefixRows() {
 export function renderTrinity(view, options = {}) {
   const hostId = options.host ?? 'file';
   const copy = HOST_COPY[hostId] ?? {
-    kicker: 'CROSS-HOST PLUGIN LAYER',
     intro: 'One catalog, three native presentations, and a namespace that tells every interface which house it belongs to.',
     note: 'Standalone preview of the shared Trinity surface.'
   };
@@ -121,9 +97,11 @@ export function renderTrinity(view, options = {}) {
 
   view.innerHTML = `<div class="page trinity-page" data-trinity-host="${esc(hostId)}"${current ? ` style="--t-host-accent:${esc(current.accent)}"` : ''}>
     <section class="trinity-hero">
+      <div class="trinity-logo-row">
+        <img class="trinity-logo" src="${logoUrl}" alt="Trinity">
+      </div>
       <div class="trinity-hero-copy">
-        <div class="trinity-eyebrow"><i></i>${esc(copy.kicker)} <span>/</span> NXP LAYER ${esc(catalog.version)}</div>
-        <div class="trinity-wordmark" aria-label="Trinity">TRINITY</div>
+        <div class="trinity-eyebrow"><i></i>NXP LAYER ${esc(catalog.version)}</div>
         <p class="trinity-tagline">${esc(catalog.tagline)}</p>
         <p class="trinity-intro">${esc(copy.intro)}</p>
         <div class="trinity-badges">
@@ -133,12 +111,6 @@ export function renderTrinity(view, options = {}) {
           <span class="${validation.ok ? 'ok' : 'warn'}">${icon(validation.ok ? 'check' : 'compass')} ${validation.ok ? 'Registry valid' : 'Registry needs attention'}</span>
         </div>
         <button type="button" class="trinity-jump" id="trinity-jump">${icon('arrow-down')} Browse the registry</button>
-      </div>
-      <div class="trinity-hero-mark">
-        ${mark(184)}
-        <span class="trinity-orbit orbit-one"></span>
-        <span class="trinity-orbit orbit-two"></span>
-        <div class="trinity-host-chip">${esc(current?.monogram ?? 'T')}<span>${esc(current?.name ?? 'Shared surface')}</span></div>
       </div>
     </section>
 

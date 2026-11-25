@@ -1,10 +1,12 @@
 <p align="center">
-  <img src="assets/brand/trinity-lockup.svg" alt="Trinity: The Three Houses Of Innovation" width="460">
+  <img src="assets/brand/trinity.png" alt="Trinity: The Three Houses Of Innovation" width="360">
 </p>
 
 # Trinity
 
-**The Three Houses Of Innovation**
+**Trinity: The Three Houses Of Innovation**
+
+**Three Houses. One Vision.**
 
 **Three projects. Three launchers. One shared plugin ecosystem.**
 
@@ -25,7 +27,7 @@ This repository is the central development home for that framework. It is not a 
 | <a href="docs/evidence/emblemweave-trinity.png"><img src="docs/evidence/emblemweave-trinity.png" width="300" alt="The Trinity page in EmblemWeave"></a> | <a href="docs/evidence/launcher-fefw-trinity.png"><img src="docs/evidence/launcher-fefw-trinity.png" width="300" alt="The Trinity page in the fefw-recomp launcher"></a> | <a href="docs/evidence/launcher-obelisk-trinity.png"><img src="docs/evidence/launcher-obelisk-trinity.png" width="300" alt="The Trinity screen in the ObeliskChamber launcher"></a> |
 | Native egui page | Host-styled page | Panel-styled screen |
 
-The EmblemWeave image is a frame from the release launcher. The fefw-recomp and ObeliskChamber images show their launcher frontends with a mock Tauri backend, because neither host repository carries the Trinity page yet. [The evidence notes](docs/evidence/README.md) record the exact level of every capture.
+All three images are captured from actual launcher windows. EmblemWeave used its native release-frame capture; fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 were built with the Trinity page and captured through their Tauri windows. The Tauri launcher integrations remain local and are not merged upstream; the EmblemWeave native page is part of its host tree. [The evidence notes](docs/evidence/README.md) record the exact level of every capture.
 
 ## Status
 
@@ -34,10 +36,12 @@ The EmblemWeave image is a frame from the release launcher. The fefw-recomp and 
 | Public NXP ABI | Implemented, version 1 |
 | Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build |
 | Reference plugin | Implemented, built and loaded by the EmblemWeave development runtime |
-| Host adapter design | Documented for all three hosts |
-| Launcher catalog surface | Native EmblemWeave page plus the fefw-recomp and ObeliskChamber launcher surfaces; all three render locally |
-| fefw-recomp runtime validation | Not run locally; the installed package is API 3 and has no prepared game in this workspace |
-| ObeliskChamber runtime validation | Not run locally; the installed package is API 5 and has no prepared game in this workspace |
+| Host adapters | Native EmblemWeave page plus Tauri pages for fefw-recomp and ObeliskChamber |
+| Launcher catalog surface | Native EmblemWeave page plus actual fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 Tauri windows; all three captured |
+| fefw-recomp launcher validation | Verified in the actual 0.2.13 window built from the v0.2.13 tag |
+| fefw-recomp runtime validation | Not run; the installed 0.2.13 game runtime is API 3 and has no prepared game in this workspace |
+| ObeliskChamber launcher validation | Verified in the actual 0.3.2 window built from the current source |
+| ObeliskChamber runtime validation | Not run; the installed 0.3.2 game runtime has no prepared game in this workspace |
 | Linux build | Not built or loaded |
 
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The support matrix in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) records each level separately.
@@ -57,7 +61,7 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | `ui/` | The shared launcher surface. It supplies content, not a host visual language. |
 | `hosts/launchers/` | Host-specific launcher adapters. |
 | `docs/` | Architecture, compatibility, migration inventory, proposals and runtime evidence. |
-| `assets/brand/` | Trinity mark and lockup. |
+| `assets/brand/` | The authoritative Trinity logo. |
 
 ## Design in one page
 
@@ -135,7 +139,7 @@ python -m unittest discover -s Trinity/tests -p "test_*.py"
 
 The C++ harness loads the plugin DLL, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables and check the interface and capability mapping.
 
-The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md). The installed executable on this machine predates code-mod support; the current development build is the test target.
+The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md). The installed launcher now carries the native Trinity page; the packaged game runtime still predates code-mod support, so the development runtime remains the NXP test target.
 
 ## Documentation
 

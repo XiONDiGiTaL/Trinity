@@ -23,7 +23,8 @@ $sharedFiles = @(
     "shared/prefixes.json",
     "shared/prefix-core.mjs",
     "ui/trinity-ui.js",
-    "ui/trinity.css"
+    "ui/trinity.css",
+    "assets/brand/trinity.png"
 )
 
 $targets = @(
