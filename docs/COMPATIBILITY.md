@@ -1,5 +1,7 @@
 # Compatibility matrix
 
+Status: 25 November 2026. The public claims in the README and the launcher catalog must match this file.
+
 ## 1. Evidence levels
 
 Every claim uses one of these labels:
@@ -26,13 +28,13 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | `nxmod_init` | Present, S and L | Present, P | Present, P |
 | `nxmod_early` | Present, S | Present, P | Present, P |
 | `on_frame` | Present, S and R | Present, P | Present, P |
-| `add_panel` | Present, S and R | Absent in API 3 package, P | Present, P |
-| `panel_visible` | Present, S and R | Absent in package strings, P | Absent from package strings; exact table not verified |
+| `add_panel` | Present, S and R | Absent in API 3 package, P | Present, P and R |
+| `panel_visible` | Present, S and R | Absent in package strings, P | Not confirmed in package strings; the panel registration path was observed |
 | `open_list` slot collision | No | No | Yes, API 5; runtime distinguishes by first argument |
-| NXP compatibility adapter | Loaded, R and V | Loaded, R | Not loaded, N |
+| NXP compatibility adapter | Loaded, R and V | Loaded, R | Loaded, R |
 | Native NXP adapter | Not implemented | Not implemented | Not implemented |
-| Panel in NXP | Registered; the older demo panel was rendered, the Trinity 0.2.0 panel capture is pending | Unavailable on API 3 | Capability exists in source lineage, not run |
-| Settings persistence through NXP | Checkbox and slider changed file, R | Settings file created; no UI on API 3, R | Not run, N |
+| Panel in NXP | Registered; the demo panel was rendered, the Trinity 0.2.0 panel capture is pending | Unavailable on API 3 | Registered in a headless run; not drawn or interacted with |
+| Settings persistence through NXP | Checkbox and slider changed file, R | Settings file created; no UI on API 3, R | Not exercised, N |
 | Launcher adapter source | Native page in the host tree | Tauri page source in this repo | Tauri page source in this repo |
 | Launcher window verified | Native page captured from the release launcher | Actual 0.2.13 Tauri window built from the tag | Actual 0.3.2 Tauri window built from current source |
 | Gameplay effect | None; Trinity changes no game state | None | None |
@@ -43,34 +45,50 @@ The original GameBanana DLLs were tested, not recompiled copies. Both target
 `NxModApi` directly; neither is an NXP client, so this is coexistence with the
 same host loader, not a test through Trinity's compatibility adapter.
 
-| Mod | Original binary SHA-256 | Result on the development runtime | Not tested |
-| --- | --- | --- | --- |
-| [Quick Save 1.0.0](https://gamebanana.com/mods/742827) | `fec36b1da9ae0ce64c59c3e92e0ff6a970189d9d44b6a15161500016b3c0f91e` | Loaded; `[Quick] ready (mod API 4, Mods window)`; found its save folder | Pressing save/load or writing a save |
-| [Turn Control 0.3.0](https://gamebanana.com/mods/745602) | `a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0` | Loaded; `[Turns] ready (mod API 4, Mods window F8 + hotkeys)` | Changing turns, freeze or facilities |
-| Trinity Core 0.2.0 | `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` | Loaded alongside both; panel registered; 5 prefixes accepted, 1 rejected by design | Gameplay effect (none exists) |
+The GameBanana IDs are easy to swap: `742827` is Turn Control and `745602` is
+Quicksave. The hashes below were checked against the installed DLLs in both
+prepared hosts.
 
-Evidence: [mod-compat-runtime.log](evidence/mod-compat-runtime.log). The game build
-was `DB93B0125F4850601D61C3EDDE012F8EB2ECFE77` (version 131072). All three mods
-loaded at the first frame and reached their own ready messages; no init declined.
+| Mod | Original binary SHA-256 | EmblemWeave API 4 | fefw-recomp API 3 | ObeliskChamber API 5 |
+| --- | --- | --- | --- | --- |
+| [Turn Control 0.3.0](https://gamebanana.com/mods/742827) | `a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0` | Loaded; `[Turns] ready (mod API 4, Mods window F8 + hotkeys)`; no turn action | Loaded; `[Turns] ready (mod API 3, System menu + hotkeys)`; no turn action | Loaded; `[Turns] ready (mod API 5, Obelisk Chamber menu + hotkeys)`; no turn action |
+| [Quicksave 1.0.0](https://gamebanana.com/mods/745602) | `fec36b1da9ae0ce64c59c3e92e0ff6a970189d9d44b6a15161500016b3c0f91e` | Loaded; `[Quick] ready (mod API 4, Mods window)`; found its save folder; no save/load action | Loaded; `[Quick] ready (mod API 3)`; save folder not found in the headless profile; no save/load action | Loaded; `[Quick] ready (mod API 5)`; save folder not found in the headless profile; no save/load action |
+| Trinity Core 0.2.0 | `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` | Loaded; panel registered; 5 prefixes accepted, 1 rejected by design | Loaded headless; no UI on API 3; 5 prefixes accepted, 1 rejected | Loaded; panel registered; 5 prefixes accepted, 1 rejected |
 
-The same three original DLLs were then loaded in the prepared fefw-recomp 0.2.13
-runtime on the same build (API 3). Quick Save and Turn Control both reported
-`ready (mod API 3)`; Trinity reported `0.2.0 on fefw-recomp (nxmod-api-3)` and
-ran headless because that table has no `nxp.ui`. Quick Save also reported that
-its save folder was not found in the headless profile. Turn Control registered
-its System submenu. No save, turn, facility or panel action was performed.
-Evidence: [fefw-runtime.log](evidence/fefw-runtime.log).
+Evidence: [mod-compat-runtime.log](evidence/mod-compat-runtime.log),
+[fefw-runtime.log](evidence/fefw-runtime.log) and
+[obelisk-runtime.log](evidence/obelisk-runtime.log). The game build was
+`DB93B0125F4850601D61C3EDDE012F8EB2ECFE77` (version 131072).
+
+The EmblemWeave run was headless load/init: all three mods reached their own
+ready messages and no init declined. Quicksave found its save folder there, but
+no save or load was exercised.
+
+The fefw-recomp 0.2.13 run used the same original DLLs on API 3. Quicksave and
+Turn Control reported `ready (mod API 3)`; Trinity reported `0.2.0 on
+fefw-recomp (nxmod-api-3)` and stayed headless because that table has no
+`nxp.ui`. Quicksave reported that its save folder was not found in the headless
+profile. Turn Control registered its System submenu. No save, turn, facility or
+panel action was performed.
+
+The ObeliskChamber 0.3.2 run used the same original DLLs on API 5. Trinity
+reported `0.2.0 on obelisk-chamber (nxmod-api-5)`, accepted the same prefix set
+and registered the panel; Turn Control registered its list screen; Quicksave
+reported `ready (mod API 5)` but no save folder. The run reached the first
+frame. It was headless, so nothing was drawn and no save, turn, facility or
+panel action was performed.
 
 ## 2b. Platform matrix
 
 | Platform | Build | Load | Runtime observation |
 | --- | --- | --- | --- |
-| Windows x64 | C | L: EmblemWeave development runtime and prepared fefw-recomp 0.2.13 | R: init with three mods on both hosts; first frame; settings written; EmblemWeave panel registration; fefw API 3 headless |
-| Linux x64 | C | L: native `dlopen` harness | R: init, panel, settings, frame and shutdown; no game runtime |
+| Windows x64 | C | L: EmblemWeave development runtime, prepared fefw-recomp 0.2.13 and prepared ObeliskChamber 0.3.2 | R: init with three mods in all three hosts; first frame in fefw-recomp and ObeliskChamber; panel registration in EmblemWeave and ObeliskChamber; demo panel rendered in EmblemWeave; settings written |
+| Linux x64 | C | L: native `dlopen` harness | R: init, panel, settings, frame and shutdown in the harness; no game runtime |
 
 The Linux shared object is ELF64 x86-64 with `nxp_get_plugin` and `nxmod_init`.
 It links only the standard C++/system libraries. This is not a Linux game host
-result and does not prove a Linux launcher.
+result and does not prove a Linux launcher. Steam Deck and Proton were not
+tested.
 
 ## 3. What the compatibility adapter exposes
 
@@ -107,21 +125,23 @@ The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were int
 | EmblemWeave development build loads `nxmod_init` | L | Runtime log in `docs/evidence/` |
 | Trinity Core 0.2.0 loads, identifies the host and registers a panel in EmblemWeave | L | `docs/evidence/trinity-core-runtime.log`, `docs/evidence/mod-compat-runtime.log` |
 | Trinity Core prefix classifier accepts five and rejects one unknown name at runtime | R | `docs/evidence/mod-compat-runtime.log` |
-| Quick Save 1.0.0 and Turn Control 0.3.0 load and initialize alongside Trinity | L, R | `docs/evidence/mod-compat-runtime.log` |
+| Turn Control 0.3.0 and Quicksave 1.0.0 load and initialize alongside Trinity in EmblemWeave | L, R | `docs/evidence/mod-compat-runtime.log` |
+| The same DLL loads in fefw-recomp 0.2.13 and runs headless | L, R | `docs/evidence/fefw-runtime.log` |
+| The same DLL loads in ObeliskChamber 0.3.2 and registers its panel headless | L, R | `docs/evidence/obelisk-runtime.log` |
+| Turn Control 0.3.0 and Quicksave 1.0.0 load and initialize alongside Trinity in fefw-recomp and ObeliskChamber | L, R | `docs/evidence/fefw-runtime.log`, `docs/evidence/obelisk-runtime.log` |
 | EmblemWeave first-run bundle installs, preserves settings and refuses a downgrade | C, R | 3 `trinity_bundle` tests passed |
 | Trinity Core settings file is created | R | `trinity.enabled=1`, `trinity.prefix_guard=1` in the plugin folder |
 | Demo panel renders in F1 > Advanced > Mods | V | `docs/evidence/emblemweave-mod-panel.png` |
 | Trinity Core panel renders in F1 > Advanced > Mods | N | Panel registration is logged; a windowed capture is pending |
+| Trinity Core panel renders in ObeliskChamber | N | Panel registration is logged; the run was headless |
 | Checkbox and slider persist through the adapter | R | Settings file read back, recorded in evidence README |
-| Same DLL loads in fefw-recomp | L, R | `docs/evidence/fefw-runtime.log` |
-| Same DLL loads in ObeliskChamber | N | No prepared runtime; installer staged 0.2.0 only |
 | Launcher page builds in both upstream Tauri sources | C | Vite and Tauri production builds, 25 November 2026 |
 | Trinity page renders in both launcher windows | V | Actual 0.2.13 and 0.3.2 Tauri captures in `docs/evidence/` |
 | Launcher navigation opens the Trinity page | V | Actual window captures, 25 November 2026 |
 | Launcher change is merged into either host repository | N | Local checkouts only |
-| Packaged Tauri window | V | `launcher-fefw-trinity.png`, `launcher-obelisk-trinity.png` |
 | Native EmblemWeave page | V | `emblemweave-trinity.png`, EmblemWeave 0.1.43 |
 | Linux `.so` builds, exports both entry points and loads | C, L, R | ELF/readelf/nm output; CTest 5/5; native harness PASS |
+| Steam Deck or Proton compatibility | N | Not tested |
 | Gameplay changes | N | No gameplay interface |
 
 ## 6. Unknowns that matter
@@ -136,25 +156,27 @@ The packaged 0.2.13 is API 3 and has no panel path. Issue #165 says API 4 is pla
 
 ### ObeliskChamber version 5
 
-The API 5 table places `open_list` where the other ports place `add_panel`, and the runtime distinguishes the call by the first argument. The adapter calls `add_panel` with a title, which is the non-`Ctx` path. That is source-consistent but not runtime-verified in the packaged host. A native adapter should expose panels through `nxp.ui` and the list screen through an explicit `obeliskchamber.list` interface rather than relying on a version number.
+The API 5 table places `open_list` where the other ports place `add_panel`, and the runtime distinguishes the call by the first argument. The adapter calls `add_panel` with a title, which is the non-`Ctx` path. The packaged 0.3.2 runtime loaded the adapter and logged `added the panel "Trinity" to the Mods window` and `panel registered`, so the loading and registration path is runtime-observed. The panel was not drawn in the headless run, and the exact packaged table has not been probed member by member. A native adapter should expose panels through `nxp.ui` and the list screen through an explicit `obeliskchamber.list` interface rather than relying on a version number.
 
 ### Single Windows binary
 
-One Windows x64 plugin built against this header and the compatibility adapter loaded in one EmblemWeave development build and in the prepared fefw-recomp 0.2.13 runtime, alongside the same two published mods. That does not prove it loads in ObeliskChamber 0.3.2; the common ABI makes it plausible, but the matrix records ObeliskChamber as unproven.
+One Windows x64 plugin built against this header and the compatibility adapter loaded in the EmblemWeave development runtime, the prepared fefw-recomp 0.2.13 runtime and the prepared ObeliskChamber 0.3.2 runtime, alongside the same two published mods. That proves loading and initialization on three host implementations, not gameplay, and not a panel drawn in every host.
 
 ### Linux is not a Linux game result
 
 The ELF shared object is native and the native harness exercises the full NXP
 lifecycle. There is no Linux game launcher or Linux game runtime in this
 workspace, so the Linux claim must not be raised to gameplay or a launcher.
+Steam Deck and Proton were not tested.
 
 ## 7. Next verification steps
 
-1. Load `Trinity.dll` in a prepared ObeliskChamber 0.3.2 game runtime; record the exact API table and host id.
-2. Capture the Trinity panel in a windowed EmblemWeave run; registration is not a visual check.
+1. Capture the Trinity panel in a windowed EmblemWeave run and exercise its settings; registration is not a visual check.
+2. Draw and interact with the Trinity panel in a windowed ObeliskChamber run.
 3. Run one native Linux host or game runtime against `libTrinity.so`; the harness is not a game.
 4. Add a native EmblemWeave adapter that calls `nxp_get_plugin` directly.
-5. Exercise a Quick Save and a Turn Control action in gameplay after backing up saves; do not infer it from initialization.
+5. Exercise a Quicksave and a Turn Control action in gameplay after backing up saves; do not infer it from initialization.
+6. Re-test the panel path when fefw-recomp ships API 4.
 
 ## 8. Reporting rule
 

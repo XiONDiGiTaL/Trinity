@@ -10,14 +10,15 @@
 - Upstream `master` is newer than the package and is the basis for the launcher source inspection. It is not proof that the packaged 0.2.13 binary contains the same code.
 - A prepared game was built from the supplied update-131072 dump with
   `fefw-launcher.exe --prepare --game E:\FEFW`.
-- On 25 November 2026 the headless runtime loaded the original Quick Save 1.0.0,
+- On 25 November 2026 the headless runtime loaded the original Quicksave 1.0.0,
   Turn Control 0.3.0 and Trinity 0.2.0 together. All three started; Trinity
   identified `fefw-recomp` / `nxmod-api-3` and stayed headless because API 3 has
   no `add_panel`.
 - Evidence: [../../docs/evidence/fefw-runtime.log](../../docs/evidence/fefw-runtime.log).
-  Quick Save reported that its save folder was not found in the headless profile;
+  Quicksave reported that its save folder was not found in the headless profile;
   no save, turn or panel action was performed. The runtime log reached
-  `max_seconds`; its process shutdown exceeded the test wrapper's timeout.
+  `max_seconds` and ended with the runtime's deliberate `124` deadline status;
+  see [../../docs/evidence/fefw-shutdown-124.md](../../docs/evidence/fefw-shutdown-124.md).
 
 ## Adapter plan
 

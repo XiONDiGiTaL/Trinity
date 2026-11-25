@@ -1,0 +1,57 @@
+# ObeliskChamber 0.3.2 runtime evidence
+
+Date: 2026-11-25
+
+Host: `X:\ObeliskChamber-0.3.2`
+Game dump: the extracted `Fire Emblem: Fortune's Weave + Update 1.1.1` dump
+Game build: `DB93B0125F4850601D61C3EDDE012F8EB2ECFE77`, update `131072`
+Runtime ABI: `nxmod` API 5
+Run: headless, `--max-seconds 25`
+
+The full log is `X:\ObeliskChamber-0.3.2\ObeliskChamber.log`. This file is the
+load, initialization, panel-registration, first-frame and deadline excerpt.
+
+## Installed plugins
+
+| MOD folder | Original file | SHA-256 |
+| --- | --- | --- |
+| `QuickSave` | `exefs/quick_save.dll` | `fec36b1da9ae0ce64c59c3e92e0ff6a970189d9d44b6a15161500016b3c0f91e` |
+| `TurnControl` | `exefs/turn_control.dll` | `a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0` |
+| `TrinityCore` | `exefs/Trinity.dll` | `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` |
+
+All three are the original GameBanana binaries. Quicksave and Turn Control use
+`NxModApi` directly. Trinity uses the NXP compatibility adapter.
+
+## Selected runtime lines
+
+```text
+[  0.528555 I t29408 -] mods: QuickSave/quick_save.dll: loaded, starts at the first frame
+[  0.530765 I t29408 -] mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+[  0.531341 I t29408 -] mods: TurnControl/turn_control.dll: loaded, starts at the first frame
+[  3.448107 I t29408 main] mods: QuickSave/quick_save.dll: [Quick] ready (mod API 5): Shift+F5 quick save, Shift+F9 quick load, controller LT+RT+L3 / R3; quick save file: save folder not found
+[  3.448119 I t29408 main] mods: QuickSave/quick_save.dll: code mod started (0 hooks)
+[  3.451205 I t29408 main] mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on obelisk-chamber (nxmod-api-5), host prefix obeliskchamber., capabilities 0x0000007f
+[  3.451231 I t29408 main] mods: TrinityCore/Trinity.dll: prefix accepted: nxp.ui -> nxp.
+[  3.451239 I t29408 main] mods: TrinityCore/Trinity.dll: prefix accepted: fefw-recomp.ui.panel -> fefw-recomp.
+[  3.451242 I t29408 main] mods: TrinityCore/Trinity.dll: prefix accepted: obeliskchamber.ui.panel -> obeliskchamber.
+[  3.451244 W t29408 main] mods: TrinityCore/Trinity.dll: prefix rejected: other.ui.panel
+[  3.451287 I t29408 main] mods: TrinityCore/Trinity.dll: 5 names accepted, 1 rejected.
+[  3.451310 I t29408 main] mods: TrinityCore/Trinity.dll: added the panel "Trinity" to the Mods window
+[  3.451316 I t29408 main] mods: TrinityCore/Trinity.dll: panel registered
+[  3.451321 I t29408 main] mods: TrinityCore/Trinity.dll: code mod started (0 hooks)
+[  3.452567 I t29408 main] mods: TurnControl/turn_control.dll: [Turns] ready (mod API 5, Obelisk Chamber menu + hotkeys); freeze off
+[  3.453119 I t29408 main] mods: TurnControl/turn_control.dll: [Turns] menu: + > System > Turn Control (list screen)
+[  3.502147 I t37664 nvn-render] boot: timeline, seconds since start (+ the step before): vulkan instance 0.12 (+0.12), vulkan device 0.19 (+0.07), NVN back end 0.52 (+0.33), RomFS ready (with its mods) 2.41 (+1.89), game's first frame update 3.45 (+1.03), first frame 3.50 (+0.06); longest step: up to RomFS ready (with its mods), 1.89 s
+[  5.155142 I t37664 nvn-render] nvn.replay: first frame with 16+ draws (present 8, 35 draws)
+[ 25.735379 W t11960 -] boot: max_seconds reached: the guest is still running; ending the process
+```
+
+## Level and limits
+
+This proves the prepared ObeliskChamber 0.3.2 game build loaded and initialized
+all three mods on API 5, registered Trinity's panel, registered Turn Control's
+list screen, reached the first frame and then ended at the configured
+`--max-seconds` deadline. The run was headless, so no panel was drawn and no
+save, load, turn, facility or panel interaction was performed. Quicksave
+reported that it could not find the game's save folder in this headless
+profile.

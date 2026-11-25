@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-Trinity is a shared plugin framework for three independent recompilation projects. It gives plugin authors one source-level contract without forcing the hosts to share a UI toolkit, a launcher technology or a game runtime.
+Trinity is a shared code-mod compatibility layer and plugin interface for three independent recompilation projects. It gives plugin authors one source-level contract without forcing the hosts to share a UI toolkit, a launcher technology or a game runtime.
 
 The architecture has four rules:
 
@@ -229,7 +229,7 @@ Unresolved risks:
 - ARM64 support;
 - host and plugin built against different copies of the header.
 
-No Linux binary has been built. No single-binary-for-everything claim is made.
+Linux x64 is built as `libTrinity.so` and loaded by the native `dlopen` harness. No Linux game launcher or game runtime has been tested, and no single-binary-for-everything claim is made.
 
 ## 12. Security model
 
@@ -251,10 +251,11 @@ Code signing, a reviewed registry and automatic revocation are future work.
 | Component | Location | Status |
 | --- | --- | --- |
 | Public ABI | `include/nxp/nxp.h` | v1 implemented |
-| Compatibility host | `hosts/compat/nxmod_adapter.cpp` | Implemented and runtime-tested in EmblemWeave |
+| Compatibility host | `hosts/compat/nxmod_adapter.cpp` | Implemented; loaded in EmblemWeave, fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 |
 | Reference plugin | `plugins/trinity_core/` | Implemented; build and reload after migration |
 | Minimal example | `examples/hello_panel/` | Implemented |
 | Host harness | `tests/nxp_host_test.cpp` | Implemented |
+| Linux x64 binary | `build-linux/libTrinity.so` | Built; ELF and export checks plus the native harness pass |
 | Manifest validator | `tools/validate_plugin.py` | Implemented |
 | Prefix core | `shared/prefix-core.mjs` | Implemented |
 | Catalog | `shared/catalog.json` | Source of truth for launcher listings |
@@ -270,5 +271,5 @@ Code signing, a reviewed registry and automatic revocation are future work.
 3. Whether `plugin.json` is accepted as the common launcher manifest alongside host-specific metadata.
 4. The support window for `nxmod_init` after native NXP adoption.
 5. The ownership and shape of a future gameplay interface.
-6. The first Linux target and toolchain.
+6. ARM64 Linux support and its toolchain.
 7. Whether package signing is required before a public registry exists.

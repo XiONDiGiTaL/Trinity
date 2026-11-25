@@ -15,11 +15,12 @@ cd X:\fefw-recomp-0.2.13
 timeout 120 .\fefw.exe --headless --max-seconds 25 --log "X:/fefw-recomp-0.2.13/fefw-trinity-runtime.log"
 ```
 
-The `timeout` wrapper returned 124 because the process did not finish its own
-shutdown within 120 seconds. The runtime log records the actual stop at 25.7
-seconds: `boot: max_seconds reached: the guest is still running; ending the
-process`. The process was gone afterwards. This is a shutdown-timing limitation
-of the headless run, not a plugin initialization failure.
+The `timeout` wrapper returned 124, but that status is fefw's own deliberate
+deadline exit: the runtime calls `TerminateProcess(GetCurrentProcess(), 124)`
+when `--max-seconds` expires. Measured wall time was about 26 seconds, not 120.
+The log records the stop at 25.7 seconds: `boot: max_seconds reached: the guest
+is still running; ending the process`. See
+[fefw-shutdown-124.md](fefw-shutdown-124.md).
 
 The runtime wrote to the `[log] path` from `fefw.ini` (`fefw.log`); the
 `--log` filename was not created, so the lines below come from `fefw.log`.
@@ -32,7 +33,7 @@ The runtime wrote to the `[log] path` from `fefw.ini` (`fefw.log`); the
 | `TurnControl` | `exefs/turn_control.dll` | `a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0` |
 | `TrinityCore` | `exefs/Trinity.dll` | `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` |
 
-All three are the original GameBanana binaries. Quick Save and Turn Control use
+All three are the original GameBanana binaries. Quicksave and Turn Control use
 `NxModApi` directly. Trinity uses the NXP compatibility adapter.
 
 ## Selected runtime lines
@@ -70,9 +71,9 @@ TrinityCore/.nxp-settings.ini
 
 This proves the prepared fefw-recomp game build loaded and initialized all
 three mods, reached the first frame, and created the plugins' settings files.
-Quick Save reported that it could not find the game's save folder in this
+Quicksave reported that it could not find the game's save folder in this
 headless profile, so no quick save was exercised. Turn Control registered its
 System submenu. No save, turn, facility, panel or other gameplay action was
 performed. The run was headless, so the panel was not visually inspected; API 3
-has no panel capability and Trinity correctly stayed headless. The shutdown
-timeout above is recorded as a runtime limitation.
+has no panel capability and Trinity correctly stayed headless. The `124` status
+is the configured deadline exit, not a shutdown hang.

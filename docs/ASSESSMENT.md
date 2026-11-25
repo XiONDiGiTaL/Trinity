@@ -6,9 +6,11 @@ Date: 25 November 2026
 
 Scope: EmblemWeave, fefw-recomp 0.2.13 and ObeliskChamber 0.3.2.
 
-Status: phase 0. A working NXP plugin and compatibility adapter exist. The only
-runtime-validated host is EmblemWeave's development build. The packaged
-fefw-recomp and ObeliskChamber runtimes were inspected, not executed.
+Status at phase 0 (superseded by [COMPATIBILITY.md](COMPATIBILITY.md)): a
+working NXP plugin and compatibility adapter existed. At that point the only
+runtime-validated host was EmblemWeave's development build; the packaged
+fefw-recomp and ObeliskChamber runtimes had been inspected, not executed. Later
+headless runs loaded the same plugin in both of those runtimes.
 
 ## Verification labels
 
@@ -676,9 +678,9 @@ returned. The panel still drew, but showed an unreadable string and
 storage for the process lifetime. The panel then showed the correct host name
 and id. This is a concrete example of why registration logs are not enough.
 
-![F1 menu](docs/evidence/emblemweave-f1-menu.png)
+![F1 menu](evidence/emblemweave-f1-menu.png)
 
-![NXP panel in EmblemWeave](docs/evidence/emblemweave-mod-panel.png)
+![NXP panel in EmblemWeave](evidence/emblemweave-mod-panel.png)
 
 The checkbox and slider were then clicked in the live host. The settings file
 was read back after the click and had changed from `demo.enabled=1` and

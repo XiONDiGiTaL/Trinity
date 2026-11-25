@@ -1,5 +1,12 @@
 # Install Trinity 0.2.0
 
+End users do not need Visual Studio, CMake, a compiler, an SDK or any other
+development tool. Use the published archives or the installer below.
+
+Launcher maintainers integrating Trinity into a host build should read
+[HOST-INTEGRATION.md](HOST-INTEGRATION.md) for loading, version checks, updates
+and error handling.
+
 ## Official release assets
 
 | Platform | Archive | Payload |
@@ -36,8 +43,10 @@ python Trinity/tools/install_trinity.py --archive .\Trinity-v0.2.0-windows-x64.z
 
 The fefw-recomp 0.2.13 runtime is `NxModApi` 3, so it installs and runs the
 plugin headless: settings, files and frame work, but no panel. ObeliskChamber
-0.3.2 advertises API 5; its exact packaged table was not runtime-probed. See
-[COMPATIBILITY.md](COMPATIBILITY.md) before claiming either in-game result.
+0.3.2 is API 5; the prepared runtime loaded the same payload, registered the
+panel and reached the first frame headless, without drawing or interacting with
+it. See [COMPATIBILITY.md](COMPATIBILITY.md) before claiming a panel or gameplay
+result in either host.
 
 ## EmblemWeave
 
@@ -89,16 +98,18 @@ gameplay. Lua/Python hosts are not supported by this binary.
 ## Known limits
 
 - The Windows plugin was loaded by the EmblemWeave development runtime and the
-  prepared fefw-recomp 0.2.13 runtime with `Quick Save` 1.0.0 and
+  prepared fefw-recomp 0.2.13 runtime with `Quicksave` 1.0.0 and
   `Turn Control` 0.3.0; that proves loading and initialization, not gameplay.
 - Those two mods target `NxModApi` directly. They do not load through Trinity's
   NXP adapter; they coexist with Trinity under the same host loader.
 - The fefw-recomp run was headless on API 3, so Trinity had no panel and no
-  save, turn or facility action was exercised. Quick Save reported that it could
+  save, turn or facility action was exercised. Quicksave reported that it could
   not find the save folder in that profile. See
   [evidence/fefw-runtime.log](evidence/fefw-runtime.log).
-- An ObeliskChamber game runtime was not prepared, so its 0.3.2 run remains
-  unverified; the installer staged 0.2.0 in its mods folder.
+- An ObeliskChamber 0.3.2 game runtime was prepared for a headless run. The
+  same binary loaded on API 5 with Quicksave and Turn Control, and Trinity
+  registered its panel; the panel was not drawn and no gameplay was exercised.
+  See [evidence/obelisk-runtime.log](evidence/obelisk-runtime.log).
 - The Trinity panel registers, but a windowed capture of the panel is still
   pending.
 - No gameplay hooks, guest memory access or save behavior are added by Trinity.

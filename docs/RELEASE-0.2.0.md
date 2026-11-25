@@ -44,14 +44,19 @@ not a Windows DLL with a new extension.
 
 ## Compatibility limits
 
-The two published mods, [Quick Save](https://gamebanana.com/mods/742827) and
-[Turn Control](https://gamebanana.com/mods/745602), were tested as their original
+The two published mods, [Turn Control](https://gamebanana.com/mods/742827) and
+[Quicksave](https://gamebanana.com/mods/745602), were tested as their original
 GameBanana DLLs. They use `NxModApi` directly and do not use the NXP
 compatibility adapter. They loaded and initialized alongside Trinity on the
 same game build in EmblemWeave (API 4) and in the prepared fefw-recomp 0.2.13
-runtime (API 3). Quick Save reported that it could not find the save folder in
+runtime (API 3). Quicksave reported that it could not find the save folder in
 the headless fefw profile; Turn Control registered its System submenu. No save,
 turn change, panel or gameplay action was exercised.
+
+A later headless ObeliskChamber 0.3.2 run loaded the same 0.2.0 binary and the
+same two mods on API 5. Trinity registered its panel, Turn Control registered
+its list screen, and the run reached the first frame; no panel or gameplay
+action was performed. See [evidence/obelisk-runtime.log](evidence/obelisk-runtime.log).
 
 The Linux result is a native host-harness result. There is no Linux game
 launcher or Linux game runtime in this workspace. The panel registered in the

@@ -4,168 +4,159 @@
 
 # Trinity
 
-**Shared plugin layer for EmblemWeave, fefw-recomp and ObeliskChamber.**
+### Unified Code Mods Plugin
 
-Trinity is the shared plugin framework for three independent *Fire Emblem: Fortune's Weave* projects:
+**Three Houses. One Vision.**
+
+Trinity is a unified code-mod plugin for three independent *Fire Emblem: Fortune's Weave* projects:
 
 - [EmblemWeave](https://github.com/XiONDiGiTaL/EmblemWeave)
 - [fefw-recomp](https://github.com/metrist38/fefw-recomp)
 - [ObeliskChamber](https://github.com/xinthefreefallxai/ObeliskChamber)
 
-The host applications remain independent. Trinity defines the common contract between them: a versioned C ABI, a compatibility adapter, host-specific integration layers, a shared catalog and a prefix registry for interface names.
+It provides a shared code-mod compatibility layer and plugin interface, so a compatible code mod can target one contract instead of maintaining a separate implementation for every launcher. Each launcher keeps its own design, functionality and identity. Trinity connects their code-mod systems through a shared interface and host-specific integration.
 
-This repository is the central development home for that framework. It is not a replacement for any host project.
+Trinity is not a replacement launcher, a mod manager or a fork of any host project.
 
-## The Trinity surface
+## What Trinity provides
 
-| EmblemWeave | fefw-recomp | ObeliskChamber |
-|:---:|:---:|:---:|
-| <a href="docs/evidence/emblemweave-trinity.png"><img src="docs/evidence/emblemweave-trinity.png" width="300" alt="The Trinity page in EmblemWeave"></a> | <a href="docs/evidence/launcher-fefw-trinity.png"><img src="docs/evidence/launcher-fefw-trinity.png" width="300" alt="The Trinity page in the fefw-recomp launcher"></a> | <a href="docs/evidence/launcher-obelisk-trinity.png"><img src="docs/evidence/launcher-obelisk-trinity.png" width="300" alt="The Trinity screen in the ObeliskChamber launcher"></a> |
-| Native egui page | Host-styled page | Panel-styled screen |
-
-All three images are captured from actual launcher windows. EmblemWeave used its native release-frame capture; fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 were built with the Trinity page and captured through their Tauri windows. The Tauri launcher integrations remain local and are not merged upstream; the EmblemWeave native page is part of its host tree. [The evidence notes](docs/evidence/README.md) record the exact level of every capture.
-
-## Status
-
-| Area | State |
+| Capability | What it means for a code mod |
 | --- | --- |
-| Public NXP ABI | Implemented, version 1 |
-| Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build and the prepared fefw-recomp 0.2.13 runtime |
-| Reference plugin | 0.2.0 built and loaded by the EmblemWeave development runtime and fefw-recomp 0.2.13 alongside two published code mods |
-| Host adapters | Native EmblemWeave page plus Tauri pages for fefw-recomp and ObeliskChamber |
-| Launcher catalog surface | Native EmblemWeave page plus actual fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 Tauri windows; all three captured |
-| fefw-recomp launcher validation | Verified in the actual 0.2.13 window built from the v0.2.13 tag |
-| fefw-recomp runtime validation | Verified headless on the prepared update-131072 runtime (API 3): Trinity, Quick Save and Turn Control loaded; no panel or gameplay action |
-| ObeliskChamber launcher validation | Verified in the actual 0.3.2 window built from the current source |
-| ObeliskChamber runtime validation | Not run; no prepared 0.3.2 game runtime; the installer staged 0.2.0 only |
-| Linux build | x64 `libTrinity.so` built, exports checked and loaded by the native `dlopen` harness; no Linux game launcher was available |
+| One plugin interface | A versioned C ABI (`NXP`) with a single discovery entry point and optional interfaces for host identity, settings, files, frames and a native panel. |
+| Existing mod compatibility | A compatibility adapter maps the `NxModApi` 3, 4 and 5 tables that the three runtimes already expose. Existing `nxmod_init` mods keep loading; no host API version has to change. |
+| Host-owned interface | The plugin supplies content; the host draws it with its own fonts, spacing, colours, input model and controller navigation. Each launcher remains visually itself. |
+| Shared services | Persisted per-plugin settings, plugin-scoped files and an optional per-frame callback, with capability checks so a plugin degrades cleanly when a host lacks an interface. |
+| Collision-free names | A prefix registry reserves `trinity.`, `nxp.` and each host's namespace, and rejects unknown or doubled prefixes at load time. |
+| Prebuilt releases | Windows x64 `Trinity.dll` and Linux x64 `libTrinity.so`, published with `SHA256SUMS` and a dependency-free installer. Launcher developers do not need to build Trinity to consume it. |
+| Evidence-based support | The compatibility matrix records the exact level reached for each host: compiled, loaded, observed, visually inspected or gameplay-tested. |
 
-Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The support matrix in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) records each level separately.
+The compatibility adapter is the bridge that makes current hosts work without a runtime rewrite. A native host adapter can expose the same NXP contract directly later. See [docs/NXP.md](docs/NXP.md) and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## What is in the repository
+## Supported launcher projects
 
-| Path | Purpose |
-| --- | --- |
-| `include/nxp/nxp.h` | The public C ABI. Plugins compile against this header only. |
-| `hosts/compat/` | The `NxModApi` compatibility host linked into a plugin DLL. It exports `nxmod_init` for hosts that do not load NXP natively. |
-| `plugins/trinity_core/` | The reference Trinity plugin: host discovery, settings, a native panel, a frame hook and the prefix registry. |
-| `examples/hello_panel/` | The smallest working NXP plugin. |
-| `tests/` | Standalone host harness, manifest tests and prefix tests. |
-| `tools/` | Windows build script, release packager, checksum-verified installer and manifest validation. |
-| `integrations/` | Sync helper that copies the shared catalog, prefix registry and launcher surface into host checkouts. |
-| `shared/` | The canonical catalog and prefix registry shared by launchers and plugins. |
-| `ui/` | The shared launcher surface. It supplies content, not a host visual language. |
-| `hosts/launchers/` | Host-specific launcher adapters. |
-| `docs/` | Architecture, compatibility, migration inventory, proposals and runtime evidence. |
-| `assets/brand/` | The authoritative Trinity logo. |
+| Project | Launcher | Code-mod API at the tested version | Trinity integration |
+| --- | --- | --- | --- |
+| [EmblemWeave](https://github.com/XiONDiGiTaL/EmblemWeave) | Native egui / Rust | `NxModApi` 4 | Native Trinity page in the host tree; NXP compatibility adapter loaded by the development runtime and the Trinity panel registered. |
+| [fefw-recomp](https://github.com/metrist38/fefw-recomp) | Tauri 2 / Vite | `NxModApi` 3 in 0.2.13; API 4 planned upstream | Host-styled Tauri page adapter and patch; Trinity Core 0.2.0 loaded headless on API 3, where no panel slot exists. |
+| [ObeliskChamber](https://github.com/xinthefreefallxai/ObeliskChamber) | Tauri 2 / Vite | `NxModApi` 5 | Panel-styled Tauri page adapter and patch; Trinity Core 0.2.0 loaded headless on API 5 and registered its panel. |
 
-## Design in one page
+The launcher and the game runtime are separate processes. Trinity's launcher surface presents the shared catalog and prefix registry; the runtime plugin provides the interfaces. A launcher page does not prove that a plugin loads, and a plugin load does not prove gameplay.
 
-A plugin exports one function:
+## Compatibility status
 
-```c
-const NxpPluginDesc* nxp_get_plugin(uint32_t host_abi_version);
-```
-
-The host validates the descriptor, calls `init`, and exposes optional interfaces through `NxpHostApi.get_interface`. The v1 interfaces are:
-
-- `nxp.ui`
-- `nxp.settings`
-- `nxp.files`
-- `nxp.frame`
-
-Every interface table starts with `size` and `version`. Tables grow only at the end. A missing interface is a normal state; the plugin must degrade.
-
-The current compatibility adapter maps NXP onto the existing `NxModApi` table, so no host API version needs to change for the first working plugins. A native host adapter can expose the same `NxpHostApi` directly later. The legacy `nxmod_init` path stays supported throughout the transition.
-
-The launcher and the runtime remain separate processes. Launchers read manifests and manage files. Runtimes validate and load code. A manifest is not a security boundary.
-
-## Prefix registry
-
-Trinity implements the project-prefix idea from [fefw-recomp issue #165](https://github.com/metrist38/fefw-recomp/issues/165) at the shared layer:
-
-| Owner | Canonical prefix | Purpose |
+| Host | Verified | Not yet verified |
 | --- | --- | --- |
-| Trinity | `trinity.` | Portable services owned by the shared framework |
-| NXP | `nxp.` | The compatibility ABI |
-| EmblemWeave | `emblemweave.` | Host-only interfaces and game integrations |
-| fefw-recomp | `fefw-recomp.` | Host-only interfaces and game integrations |
-| ObeliskChamber | `obeliskchamber.` | Host-only interfaces and game integrations |
+| EmblemWeave (development runtime, API 4) | Windows x64 DLL loaded and initialized alongside two published code mods; demo panel rendered under F1 > Advanced > Mods; Trinity panel registration and prefix checks logged; settings persisted through the adapter. | A windowed capture of the Trinity 0.2.0 panel; any save, turn or gameplay action. |
+| fefw-recomp 0.2.13 (API 3) | Windows x64 DLL loaded and initialized headless with the same two published mods; first frame reached; settings files created. | A panel (API 3 has no `add_panel` slot); any save, turn or gameplay action. |
+| ObeliskChamber 0.3.2 (API 5) | Windows x64 DLL loaded and initialized headless with the same two published mods; panel registered; first frame reached. | Drawing or interacting with the panel; any save, turn or gameplay action. |
+| Linux x64 | `libTrinity.so` builds as ELF64 x86-64, exports both entry points and passes the native `dlopen` host harness. | Any Linux game launcher or game runtime; Steam Deck and Proton are untested. |
 
-Short aliases such as `ew.`, `fefw.` and `oc.` are accepted for input and diagnostics. Canonical names are written to disk. The loader rejects unknown and doubled prefixes. Existing `NxModApi` symbols remain valid; prefixes are added at the interface registry rather than forced onto old entry points.
+Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The full evidence ledger is in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 
-The machine-readable registry is [shared/prefixes.json](shared/prefixes.json). The portable classifier and its tests are [shared/prefix-core.mjs](shared/prefix-core.mjs) and [shared/prefix-core.test.mjs](shared/prefix-core.test.mjs).
+## Installation and downloads
 
-`shared/catalog.json` and `shared/prefixes.json` are canonical. The launcher adapters embed snapshots, and [integrations/sync-trinity.ps1](integrations/sync-trinity.ps1) refreshes them. Re-run the sync after any change to the catalog or registry, then rebuild the host surface.
+The current release is [Trinity 0.2.0](https://github.com/XiONDiGiTaL/Trinity/releases/tag/v0.2.0).
 
-## Build on Windows
+| Platform | Release asset | Payload |
+| --- | --- | --- |
+| Windows x64 | `Trinity-v0.2.0-windows-x64.zip` | `TrinityCore/exefs/Trinity.dll` |
+| Linux x64 | `Trinity-v0.2.0-linux-x64.tar.gz` | `TrinityCore/lib/libTrinity.so` and `include/nxp/nxp.h` |
 
-Requirements:
+`SHA256SUMS` and `release.json` sit beside the archives. Verify the archive before extracting; the installer does this automatically. End users do not need Visual Studio, CMake, a compiler, an SDK or any other development tool to install Trinity.
 
-- CMake 3.20 or newer
-- Ninja
-- Visual Studio 2022 or newer
-- The clang-cl and lld-link binaries shipped under `EmblemWeave/tools/bin` in the development workspace
-
-From the workspace root:
+For fefw-recomp and ObeliskChamber, the dependency-free installer writes only `<host>/mods/TrinityCore`:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File Trinity/tools/build-windows.ps1
+python tools/install_trinity.py --host-dir "C:\path\to\fefw-recomp" --version 0.2.0
+python tools/install_trinity.py --host-dir "C:\path\to\ObeliskChamber" --version 0.2.0
 ```
 
-Outputs:
+For EmblemWeave, builds that include the integration embed the Windows payload and install `TrinityCore` under `data/play/mods` (or `%APPDATA%\EmblemWeave\play\mods`) on first start. Existing settings are preserved across updates.
 
-- `Trinity/build/Trinity.dll`
-- `Trinity/build/NxpDemo.dll`
-- `Trinity/build/nxp_host_test.exe`
-- `Trinity/build/nxmod_adapter_test.exe`
+Release archives, offline installation, host bundles and checksum verification are documented in [docs/INSTALL.md](docs/INSTALL.md).
 
-The compatibility adapter compiles against the public `nxrt/mod_api.h` and `nxrecomp/ctx.h` headers from an EmblemWeave checkout. Pass `-DNXP_NXMOD_ROOT=<checkout>/engine/fefw-recomp` if the checkout is elsewhere.
+## Existing code mod compatibility
 
-A native host implementation needs only `include/nxp/nxp.h`.
+Trinity is tested alongside the original binaries of two published code mods. They use `NxModApi` directly and do not pass through Trinity's NXP adapter; the result is coexistence under the same host loader, not a claim that they are NXP plugins.
 
-## Build and test on Linux
+| Mod | EmblemWeave (API 4) | fefw-recomp 0.2.13 (API 3) | ObeliskChamber 0.3.2 (API 5) |
+| --- | --- | --- | --- |
+| [Quicksave 1.0.0](https://gamebanana.com/mods/745602) | Loaded; `[Quick] ready`; found its save folder. No save or load action exercised. | Loaded; `[Quick] ready`; save folder not found in the headless profile. No save or load action exercised. | Loaded; `[Quick] ready`; save folder not found in the headless profile. No save or load action exercised. |
+| [Turn Control 0.3.0](https://gamebanana.com/mods/742827) | Loaded; `[Turns] ready`; Mods window and hotkeys available. No turn or facility action exercised. | Loaded; `[Turns] ready`; System submenu registered. No turn or facility action exercised. | Loaded; `[Turns] ready`; Turn Control list screen registered. No turn or facility action exercised. |
 
-Ninja, CMake and a C++17 compiler are enough. The adapter uses `/proc/self/exe` for host detection; the host harness uses `dlopen`.
+Both mods and Trinity Core loaded together in every host above, with no init declined. The runs were headless; they prove loading and initialization, not save, turn or gameplay behavior. See [docs/evidence/](docs/evidence/) for the logs and exact hashes.
 
-```bash
-cmake -S . -B build-linux -G Ninja -DCMAKE_BUILD_TYPE=Release \
-  -DNXP_NXMOD_ROOT=../EmblemWeave/engine/fefw-recomp
-cmake --build build-linux
-ctest --test-dir build-linux --output-on-failure
-./build-linux/nxp_host_test ./build-linux/libTrinity.so trinity
-```
+These are also the reference mods used to check that Trinity does not disturb an existing code-mod ecosystem. See [Credits & Contributors](#credits--contributors).
 
-The Linux output is an ELF64 x86-64 shared object. `readelf -h`, `nm -D` and `ldd` are part of the verification; a renamed DLL is not a Linux build. There is no Linux game runtime in this workspace, so the Linux claim stops at native loading. See [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
+## Platform support
 
-## Test
+| Platform | Artifact | Architecture | Runtime dependencies | Verified level |
+| --- | --- | --- | --- | --- |
+| Windows | `Trinity.dll` | PE32+ x86-64 | No third-party libraries. Uses the x64 Microsoft C/C++ runtime; a host system without it needs the standard VC++ Redistributable. | Built; loaded by EmblemWeave, fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 game runtimes. |
+| Linux | `libTrinity.so` | ELF64 x86-64 | The standard x86-64 C/C++ runtime already present on desktop distributions (`libstdc++`, `libgcc_s`, `libc`). No third-party libraries. | Built; ELF and exports checked; loaded by the native `dlopen` harness. No Linux game host was tested. |
 
-```powershell
-ctest --test-dir Trinity/build --output-on-failure
-node --test Trinity/shared/prefix-core.test.mjs
-python Trinity/tools/validate_plugin.py Trinity/plugins/trinity_core/plugin.json
-python -m unittest discover -s Trinity/tests -p "test_*.py"
-```
+`Trinity.dll` and `libTrinity.so` are different binary formats. Renaming one does not produce the other. Build the matching artifact for the platform and load it with that platform's module loader.
 
-The C++ harness loads the plugin, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables. The same five tests pass on Windows and Linux.
+Steam Deck and Proton compatibility have not been validated. The Linux result is a native harness result, not a Linux game launch.
 
-The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/INSTALL.md](docs/INSTALL.md). The development runtime loaded Trinity 0.2.0, [Quick Save](https://gamebanana.com/mods/742827) 1.0.0 and [Turn Control](https://gamebanana.com/mods/745602) 0.3.0 together; the first two are native `NxModApi` plugins and do not pass through Trinity's adapter. The same three original DLLs also loaded in the prepared fefw-recomp 0.2.13 runtime (API 3) and reached the first frame; that run was headless and performed no gameplay action. See [docs/evidence/fefw-runtime.log](docs/evidence/fefw-runtime.log). Loading is not gameplay.
+## For launcher maintainers
+
+Other launcher projects can consume Trinity without building it:
+
+1. Bundle a verified release payload, or download an official release and verify it against `SHA256SUMS`.
+2. Place `TrinityCore` where the host's existing mod loader already scans (`mods/` for fefw-recomp and ObeliskChamber; `data/play/mods/` for EmblemWeave).
+3. Let the existing loader call `nxmod_init`, or resolve `nxp_get_plugin` from a native adapter.
+4. Validate `plugin.json`, the NXP descriptor and the host's capability set before enabling UI.
+5. Preserve the launcher's current pages, navigation and visual language; add Trinity as one entry rather than replacing the shell.
+6. Report a missing or incompatible plugin as a disabled entry with a useful reason, not as a launcher crash.
+
+The practical guide, including version checks, update handling, error messages and host-specific load paths, is [docs/HOST-INTEGRATION.md](docs/HOST-INTEGRATION.md). It requires no build step in the host project beyond its normal packaging.
 
 ## Documentation
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Install and release assets](docs/INSTALL.md)
-- [Release 0.2.0 notes](docs/RELEASE-0.2.0.md)
-- [Compatibility matrix](docs/COMPATIBILITY.md)
-- [Development inventory and migration record](docs/INVENTORY.md)
-- [NXP ABI guide](docs/NXP.md)
-- [Prefix specification](docs/PREFIXES.md)
-- [Technical assessment](docs/ASSESSMENT.md)
-- [Maintainer proposal](docs/PROPOSAL.md)
-- [Test evidence](docs/evidence/README.md)
-- [Brand assets](assets/brand/README.md)
+| Document | Purpose |
+| --- | --- |
+| [Launcher integration](docs/HOST-INTEGRATION.md) | Bundling, downloading, verifying, loading, version checks, updates and error handling for host maintainers. |
+| [Install and release assets](docs/INSTALL.md) | End-user installation, offline bundles and platform artifacts. |
+| [Compatibility matrix](docs/COMPATIBILITY.md) | Exact host and platform status with evidence levels. |
+| [Architecture](docs/ARCHITECTURE.md) | Layers, lifecycle, threading and the launcher/runtime split. |
+| [NXP ABI guide](docs/NXP.md) | The public plugin contract, interfaces and rules for native adapters. |
+| [Prefix specification](docs/PREFIXES.md) | The shared namespace registry and its relationship to fefw-recomp issue #165. |
+| [Building and testing](docs/BUILDING.md) | Contributor build and test instructions for Windows and Linux. |
+| [Release 0.2.0 notes](docs/RELEASE-0.2.0.md) | What changed in the current release. |
+| [Test evidence](docs/evidence/README.md) | Runtime logs, launcher captures and their limits. |
+| [Licensing and provenance](docs/THIRD_PARTY.md) | License scope and third-party attribution. |
+| [Development inventory](docs/INVENTORY.md) | What existed before Trinity and what was migrated. |
+| [Technical assessment](docs/ASSESSMENT.md) | Phase 0 assessment, retained as a historical record. |
+| [Maintainer proposal](docs/PROPOSAL.md) | Early proposal, not posted and not accepted. |
+| [Brand assets](assets/brand/README.md) | The authoritative Trinity logo. |
 
-## Licensing
+## Credits & Contributors
+
+Trinity exists because three independent launcher projects chose to share a code-mod surface, and because contributors made that surface testable against real mods. Listing a project here credits the person who leads it; it does not imply that everyone below authored Trinity itself.
+
+| Contributor | Project / contribution | Links |
+| --- | --- | --- |
+| [**XiØN**](https://github.com/XiONDiGiTaL) | EmblemWeave | [EmblemWeave](https://github.com/XiONDiGiTaL/EmblemWeave) · [GitHub](https://github.com/XiONDiGiTaL) |
+| [**metrist38**](https://github.com/metrist38) | fefw-recomp | [fefw-recomp](https://github.com/metrist38/fefw-recomp) · [GitHub](https://github.com/metrist38) |
+| [**xinthefreefallx**](https://github.com/xinthefreefallxai/ObeliskChamber) | ObeliskChamber | [ObeliskChamber](https://github.com/xinthefreefallxai/ObeliskChamber) |
+| [**Mi-Kel**](https://github.com/Mi-Kel) | Pull request contributions and code mods used for compatibility testing | [GitHub](https://github.com/Mi-Kel) · [GameBanana submissions](https://gamebanana.com/members/submissions/sublog/316123) |
+
+**Mi-Kel** contributed the merged [EmblemWeave pull request #71](https://github.com/XiONDiGiTaL/EmblemWeave/pull/71), which added the `NxModApi` 4 Mods window for code mods' own settings (keyboard F8, controller through the menu's Mods tab). Mi-Kel also provided the code mods used as compatibility references: [Quicksave 1.0.0](https://gamebanana.com/mods/745602) and [Turn Control 0.3.0](https://gamebanana.com/mods/742827), published on GameBanana as `dg^` through the linked submissions page. Those original binaries are what Trinity's coexistence tests load; they are not Trinity plugins.
+
+Mi-Kel is not a maintainer of EmblemWeave, fefw-recomp or ObeliskChamber. The three launcher projects remain their own work, and Trinity's plugin layer, ABI, adapters and launcher surface are maintained in this repository. The credits above do not make all four contributors authors of Trinity.
+
+## Project philosophy
+
+Three projects, three identities, one shared code-mod contract. Trinity does not flatten the launchers into one interface or ask them to adopt a common shell. It gives compatible mods a stable place to stand while each host keeps its own design, input model and release path.
+
+Support is claimed only at the level that was tested. A build is not a load, a load is not a render, and a render is not gameplay. The [compatibility matrix](docs/COMPATIBILITY.md) is the public claim; new evidence appends to it rather than replacing a lower level with a hopeful one.
+
+**Three Houses. One Vision.**
+
+*Independent projects, shared innovation, weaved together.*
+
+## License
 
 The repository is MIT licensed as established by its owner. The NXP header, the compatibility adapter and the reference plugin carry `GPL-3.0-or-later`, matching the host projects from which their ABI is derived. Third-party and host-derived material is listed in [docs/THIRD_PARTY.md](docs/THIRD_PARTY.md). Do not remove an SPDX identifier from a migrated file.
 
@@ -173,6 +164,4 @@ The repository is MIT licensed as established by its owner. The NXP header, the 
 
 The three host projects remain independent. Changes to a host repository require that host's maintainers and its own review process. Trinity changes belong here.
 
-Do not claim support for a host or a platform without a matching entry in the compatibility matrix and evidence for the exact level claimed.
-
-Independent launchers, one shared plugin layer.
+Do not claim support for a host or a platform without a matching entry in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and evidence for the exact level claimed.

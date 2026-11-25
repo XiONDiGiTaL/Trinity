@@ -54,22 +54,24 @@ The migrated NXP files keep their `GPL-3.0-or-later` SPDX identifiers. The top-l
 | `NXMOD_API_VERSION` | 4 | 3 in the package, 4 planned upstream | 5 |
 | Entry points | `nxmod_early`, `nxmod_init` | Same | Same |
 | Panel API | `add_panel`, `panel_visible` | Absent in the packaged API 3 | Present; `open_list` shares the same table slot |
-| Panel rendering | ImGui F1 menu, Advanced > Mods | Not available on API 3 | ImGui menu and overlay; exact package layout not run |
+| Panel rendering | ImGui F1 menu, Advanced > Mods | Not available on API 3 | ImGui menu and overlay; the headless run registered the panel, which was not drawn |
 | Frame callback | `on_frame` | `on_frame` | `on_frame` |
 | File APIs | Raw host paths | Same | Same |
 | Hook kinds | `inline`, `midhook`, `entryhook` | Same | Same |
 | Unload | No; DLL stays mapped | Same | Same |
-| NXP runtime evidence | Loaded, panel rendered, settings persisted | None | None |
+| NXP runtime evidence | Loaded, panel registered, settings persisted | Loaded headless on API 3 | Loaded headless on API 5; panel registered |
 
 The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were built with Trinity and installed as launchers. The game runtimes and their API layouts were left unchanged.
 
 ## 5. Current repository components
 
+Status was corrected after the 0.2.0 runtime runs; `COMPATIBILITY.md` is the authoritative matrix.
+
 | Component | State | Evidence |
 | --- | --- | --- |
 | NXP ABI v1 | Implemented | Header compiles; harness exercises it |
-| Compatibility adapter | Implemented | Loaded by the EmblemWeave development build |
-| Trinity Core plugin | Implemented in this repository | Built; loaded and registered a panel in the EmblemWeave development runtime |
+| Compatibility adapter | Implemented | Loaded by EmblemWeave, fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 |
+| Trinity Core plugin | Implemented in this repository | Built; loaded in all three game runtimes; registered a panel in EmblemWeave and ObeliskChamber |
 | Hello panel demo | Implemented | CTest harness |
 | Manifest validator | Implemented | Python unit tests |
 | Prefix classifier | Implemented in JavaScript | Node tests |
@@ -78,7 +80,7 @@ The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were bui
 | EmblemWeave native page | Implemented in the host tree | Captured from the 0.1.43 release launcher; drift tests pass |
 | Native NXP host adapter | Design only | Requires host source changes and maintainer review |
 | Gameplay interface | Not designed beyond a boundary note | No gameplay claim |
-| Linux binary | None | Not built |
+| Linux x64 binary | Built; ELF/export checks and native `dlopen` harness pass | `docs/evidence/linux-host.txt` |
 
 ## 6. First implementation milestone
 
@@ -99,7 +101,7 @@ The launcher UI is deliberately not on the critical path for the ABI. It consume
 
 - The plugin is versioned 0.2.0 and builds as `Trinity.dll` on Windows x64 and
   `libTrinity.so` on Linux x64.
-- The Windows build loaded alongside the original Quick Save 1.0.0 and Turn
+- The Windows build loaded alongside the original Quicksave 1.0.0 and Turn
   Control 0.3.0 DLLs in the EmblemWeave development runtime. This is load/init
   evidence; no save, turn, facility or other gameplay action was exercised.
 - The Linux build is a native ELF64 shared object, checked with `readelf` and
