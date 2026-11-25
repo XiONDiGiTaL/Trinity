@@ -35,9 +35,21 @@ The adapter adds one page and one navigation entry. It does not change the exist
 
 1. Compile the launcher with the page.
 2. Build a runtime from the API 4 source.
-3. Load `trinity.dll` from a prepared mods folder.
+3. Load `Trinity.dll` from a prepared mods folder.
 4. Capture the log and the panel.
 5. Record the exact host version and API version.
 6. Repeat with a plugin that has an observable non-gameplay effect, then a gameplay effect only after a gameplay interface exists.
 
-None of those steps has been completed for this host.
+The runtime steps have not been completed for this host. The launcher page and the official installer exist, but they are not a runtime claim.
+
+## Official release install
+
+Use the checked downloader from the Trinity checkout or a release copy:
+
+```powershell
+python tools/install_trinity.py --host-dir "X:\fefw-recomp-0.2.13" --version 0.2.0
+```
+
+The helper downloads the official archive and `SHA256SUMS`, verifies the hash before extraction, and replaces only `<host>\mods\TrinityCore`. On this host's API 3 table the plugin runs headless: settings, files and frame work, but no panel.
+
+For a host release that must work offline, vendor a verified payload with `--bundle vendor/trinity`, then copy `TrinityCore` into the release's `mods` folder and compare `plugin.json` on first run. Pin the version and checksum; do not download a floating `latest` at startup. See [docs/INSTALL.md](../../docs/INSTALL.md).

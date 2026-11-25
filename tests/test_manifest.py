@@ -11,13 +11,13 @@ def base_manifest():
         "schema": 1,
         "id": "org.xion.trinity.core",
         "name": "Trinity Core",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "description": "Reference plugin",
         "authors": ["XiONDiGiTaL"],
         "license": "GPL-3.0-or-later",
         "abi": {"min": 1, "max": 1},
         "hosts": ["emblemweave", "fefw-recomp", "obelisk-chamber"],
-        "entry": {"windows": "trinity.dll"},
+        "entry": {"windows": "Trinity.dll"},
         "capabilities": ["nxp.ui", "nxp.settings"],
         "dependencies": [],
     }
@@ -51,7 +51,7 @@ class ManifestTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             errors = validate(manifest, Path(directory))
             self.assertTrue(any("does not exist" in error for error in errors))
-            (Path(directory) / "trinity.dll").write_bytes(b"not a real dll")
+            (Path(directory) / "Trinity.dll").write_bytes(b"not a real dll")
             self.assertEqual(validate(manifest, Path(directory)), [])
 
     def test_rejects_unprefixed_capability(self):

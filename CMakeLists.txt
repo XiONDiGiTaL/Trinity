@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(trinity VERSION 0.1.0 LANGUAGES C CXX)
+project(trinity VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,8 +27,12 @@ add_library(trinity_core SHARED
 target_include_directories(trinity_core PRIVATE ${TRINITY_HOST_INCLUDES})
 target_compile_definitions(trinity_core PRIVATE _CRT_SECURE_NO_WARNINGS)
 set_target_properties(trinity_core PROPERTIES
-    PREFIX ""
-    OUTPUT_NAME "trinity")
+    OUTPUT_NAME "Trinity")
+if(WIN32)
+    set_target_properties(trinity_core PROPERTIES PREFIX "")
+else()
+    set_target_properties(trinity_core PROPERTIES PREFIX "lib")
+endif()
 
 if(TRINITY_BUILD_DEMO)
     add_library(nxp_demo SHARED
@@ -37,8 +41,12 @@ if(TRINITY_BUILD_DEMO)
     target_include_directories(nxp_demo PRIVATE ${TRINITY_HOST_INCLUDES})
     target_compile_definitions(nxp_demo PRIVATE _CRT_SECURE_NO_WARNINGS)
     set_target_properties(nxp_demo PROPERTIES
-        PREFIX ""
-        OUTPUT_NAME "nxp_demo")
+        OUTPUT_NAME "NxpDemo")
+    if(WIN32)
+        set_target_properties(nxp_demo PROPERTIES PREFIX "")
+    else()
+        set_target_properties(nxp_demo PROPERTIES PREFIX "lib")
+    endif()
 endif()
 
 if(TRINITY_BUILD_TESTS)
@@ -46,6 +54,7 @@ if(TRINITY_BUILD_TESTS)
     add_executable(nxp_host_test tests/nxp_host_test.cpp)
     target_include_directories(nxp_host_test PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
     target_compile_definitions(nxp_host_test PRIVATE _CRT_SECURE_NO_WARNINGS)
+    target_link_libraries(nxp_host_test PRIVATE ${CMAKE_DL_LIBS})
 
     add_test(NAME trinity_core_host_test
         COMMAND nxp_host_test "$<TARGET_FILE:trinity_core>" trinity)

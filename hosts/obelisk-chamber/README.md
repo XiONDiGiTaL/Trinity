@@ -17,10 +17,20 @@
 3. Expose the list screen through a host interface such as `obeliskchamber.list` version 1.
 4. Keep the old `open_list` behaviour for existing mods.
 5. Pass the true host id, `obelisk-chamber`.
-6. Test the same `trinity.dll` that EmblemWeave loads.
+6. Test the same `Trinity.dll` that EmblemWeave loads.
 7. Record the exact table layout and runtime version in `docs/COMPATIBILITY.md`.
 
 Until step 6, the matrix says "not loaded". The source string match is not runtime evidence.
+
+## Official release install
+
+```powershell
+python tools/install_trinity.py --host-dir "X:\ObeliskChamber-0.3.2" --version 0.2.0
+```
+
+The helper verifies the official archive against `SHA256SUMS` and replaces only `<host>\mods\TrinityCore`. The packaged API 5 table's `open_list`/`add_panel` slot was not runtime-probed; do not claim a panel until step 6 above is done.
+
+For a bundled host release, stage the verified payload with `--bundle vendor/trinity`, copy `TrinityCore` into the host's `mods` folder, and compare `plugin.json` on first run. Keep the version and checksum pinned. See [docs/INSTALL.md](../../docs/INSTALL.md).
 
 ## Launcher
 

@@ -1,0 +1,24 @@
+# EmblemWeave development runtime, 25 November 2026
+# Game build DB93B0125F4850601D61C3EDDE012F8EB2ECFE77 (version 131072)
+# Original GameBanana binaries, not rebuilt copies:
+# Quick Save 1.0.0  sha256 fec36b1da9ae0ce64c59c3e92e0ff6a970189d9d44b6a15161500016b3c0f91e
+# Turn Control 0.3.0 sha256 a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0
+# Trinity Core 0.2.0 sha256 f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd
+# Headless ([gfx] headless = true); load/init only, no gameplay.
+mods: Quick Save/quick_save.dll: loaded, starts at the first frame
+mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+mods: Turn Control/turn_control.dll: loaded, starts at the first frame
+mods: Quick Save/quick_save.dll: [Quick] ready (mod API 4, Mods window): Shift+F5 quick save, Shift+F9 quick load, controller LT+RT+L3 / R3; quick save file: ...\play\save\account\Player\000\Quick
+mods: Quick Save/quick_save.dll: code mod started (0 hooks)
+mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on emblemweave (nxmod-api-4), host prefix emblemweave., capabilities 0x0000007f
+mods: TrinityCore/Trinity.dll: prefix accepted: trinity.core.panel -> trinity.
+mods: TrinityCore/Trinity.dll: prefix accepted: nxp.ui -> nxp.
+mods: TrinityCore/Trinity.dll: prefix accepted: emblemweave.ui.panel -> emblemweave.
+mods: TrinityCore/Trinity.dll: prefix accepted: fefw-recomp.ui.panel -> fefw-recomp.
+mods: TrinityCore/Trinity.dll: prefix accepted: obeliskchamber.ui.panel -> obeliskchamber.
+mods: TrinityCore/Trinity.dll: prefix rejected: other.ui.panel
+mods: TrinityCore/Trinity.dll: 5 names accepted, 1 rejected.
+mods: TrinityCore/Trinity.dll: panel registered
+mods: TrinityCore/Trinity.dll: code mod started (0 hooks)
+mods: Turn Control/turn_control.dll: [Turns] ready (mod API 4, Mods window F8 + hotkeys); freeze off
+mods: Turn Control/turn_control.dll: code mod started (0 hooks)

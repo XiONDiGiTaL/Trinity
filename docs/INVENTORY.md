@@ -94,3 +94,19 @@ The launcher UI is deliberately not on the critical path for the ABI. It consume
 - The source assessment and proposal were retained verbatim apart from a migration banner and path corrections.
 - The historical F1 menu, mod panel and runtime logs were preserved. The three launcher page images were replaced with actual window captures.
 - The supplied logo is committed as `assets/brand/trinity.png` and is the only Trinity brand artwork used by the repository.
+
+## 8. 0.2.0 update
+
+- The plugin is versioned 0.2.0 and builds as `Trinity.dll` on Windows x64 and
+  `libTrinity.so` on Linux x64.
+- The Windows build loaded alongside the original Quick Save 1.0.0 and Turn
+  Control 0.3.0 DLLs in the EmblemWeave development runtime. This is load/init
+  evidence; no save, turn, facility or other gameplay action was exercised.
+- The Linux build is a native ELF64 shared object, checked with `readelf` and
+  `nm -D` and loaded by the native `nxp_host_test` harness. There is still no
+  Linux game launcher in this workspace, so Linux gameplay remains unverified.
+- EmblemWeave embeds the Windows payload and installs or updates only
+  `TrinityCore` on first start. Three Rust tests cover install, version guard
+  and settings preservation.
+- The official-release helpers and the archive checksums are in `tools/` and
+  `docs/INSTALL.md`.

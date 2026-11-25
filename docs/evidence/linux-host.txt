@@ -1,0 +1,9 @@
+# Native Linux x64 verification, 25 November 2026 (WSL Ubuntu, clang 21.1.8)
+build-linux/libTrinity.so: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked
+Class: ELF64
+Type: DYN (Shared object file)
+Machine: Advanced Micro Devices X86-64
+T nxp_get_plugin
+T nxmod_init
+PASS: Trinity Core loaded, discovered host nxp-test-host, added a panel, persisted settings, ran a frame, logged, and shut down
+ctest: 5/5 passed (trinity_core_host_test, hello_panel_host_test, nxmod_adapter_api3, api4, api5)

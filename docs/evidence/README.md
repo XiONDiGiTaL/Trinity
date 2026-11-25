@@ -17,7 +17,9 @@ mock or a dev-server render.
 | `emblemweave-f1-menu.png` | The host's own F1 menu, before selecting the plugin page. |
 | `emblemweave-mod-panel.png` | F1 > Advanced > Mods with the NXP demo panel. The host name and id are correct, and the Enabled and Speed controls are visible. |
 | `emblemweave-runtime.log` | The host log from a run that loaded the demo, registered its panel, started the code mod and later recorded a settings change. |
-| `trinity-core-runtime.log` | An excerpt from the 25 November 2026 run that loaded Trinity Core, identified `emblemweave` / `nxmod-api-4`, registered the Trinity panel and ran the prefix classifier. |
+| `trinity-core-runtime.log` | An excerpt from the 25 November 2026 run that loaded Trinity Core, identified `emblemweave` / `nxmod-api-4`, registered the Trinity panel and ran the prefix classifier. It records 0.1.0; the combined 0.2.0 run is below. |
+| `mod-compat-runtime.log` | The 0.2.0 run that loaded the original Quick Save 1.0.0 and Turn Control 0.3.0 binaries alongside Trinity, with all three ready messages. |
+| `linux-host.txt` | The native Linux x64 build, ELF/export checks and `dlopen` harness result. |
 | `launcher-fefw-trinity.png` | The actual fefw-recomp 0.2.13 Tauri window with the Trinity page open. Built from the `v0.2.13` tag with the shared surface. Captured with the Windows window API at 1180 x 1000. |
 | `launcher-obelisk-trinity.png` | The actual ObeliskChamber 0.3.2 Tauri window with the Trinity page open. Built from the current 0.3.2 source with the shared surface. Captured with the Windows window API at 1180 x 1000. |
 
@@ -56,9 +58,11 @@ read the prefix registry in all three hosts. They do not verify the NXP runtime
 DLL in fefw-recomp or ObeliskChamber. Only EmblemWeave has runtime evidence for
 the NXP plugin.
 
-The fefw-recomp and ObeliskChamber cards now report `Launcher verified` with a
-green state. The EmblemWeave card keeps `Runtime verified` because its NXP plugin
-was loaded by the game runtime.
+The fefw-recomp and ObeliskChamber cards report `Launcher verified`. The
+EmblemWeave card keeps `Runtime verified` because its plugin was loaded by the
+game runtime. Trinity 0.2.0 also loaded with Quick Save 1.0.0 and Turn Control
+0.3.0; this is initialization evidence, not gameplay. The Linux harness is a
+native load result, not a Linux game launch.
 
 ## Runtime lines
 
@@ -96,16 +100,19 @@ was captured with the Windows desktop API.
 The reference plugin was built from this repository and installed as:
 
 ```text
-%APPDATA%\EmblemWeave\play\mods\TrinityCore\exefs\trinity.dll
+%APPDATA%\EmblemWeave\play\mods\TrinityCore\exefs\Trinity.dll
 %APPDATA%\EmblemWeave\play\mods\TrinityCore\plugin.json
 ```
 
-The development runtime loaded it alongside the older demo. The excerpt records
-the host identity, panel registration and prefix check. The plugin folder
-contained `trinity.enabled=1` and `trinity.prefix_guard=1` after the run.
+The 0.2.0 development runtime loaded it alongside the original Quick Save and
+Turn Control binaries. `mod-compat-runtime.log` records all three ready
+lines, the host identity, panel registration and prefix check. The plugin
+folder contained `trinity.enabled=1` and `trinity.prefix_guard=1` after the run.
 
-This was a headless run. It proves loading and registration, not that the panel
-was drawn. A windowed capture of the in-game Trinity panel is still pending.
+This was a headless run. It proves loading, independent initialization and
+registration; it does not prove that the panel was drawn or that either mod
+changed a save, turn or facility. A windowed capture of the in-game Trinity
+panel is still pending.
 
 ## Limits
 
@@ -117,4 +124,6 @@ was drawn. A windowed capture of the in-game Trinity panel is still pending.
 - The same DLL is runtime-verified only in EmblemWeave. It is not proven to load
   in the other two game runtimes.
 - The upstream launcher source changes are local and unmerged.
-- The images do not prove gameplay behavior or a Linux build.
+- The images do not prove gameplay behavior.
+- The Linux `.so` is loaded by a native harness, not a Linux game runtime; no
+  Linux launcher is available in this workspace.

@@ -16,7 +16,7 @@ The architecture has four rules:
 ```text
 Plugin package
   plugin.json             metadata, ABI range, host list, entry point
-  trinity.dll / .so       code
+  Trinity.dll / libTrinity.so   code
   assets/                 optional plugin-owned data
         |
         | native module load

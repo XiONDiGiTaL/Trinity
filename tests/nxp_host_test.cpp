@@ -7,7 +7,11 @@
 // Usage: nxp_host_test <plugin.dll> [trinity|demo]
 // The optional mode only selects which persisted keys the harness inspects.
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 
 #include <cstdint>
 #include <cstdio>
@@ -19,6 +23,20 @@
 #include "nxp/nxp.h"
 
 namespace {
+
+#ifdef _WIN32
+using ModuleHandle = HMODULE;
+ModuleHandle load_module(const char* path) { return LoadLibraryA(path); }
+void close_module(ModuleHandle module) { FreeLibrary(module); }
+void* module_symbol(ModuleHandle module, const char* name) { return reinterpret_cast<void*>(GetProcAddress(module, name)); }
+std::string load_error_text() { return std::to_string(static_cast<unsigned long>(GetLastError())); }
+#else
+using ModuleHandle = void*;
+ModuleHandle load_module(const char* path) { return dlopen(path, RTLD_NOW | RTLD_LOCAL); }
+void close_module(ModuleHandle module) { if (module) dlclose(module); }
+void* module_symbol(ModuleHandle module, const char* name) { return dlsym(module, name); }
+std::string load_error_text() { const char* error = dlerror(); return error ? error : "unknown dlopen error"; }
+#endif
 
 struct MockState {
     std::map<std::string, std::string> settings;
@@ -179,7 +197,7 @@ bool any_log_contains(const char* needle) {
 
 int main(int argc, char** argv) {
     if (argc < 2 || argc > 3) {
-        std::fprintf(stderr, "usage: nxp_host_test <plugin.dll> [trinity|demo]\n");
+        std::fprintf(stderr, "usage: nxp_host_test <plugin> [trinity|demo]\n");
         return 2;
     }
     const std::string mode = argc == 3 ? argv[2] : "trinity";
@@ -188,15 +206,15 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    HMODULE module = LoadLibraryA(argv[1]);
+    ModuleHandle module = load_module(argv[1]);
     if (!module) {
-        std::fprintf(stderr, "LoadLibrary failed: %lu\n", static_cast<unsigned long>(GetLastError()));
+        std::fprintf(stderr, "load failed: %s\n", load_error_text().c_str());
         return 1;
     }
-    auto entry = reinterpret_cast<NxpGetPluginFn>(GetProcAddress(module, NXP_PLUGIN_ENTRY));
+    auto entry = reinterpret_cast<NxpGetPluginFn>(module_symbol(module, NXP_PLUGIN_ENTRY));
     if (!entry) {
         std::fprintf(stderr, "plugin does not export %s\n", NXP_PLUGIN_ENTRY);
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
@@ -204,7 +222,7 @@ int main(int argc, char** argv) {
     if (!desc || desc->abi_version != NXP_ABI_VERSION || desc->size < NXP_PLUGIN_DESC_V1_SIZE || !desc->init ||
         !desc->shutdown) {
         std::fprintf(stderr, "plugin descriptor is not compatible\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
@@ -228,29 +246,29 @@ int main(int argc, char** argv) {
 
     if (desc->init(&host) != NXP_OK) {
         std::fprintf(stderr, "init failed\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
     if (!g.panel || g.panel_adds != 1 || !g.frame) {
         std::fprintf(stderr, "discovery, panel or frame registration failed\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
     if (!any_log_contains("panel registered")) {
         std::fprintf(stderr, "the plugin did not report panel registration\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
     if (g.settings.empty()) {
         std::fprintf(stderr, "the plugin did not create any settings\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
     const std::string enabled_key = find_key_with_suffix(".enabled");
     if (enabled_key.empty() || g.settings[enabled_key] != "1") {
         std::fprintf(stderr, "the plugin did not persist an enabled default\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
     const std::string speed_key = find_key_with_suffix(".speed");
@@ -277,7 +295,7 @@ int main(int argc, char** argv) {
     g.panel(&canvas, g.panel_user);
     if (g.text.empty()) {
         std::fprintf(stderr, "the panel drew no text\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
@@ -285,7 +303,7 @@ int main(int argc, char** argv) {
     g.panel(&canvas, g.panel_user);
     if (g.settings[enabled_key] != "0") {
         std::fprintf(stderr, "checkbox change was not persisted (got %s)\n", g.settings[enabled_key].c_str());
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
@@ -294,7 +312,7 @@ int main(int argc, char** argv) {
         g.panel(&canvas, g.panel_user);
         if (g.settings[speed_key] != "60") {
             std::fprintf(stderr, "slider change was not persisted (got %s)\n", g.settings[speed_key].c_str());
-            FreeLibrary(module);
+            close_module(module);
             return 1;
         }
     }
@@ -303,7 +321,7 @@ int main(int argc, char** argv) {
     g.panel(&canvas, g.panel_user);
     if (g.settings[enabled_key] != "1" || (!speed_key.empty() && g.settings[speed_key] != "100")) {
         std::fprintf(stderr, "reset did not restore defaults\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
@@ -312,19 +330,19 @@ int main(int argc, char** argv) {
     g.panel(&canvas, g.panel_user);
     if (!any_log_contains("Trinity") && mode == "trinity") {
         std::fprintf(stderr, "the Trinity host log does not identify the plugin\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
     desc->shutdown();
     if (!g.settings_flushed) {
         std::fprintf(stderr, "shutdown did not flush settings\n");
-        FreeLibrary(module);
+        close_module(module);
         return 1;
     }
 
     std::printf("PASS: %s loaded, discovered host %s, added a panel, persisted settings, ran a frame, logged, and shut down\n",
                 desc->name ? desc->name : "plugin", host.host_id);
-    FreeLibrary(module);
+    close_module(module);
     return 0;
 }

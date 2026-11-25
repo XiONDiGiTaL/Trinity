@@ -31,7 +31,7 @@ char g_host_label[64] = "Shared host";
 
 constexpr const char* kPluginId = "org.xion.trinity.core";
 constexpr const char* kPluginName = "Trinity Core";
-constexpr const char* kPluginVersion = "0.1.0";
+constexpr const char* kPluginVersion = "0.2.0";
 
 struct House {
     const char* id;
@@ -174,7 +174,7 @@ void draw_panel(const NxpUiCanvas* ui, void*) {
     if (!ui) return;
 
     ui->text("TRINITY");
-    ui->text_disabled("The Three Houses Of Innovation");
+    ui->text_disabled("Portable shared services for code mods");
     if (g_host) {
         char host[320];
         std::snprintf(host, sizeof(host), "%s  /  %s  /  %s",
@@ -184,10 +184,10 @@ void draw_panel(const NxpUiCanvas* ui, void*) {
         ui->text_disabled(host);
     }
     char current[160];
-    std::snprintf(current, sizeof(current), "House of %s   %s", g_host_label, g_host_prefix);
+    std::snprintf(current, sizeof(current), "Host: %s   %s", g_host_label, g_host_prefix);
     ui->text(current);
 
-    ui->separator("Houses");
+    ui->separator("Host integrations");
     for (const House& house : kHouses) {
         char line[256];
         std::snprintf(line, sizeof(line), "%s  %s  %s%s", house.name, house.prefix, house.api,
@@ -256,7 +256,7 @@ int plugin_init(const NxpHostApi* host) {
     save_settings();
 
     char line[512];
-    std::snprintf(line, sizeof(line), "%s %s on %s (%s), house prefix %s, capabilities 0x%08x",
+    std::snprintf(line, sizeof(line), "%s %s on %s (%s), host prefix %s, capabilities 0x%08x",
                   kPluginName, kPluginVersion, host->host_id ? host->host_id : "?",
                   host->host_version ? host->host_version : "?", g_host_prefix, host->capabilities);
     log_line(NXP_LOG_INFO, line);

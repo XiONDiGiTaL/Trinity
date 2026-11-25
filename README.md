@@ -31,14 +31,14 @@ All three images are captured from actual launcher windows. EmblemWeave used its
 | --- | --- |
 | Public NXP ABI | Implemented, version 1 |
 | Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build |
-| Reference plugin | Implemented, built and loaded by the EmblemWeave development runtime |
+| Reference plugin | 0.2.0 built and loaded by the EmblemWeave development runtime alongside two published code mods |
 | Host adapters | Native EmblemWeave page plus Tauri pages for fefw-recomp and ObeliskChamber |
 | Launcher catalog surface | Native EmblemWeave page plus actual fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 Tauri windows; all three captured |
 | fefw-recomp launcher validation | Verified in the actual 0.2.13 window built from the v0.2.13 tag |
 | fefw-recomp runtime validation | Not run; the installed 0.2.13 game runtime is API 3 and has no prepared game in this workspace |
 | ObeliskChamber launcher validation | Verified in the actual 0.3.2 window built from the current source |
 | ObeliskChamber runtime validation | Not run; the installed 0.3.2 game runtime has no prepared game in this workspace |
-| Linux build | Not built or loaded |
+| Linux build | x64 `libTrinity.so` built, exports checked and loaded by the native `dlopen` harness; no Linux game launcher was available |
 
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The support matrix in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) records each level separately.
 
@@ -51,7 +51,7 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | `plugins/trinity_core/` | The reference Trinity plugin: host discovery, settings, a native panel, a frame hook and the prefix registry. |
 | `examples/hello_panel/` | The smallest working NXP plugin. |
 | `tests/` | Standalone host harness, manifest tests and prefix tests. |
-| `tools/` | Windows build script and manifest validation. |
+| `tools/` | Windows build script, release packager, checksum-verified installer and manifest validation. |
 | `integrations/` | Sync helper that copies the shared catalog, prefix registry and launcher surface into host checkouts. |
 | `shared/` | The canonical catalog and prefix registry shared by launchers and plugins. |
 | `ui/` | The shared launcher surface. It supplies content, not a host visual language. |
@@ -115,14 +115,28 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File Trinity/tools/build-wind
 
 Outputs:
 
-- `Trinity/build/trinity.dll`
-- `Trinity/build/nxp_demo.dll`
+- `Trinity/build/Trinity.dll`
+- `Trinity/build/NxpDemo.dll`
 - `Trinity/build/nxp_host_test.exe`
 - `Trinity/build/nxmod_adapter_test.exe`
 
 The compatibility adapter compiles against the public `nxrt/mod_api.h` and `nxrecomp/ctx.h` headers from an EmblemWeave checkout. Pass `-DNXP_NXMOD_ROOT=<checkout>/engine/fefw-recomp` if the checkout is elsewhere.
 
 A native host implementation needs only `include/nxp/nxp.h`.
+
+## Build and test on Linux
+
+Ninja, CMake and a C++17 compiler are enough. The adapter uses `/proc/self/exe` for host detection; the host harness uses `dlopen`.
+
+```bash
+cmake -S . -B build-linux -G Ninja -DCMAKE_BUILD_TYPE=Release \
+  -DNXP_NXMOD_ROOT=../EmblemWeave/engine/fefw-recomp
+cmake --build build-linux
+ctest --test-dir build-linux --output-on-failure
+./build-linux/nxp_host_test ./build-linux/libTrinity.so trinity
+```
+
+The Linux output is an ELF64 x86-64 shared object. `readelf -h`, `nm -D` and `ldd` are part of the verification; a renamed DLL is not a Linux build. There is no Linux game runtime in this workspace, so the Linux claim stops at native loading. See [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 
 ## Test
 
@@ -133,13 +147,15 @@ python Trinity/tools/validate_plugin.py Trinity/plugins/trinity_core/plugin.json
 python -m unittest discover -s Trinity/tests -p "test_*.py"
 ```
 
-The C++ harness loads the plugin DLL, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables and check the interface and capability mapping.
+The C++ harness loads the plugin, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables. The same five tests pass on Windows and Linux.
 
-The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md). The installed launcher now carries the native Trinity page; the packaged game runtime still predates code-mod support, so the development runtime remains the NXP test target.
+The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/INSTALL.md](docs/INSTALL.md). The development runtime loaded Trinity 0.2.0, [Quick Save](https://gamebanana.com/mods/742827) 1.0.0 and [Turn Control](https://gamebanana.com/mods/745602) 0.3.0 together; the first two are native `NxModApi` plugins and do not pass through Trinity's adapter. Loading is not gameplay.
 
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Install and release assets](docs/INSTALL.md)
+- [Release 0.2.0 notes](docs/RELEASE-0.2.0.md)
 - [Compatibility matrix](docs/COMPATIBILITY.md)
 - [Development inventory and migration record](docs/INVENTORY.md)
 - [NXP ABI guide](docs/NXP.md)

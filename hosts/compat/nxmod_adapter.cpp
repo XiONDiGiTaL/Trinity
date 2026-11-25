@@ -11,9 +11,13 @@
 // exists. A plugin can therefore run unchanged on a v4 host without UI and on a
 // v4 host with panels.
 
+#ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 #include <algorithm>
 #include <cctype>
@@ -56,6 +60,7 @@ std::string join(const std::string& dir, const std::string& name) {
 }
 
 std::string module_path() {
+#ifdef _WIN32
     wchar_t buf[32768];
     const DWORD n = GetModuleFileNameW(nullptr, buf, static_cast<DWORD>(std::size(buf)));
     if (n == 0 || n >= std::size(buf)) return {};
@@ -64,6 +69,13 @@ std::string module_path() {
     std::string out(static_cast<size_t>(bytes), '\0');
     if (WideCharToMultiByte(CP_UTF8, 0, buf, static_cast<int>(n), out.data(), bytes, nullptr, nullptr) != bytes) return {};
     return out;
+#else
+    char buf[4096];
+    const ssize_t n = readlink("/proc/self/exe", buf, sizeof(buf) - 1);
+    if (n <= 0 || static_cast<size_t>(n) >= sizeof(buf) - 1) return {};
+    buf[n] = '\0';
+    return std::string(buf, static_cast<size_t>(n));
+#endif
 }
 
 std::string lower(std::string s) {
@@ -73,13 +85,15 @@ std::string lower(std::string s) {
 
 void detect_host() {
     const std::string path = lower(module_path());
-    if (path.find("\\emblemweave\\") != std::string::npos || path.find("/emblemweave/") != std::string::npos) {
+    const size_t slash = path.find_last_of("\\/");
+    const std::string exe = slash == std::string::npos ? path : path.substr(slash + 1);
+    if (path.find("emblemweave") != std::string::npos) {
         g_host_id = "emblemweave";
         g_host_name = "EmblemWeave";
-    } else if (path.find("obeliskchamber") != std::string::npos) {
+    } else if (path.find("obeliskchamber") != std::string::npos || exe.rfind("obelisk", 0) == 0) {
         g_host_id = "obelisk-chamber";
         g_host_name = "ObeliskChamber";
-    } else if (path.find("fefw-recomp") != std::string::npos) {
+    } else if (path.find("fefw-recomp") != std::string::npos || exe == "fefw" || exe == "fefw.exe") {
         g_host_id = "fefw-recomp";
         g_host_name = "fefw-recomp";
     } else {
@@ -346,7 +360,13 @@ static_assert(offsetof(NxpUiCanvas, tooltip) == offsetof(NxModUi, tooltip), "too
 
 extern "C" const NxpPluginDesc* nxp_get_plugin(uint32_t host_abi_version);
 
-extern "C" __declspec(dllexport) int nxmod_init(const NxModApi* api, const char* mod_dir) {
+#if defined(_WIN32)
+#define NXMOD_EXPORT extern "C" __declspec(dllexport)
+#else
+#define NXMOD_EXPORT extern "C" __attribute__((visibility("default")))
+#endif
+
+NXMOD_EXPORT int nxmod_init(const NxModApi* api, const char* mod_dir) {
     if (!api || !mod_dir || !*mod_dir) return 1;
 
     g_api = api;

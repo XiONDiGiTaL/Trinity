@@ -215,19 +215,21 @@ Pass `-DNXP_NXMOD_ROOT=<checkout>/engine/fefw-recomp` for a different layout.
 Outputs:
 
 ```text
-Trinity/build/trinity.dll
-Trinity/build/nxp_demo.dll
+Trinity/build/Trinity.dll
+Trinity/build/NxpDemo.dll
 Trinity/build/nxp_host_test.exe
 ```
+
+On Linux the equivalent outputs are `build-linux/libTrinity.so`, `build-linux/libNxpDemo.so` and `build-linux/nxp_host_test`; the same five CTest cases pass.
 
 ## 13. Installing for an EmblemWeave runtime test
 
 ```text
-%APPDATA%\EmblemWeave\play\mods\TrinityCore\exefs\trinity.dll
+%APPDATA%\EmblemWeave\play\mods\TrinityCore\exefs\Trinity.dll
 %APPDATA%\EmblemWeave\play\mods\TrinityCore\plugin.json
 ```
 
-The runtime discovers mod folders under `[fs] mods`. A folder beginning with `_` or `-` is disabled.
+The runtime discovers mod folders under `[fs] mods`. A folder beginning with `_` or `-` is disabled. EmblemWeave builds that contain the bundle install this folder on first start; the manual path is for older launchers and development builds.
 
 The installed EmblemWeave play executable from 15 November 2026 lacks `nxmod_init`. Use a development build that contains the code-mod loader.
 
@@ -239,7 +241,7 @@ The installed EmblemWeave play executable from 15 November 2026 lacks `nxmod_ini
 - dependency resolution or load ordering;
 - in-process reload or unload;
 - exception containment by the host;
-- Linux loading;
+- a Linux GUI game host (the Linux `.so` is loaded by the native harness, not a game);
 - package signing or a registry;
 - custom rendering.
 
