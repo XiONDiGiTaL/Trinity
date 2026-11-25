@@ -22,7 +22,7 @@ This repository is the central development home for that framework. It is not a 
 | Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build |
 | Reference plugin | Implemented, built and loaded by the EmblemWeave development runtime |
 | Host adapter design | Documented for all three hosts |
-| Launcher catalog surface | Source implemented for fefw-recomp and ObeliskChamber; native EmblemWeave design documented |
+| Launcher catalog surface | fefw-recomp and ObeliskChamber adapters build and render in local upstream clones; native EmblemWeave design documented |
 | fefw-recomp runtime validation | Not run locally; the installed package is API 3 and has no prepared game in this workspace |
 | ObeliskChamber runtime validation | Not run locally; the installed package is API 5 and has no prepared game in this workspace |
 | Linux build | Not built or loaded |

@@ -32,9 +32,9 @@
       "launcher": "Tauri 2 / Vite",
       "prefix": "fefw-recomp.",
       "accent": "#40ccba",
-      "status": "Source integrated",
+      "status": "Launcher build verified",
       "tone": "warn",
-      "evidence": "The Trinity page is wired into the upstream launcher source. The prepared game runtime is not installed here, so in-game loading was not run.",
+      "evidence": "The Trinity page builds and renders in a local clone of the upstream launcher. The change is not yet merged into that repository, and the prepared game runtime is not installed here, so in-game loading was not run.",
       "adapter": "Host-styled Trinity page plus a future NXP loader",
       "listings": 5
     },
@@ -47,9 +47,9 @@
       "launcher": "Tauri 2 / Vite",
       "prefix": "obeliskchamber.",
       "accent": "#e0b84c",
-      "status": "Source integrated",
+      "status": "Launcher build verified",
       "tone": "warn",
-      "evidence": "The Trinity screen is wired into the upstream launcher source. The prepared game runtime is not installed here, so in-game loading was not run.",
+      "evidence": "The Trinity screen builds and renders in a local clone of the upstream launcher. The change is not yet merged into that repository, and the prepared game runtime is not installed here, so in-game loading was not run.",
       "adapter": "Panel-styled Trinity screen plus a future NXP loader",
       "listings": 5
     }

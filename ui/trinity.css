@@ -29,6 +29,7 @@
   --t-radius-sm: var(--radius-sm, 10px);
   gap: 22px;
   width: 100%;
+  min-width: 0;
   max-width: 1080px;
   margin: 0 auto;
   color: var(--t-text);
@@ -140,6 +141,23 @@
 .trinity-badges span.ok { color: var(--t-ok); border-color: rgba(79, 201, 140, .26); }
 .trinity-badges span.warn { color: var(--t-warn); }
 .trinity-badges .trinity-icon { width: 14px; height: 14px; }
+.trinity-jump {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: fit-content;
+  margin-top: 16px;
+  padding: 0 0 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(226, 189, 92, .35);
+  background: transparent;
+  color: var(--t-gold-soft);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.trinity-jump:hover { color: var(--t-text); border-color: var(--t-line-strong); }
+.trinity-jump .trinity-icon { width: 14px; height: 14px; }
 
 .trinity-hero-mark { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; min-height: 190px; }
 .trinity-mark { position: relative; z-index: 2; width: 184px; height: 184px; filter: drop-shadow(0 12px 20px rgba(0, 0, 0, .42)); }

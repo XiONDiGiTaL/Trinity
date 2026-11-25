@@ -132,6 +132,7 @@ export function renderTrinity(view, options = {}) {
           <span>${icon('key')} ${prefixes.hosts.length} prefixes</span>
           <span class="${validation.ok ? 'ok' : 'warn'}">${icon(validation.ok ? 'check' : 'compass')} ${validation.ok ? 'Registry valid' : 'Registry needs attention'}</span>
         </div>
+        <button type="button" class="trinity-jump" id="trinity-jump">${icon('arrow-down')} Browse the registry</button>
       </div>
       <div class="trinity-hero-mark">
         ${mark(184)}
@@ -151,12 +152,12 @@ export function renderTrinity(view, options = {}) {
     <section class="trinity-section">
       <div class="trinity-section-head">
         <div><span class="trinity-kicker">Browse by house</span><h2>Three rooms, one door</h2></div>
-        <span class="trinity-count">${catalog.houses.length} hosts <b>all source integrated</b></span>
+        <span class="trinity-count">${catalog.houses.length} hosts <b>one shared catalog</b></span>
       </div>
       <div class="trinity-houses">${catalog.houses.map(hostCard).join('')}</div>
     </section>
 
-    <section class="trinity-section">
+    <section class="trinity-section" id="trinity-registry">
       <div class="trinity-section-head">
         <div><span class="trinity-kicker">Registry</span><h2>What Trinity carries</h2></div>
         <span class="trinity-count" id="trinity-result-count">${total} listings</span>
@@ -227,6 +228,10 @@ export function renderTrinity(view, options = {}) {
     empty.hidden = shown !== 0;
     count.textContent = `${shown} ${shown === 1 ? 'listing' : 'listings'}`;
   };
+
+  view.querySelector('#trinity-jump')?.addEventListener('click', () => {
+    view.querySelector('#trinity-registry')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   search.addEventListener('input', applyFilter);
   view.querySelectorAll('[data-filter]').forEach((button) => {

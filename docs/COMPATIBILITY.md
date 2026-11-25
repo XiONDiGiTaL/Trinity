@@ -11,7 +11,7 @@ Every claim uses one of these labels:
 | C | Compiled successfully in this workspace |
 | L | Loaded by a host and reported as loaded |
 | R | Observed at runtime through logs, settings or UI |
-| V | Visually inspected in a host window |
+| V | Visually inspected in a host window, or in a host shell rendered in a browser |
 | N | Not tested, or not testable with the available packages |
 
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
@@ -34,7 +34,7 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | Panel in NXP | Rendered in F1 > Advanced > Mods | Unavailable on API 3 | Capability exists in source lineage, not run |
 | Settings persistence through NXP | Checkbox and slider changed file, R | Not run, N | Not run, N |
 | Launcher adapter source | Design only | Tauri page source in this repo | Tauri page source in this repo |
-| Launcher build verified | N/A | Not built in this repository | Not built in this repository |
+| Launcher build verified | N/A | Built and rendered in a local upstream clone | Built and rendered in a local upstream clone |
 | Gameplay effect | None; the demo changes no game state | None | None |
 
 ## 3. What the compatibility adapter exposes
@@ -57,7 +57,7 @@ The two Tauri launchers use a `PAGES` map. The Trinity adapter adds one page mod
 
 EmblemWeave's launcher is egui/Rust. It needs a native page and an additional navigation group. The existing tests require every page to belong to exactly one group. No EmblemWeave source has been changed in this repository.
 
-No launcher build has been run from this repository yet. The status is source-level until a host checkout builds it.
+Both Tauri launchers were built from local clones of the upstream source after adding the Trinity page. The built pages were then rendered in a browser with a mock Tauri bridge, and both screenshots are in `docs/evidence/`. This verifies the page, host styling and catalog rendering. It does not verify a packaged Tauri window, and the change has not been merged into either host repository.
 
 ## 5. Verification ledger
 
@@ -76,7 +76,10 @@ No launcher build has been run from this repository yet. The status is source-le
 | Checkbox and slider persist through the adapter | R | Settings file read back, recorded in evidence README |
 | Same DLL loads in fefw-recomp | N | No prepared runtime |
 | Same DLL loads in ObeliskChamber | N | No prepared runtime |
-| Launcher page renders in either Tauri launcher | N | Source only |
+| Launcher page builds in both upstream Tauri sources | C | Vite production builds, 25 November 2026 |
+| Trinity page renders in both launcher shells | V | `docs/evidence/launcher-fefw-trinity.png`, `docs/evidence/launcher-obelisk-trinity.png` |
+| Launcher change is merged into either host repository | N | Local clones only |
+| Packaged Tauri window | N | Browser shell with a mock bridge |
 | Native EmblemWeave page | N | Design only |
 | Linux `.so` builds and loads | N | No Linux build |
 | Gameplay changes | N | No gameplay interface |

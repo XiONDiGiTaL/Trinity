@@ -1,0 +1,54 @@
+diff --git a/launcher/src/locales/en.js b/launcher/src/locales/en.js
+index 72154d2..4a11f0b 100644
+--- a/launcher/src/locales/en.js
++++ b/launcher/src/locales/en.js
+@@ -14,6 +14,8 @@ export const en = {
+     'nav.setup': 'Setup',
+     'nav.settings': 'Settings',
+     'nav.about': 'About',
++    'nav.trinity': 'Trinity',
++    'nav.trinityHelp': 'The shared plugin layer across EmblemWeave, fefw-recomp and ObeliskChamber.',
+     'nav.restartUpdate': 'Restart to update',
+     'nav.updateTo': 'Update to {version}',
+     'window.title': 'Obelisk Chamber',
+diff --git a/launcher/src/locales/zh.js b/launcher/src/locales/zh.js
+index dd88b0b..29df841 100644
+--- a/launcher/src/locales/zh.js
++++ b/launcher/src/locales/zh.js
+@@ -12,6 +12,8 @@ export const zh = {
+     'nav.setup': '构建',
+     'nav.settings': '设置',
+     'nav.about': '关于',
++    'nav.trinity': 'Trinity',
++    'nav.trinityHelp': '跨 EmblemWeave、fefw-recomp 与 ObeliskChamber 的共享插件层。',
+     'nav.restartUpdate': '重启以更新',
+     'nav.updateTo': '更新到 {version}',
+     'window.title': 'Obelisk Chamber',
+diff --git a/launcher/src/main.js b/launcher/src/main.js
+index af2228c..ed51fe6 100644
+--- a/launcher/src/main.js
++++ b/launcher/src/main.js
+@@ -1,6 +1,7 @@
+ import './theme.css';
+ import './layout.css';
+ import './components.css';
++import './trinity/trinity.css';
+ import { listen } from '@tauri-apps/api/event';
+ import { api, esc, icon, refreshIcons, errText, toast } from './util.js';
+ import { t, initLang, getLang } from './i18n.js';
+@@ -8,6 +9,7 @@ import * as play from './pages/play.js';
+ import * as settings from './pages/settings.js';
+ import * as setup from './pages/setup.js';
+ import * as about from './pages/about.js';
++import * as trinity from './pages/trinity.js';
+ import { upd, notify, checkNow, available } from './update.js';
+ import { initMenu, setKeys, setHelp, confirmBox, focusStart, resetViewFocus } from './menu.js';
+ import { applyGameArt } from './gameart.js';
+@@ -22,6 +24,7 @@ const PAGES = {
+   setup: { mod: setup, key: 'nav.setup', help: 'nav.setupHelp', icon: 'hammer' },
+   settings: { mod: settings, key: 'nav.settings', help: 'nav.settingsHelp', icon: 'settings' },
+   about: { mod: about, key: 'nav.about', help: 'nav.aboutHelp', icon: 'info' },
++  trinity: { mod: trinity, key: 'nav.trinity', help: 'nav.trinityHelp', icon: 'sparkles' },
+ };
+
+ const nav = document.getElementById('nav');
