@@ -137,10 +137,10 @@ Trinity exists because three independent launcher projects chose to share a code
 
 | Contributor | Project / contribution | Links |
 | --- | --- | --- |
-| [**XiØN**](https://github.com/XiONDiGiTaL) | EmblemWeave | [EmblemWeave](https://github.com/XiONDiGiTaL/EmblemWeave) · [GitHub](https://github.com/XiONDiGiTaL) |
-| [**metrist38**](https://github.com/metrist38) | fefw-recomp | [fefw-recomp](https://github.com/metrist38/fefw-recomp) · [GitHub](https://github.com/metrist38) |
-| [**xinthefreefallx**](https://github.com/xinthefreefallxai/ObeliskChamber) | ObeliskChamber | [ObeliskChamber](https://github.com/xinthefreefallxai/ObeliskChamber) |
-| [**Mi-Kel**](https://github.com/Mi-Kel) | Pull request contributions and code mods used for compatibility testing | [GitHub](https://github.com/Mi-Kel) · [GameBanana submissions](https://gamebanana.com/members/submissions/sublog/316123) |
+| [**XiØN**](https://github.com/XiONDiGiTaL) | EmblemWeave | [EmblemWeave](https://github.com/XiONDiGiTaL/EmblemWeave)  |
+| [**metrist38**](https://github.com/metrist38) | fefw-recomp | [fefw-recomp](https://github.com/metrist38/fefw-recomp) |
+| [**xinthefreefallx**](https://github.com/xinthefreefallxai) | ObeliskChamber | [ObeliskChamber](https://github.com/xinthefreefallxai/ObeliskChamber) |
+| [**Mi-Kel**](https://github.com/Mi-Kel) | Pull request contributions and code mods used for compatibility testing | [Code Mods](https://gamebanana.com/members/submissions/sublog/316123) |
 
 **Mi-Kel** contributed the merged [EmblemWeave pull request #71](https://github.com/XiONDiGiTaL/EmblemWeave/pull/71), which added the `NxModApi` 4 Mods window for code mods' own settings (keyboard F8, controller through the menu's Mods tab). Mi-Kel also provided the code mods used as compatibility references: [Quicksave 1.0.0](https://gamebanana.com/mods/745602) and [Turn Control 0.3.0](https://gamebanana.com/mods/742827), published on GameBanana as `dg^` through the linked submissions page. Those original binaries are what Trinity's coexistence tests load; they are not Trinity plugins.
 
