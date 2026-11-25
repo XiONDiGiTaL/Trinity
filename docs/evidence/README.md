@@ -13,12 +13,13 @@ described below.
 
 | File | What it shows |
 | --- | --- |
+| `emblemweave-trinity.png` | The native Trinity page in the EmblemWeave release launcher, captured from the rendered frame with `--page Trinity --screenshot`. |
 | `emblemweave-f1-menu.png` | The host's own F1 menu, before selecting the plugin page. |
 | `emblemweave-mod-panel.png` | F1 > Advanced > Mods with the NXP demo panel. The host name and id are correct, and the Enabled and Speed controls are visible. |
 | `emblemweave-runtime.log` | The host log from a run that loaded the demo, registered its panel, started the code mod and later recorded a settings change. |
 | `trinity-core-runtime.log` | An excerpt from the 25 November 2026 run that loaded Trinity Core, identified `emblemweave` / `nxmod-api-4`, registered the Trinity panel and ran the prefix classifier. |
-| `launcher-fefw-trinity.png` | The Trinity page rendered inside the fefw-recomp launcher shell, with that launcher's navigation and cool surface. |
-| `launcher-obelisk-trinity.png` | The Trinity screen rendered inside the ObeliskChamber panel frame, with its sharper edges and gold rules. |
+| `launcher-fefw-trinity.png` | The Trinity page rendered inside the fefw-recomp launcher frontend, with that launcher's navigation and cool surface. Captured at 1180 x 1000. |
+| `launcher-obelisk-trinity.png` | The Trinity screen rendered inside the ObeliskChamber panel frame, with its sharper edges and gold rules. Captured at 1180 x 1000. |
 
 The panel capture is from the build immediately before the final descriptor
 size macro was added. That macro only changes the init-time size check from
@@ -70,7 +71,26 @@ the host identity, panel registration and prefix check. The plugin folder
 contained `trinity.enabled=1` and `trinity.prefix_guard=1` after the run.
 
 This was a headless run. It proves loading and registration, not that the panel
-was drawn. A windowed capture of the Trinity panel is still pending.
+was drawn. A windowed capture of the in-game Trinity panel is still pending.
+
+## EmblemWeave page capture
+
+The `emblemweave-trinity.png` image comes from the release launcher built from
+the current Trinity page work. The executable was started with:
+
+```text
+EmblemWeave.exe --page Trinity --screenshot <path>
+```
+
+The built-in capture path reads the launcher's own GPU frame after the page has
+settled, so no other window can appear in the image. The house cards show the
+per-house accents: blue for EmblemWeave, violet for fefw-recomp and green for
+ObeliskChamber. The page also carries the prefix registry and listing filters
+below the visible area.
+
+This is a launcher page capture, not the NXP panel inside the game. It proves
+that the native page renders with the shared catalog. It does not replace the
+in-game panel evidence.
 
 ## Launcher page renders
 
@@ -80,11 +100,11 @@ the host-specific locale keys were added. `npm run build` passed for fefw-recomp
 and ObeliskChamber launcher 0.3.2.
 
 The two screenshots come from Vite dev servers on loopback with a mock Tauri
-bridge. The mock supplied an empty configuration and a repository-not-found
-overview so each launcher drew its own setup state. The Trinity page was then
-opened from the host navigation. This verifies the page, the shared CSS, the
-catalog and the host-specific presentation. It does not verify a Tauri window
-or a packaged launcher.
+bridge at a 1180 x 1000 viewport. The mock supplied an empty configuration and a
+repository-not-found overview so each launcher drew its own setup state. The
+Trinity page was then opened from the host navigation. This verifies the page,
+the shared CSS, the catalog and the host-specific presentation. It does not
+verify a Tauri window or a packaged launcher.
 
 The change exists only in the local clones. It has not been pushed to either
 host repository.
@@ -95,7 +115,8 @@ host repository.
 - The panel was rendered and its controls were clicked. No gameplay value was
   changed.
 - fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 game runtimes were not run.
-- The launcher screenshots use the current upstream launcher sources, not the
-  packaged launcher binaries.
+- The EmblemWeave page capture is a launcher page, not the in-game NXP panel.
+- The launcher screenshots use the current upstream launcher sources with a mock
+  Tauri backend, not packaged launcher binaries.
 - Neither launcher integration is merged upstream.
 - The images do not prove that the same DLL works in the other two hosts.

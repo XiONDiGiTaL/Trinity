@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/brand/trinity-lockup.svg" alt="Trinity: The Three Houses Of Innovation" width="460">
+</p>
+
 # Trinity
 
 **The Three Houses Of Innovation**
@@ -14,6 +18,15 @@ The host applications remain independent. Trinity defines the common contract be
 
 This repository is the central development home for that framework. It is not a replacement for any host project.
 
+## The Trinity surface
+
+| EmblemWeave | fefw-recomp | ObeliskChamber |
+|:---:|:---:|:---:|
+| <a href="docs/evidence/emblemweave-trinity.png"><img src="docs/evidence/emblemweave-trinity.png" width="300" alt="The Trinity page in EmblemWeave"></a> | <a href="docs/evidence/launcher-fefw-trinity.png"><img src="docs/evidence/launcher-fefw-trinity.png" width="300" alt="The Trinity page in the fefw-recomp launcher"></a> | <a href="docs/evidence/launcher-obelisk-trinity.png"><img src="docs/evidence/launcher-obelisk-trinity.png" width="300" alt="The Trinity screen in the ObeliskChamber launcher"></a> |
+| Native egui page | Host-styled page | Panel-styled screen |
+
+The EmblemWeave image is a frame from the release launcher. The fefw-recomp and ObeliskChamber images show their launcher frontends with a mock Tauri backend, because neither host repository carries the Trinity page yet. [The evidence notes](docs/evidence/README.md) record the exact level of every capture.
+
 ## Status
 
 | Area | State |
@@ -22,7 +35,7 @@ This repository is the central development home for that framework. It is not a 
 | Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build |
 | Reference plugin | Implemented, built and loaded by the EmblemWeave development runtime |
 | Host adapter design | Documented for all three hosts |
-| Launcher catalog surface | fefw-recomp and ObeliskChamber adapters build and render in local upstream clones; native EmblemWeave design documented |
+| Launcher catalog surface | Native EmblemWeave page plus the fefw-recomp and ObeliskChamber launcher surfaces; all three render locally |
 | fefw-recomp runtime validation | Not run locally; the installed package is API 3 and has no prepared game in this workspace |
 | ObeliskChamber runtime validation | Not run locally; the installed package is API 5 and has no prepared game in this workspace |
 | Linux build | Not built or loaded |
@@ -38,7 +51,8 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | `plugins/trinity_core/` | The reference Trinity plugin: host discovery, settings, a native panel, a frame hook and the prefix registry. |
 | `examples/hello_panel/` | The smallest working NXP plugin. |
 | `tests/` | Standalone host harness, manifest tests and prefix tests. |
-| `tools/` | Windows build script, launcher sync and manifest validation. |
+| `tools/` | Windows build script and manifest validation. |
+| `integrations/` | Sync helper that copies the shared catalog, prefix registry and launcher surface into host checkouts. |
 | `shared/` | The canonical catalog and prefix registry shared by launchers and plugins. |
 | `ui/` | The shared launcher surface. It supplies content, not a host visual language. |
 | `hosts/launchers/` | Host-specific launcher adapters. |
@@ -81,6 +95,8 @@ Trinity implements the project-prefix idea from [fefw-recomp issue #165](https:/
 Short aliases such as `ew.`, `fefw.` and `oc.` are accepted for input and diagnostics. Canonical names are written to disk. The loader rejects unknown and doubled prefixes. Existing `NxModApi` symbols remain valid; prefixes are added at the interface registry rather than forced onto old entry points.
 
 The machine-readable registry is [shared/prefixes.json](shared/prefixes.json). The portable classifier and its tests are [shared/prefix-core.mjs](shared/prefix-core.mjs) and [shared/prefix-core.test.mjs](shared/prefix-core.test.mjs).
+
+`shared/catalog.json` and `shared/prefixes.json` are canonical. The launcher adapters embed snapshots, and [integrations/sync-trinity.ps1](integrations/sync-trinity.ps1) refreshes them. Re-run the sync after any change to the catalog or registry, then rebuild the host surface.
 
 ## Build on Windows
 
@@ -130,6 +146,8 @@ The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPA
 - [Prefix specification](docs/PREFIXES.md)
 - [Technical assessment](docs/ASSESSMENT.md)
 - [Maintainer proposal](docs/PROPOSAL.md)
+- [Test evidence](docs/evidence/README.md)
+- [Brand assets](assets/brand/README.md)
 
 ## Licensing
 
