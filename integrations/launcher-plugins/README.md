@@ -136,16 +136,18 @@ an old package left beside the launcher.
 
 ## Verification performed
 
-Each installed launcher was run twice: once with `Trinity.dll` in its root and
-once with the DLL under `plugins/` (flat and nested package forms). Before each
-run the staged DLL was replaced with a stale marker. All three launchers
-restored the real payload:
+EmblemWeave at `E:\EmblemWeave`, fefw-recomp and ObeliskChamber were each run
+with `Trinity.dll` in the root and under `plugins/` (flat and nested package
+forms). The second EmblemWeave install at `X:\EmblemWeave` was run with the root
+DLL. Before each run the staged DLL was replaced with a stale marker. All three
+launchers restored the real payload:
 
 | Launcher | Drop-in location tested | Staged result |
 | --- | --- | --- |
 | EmblemWeave 0.1.43 at `E:\EmblemWeave` | `Trinity.dll`; `plugins\Trinity.dll` | `data\play\mods\TrinityCore\exefs\Trinity.dll` |
 | fefw-recomp 0.2.13 at `X:\fefw-recomp-0.2.13` | root DLL; `plugins\TrinityCore\exefs\Trinity.dll` | `mods\TrinityCore\exefs\Trinity.dll` |
 | ObeliskChamber 0.3.2 at `X:\ObeliskChamber-0.3.2` | root DLL; `plugins\Trinity.dll` | `mods\TrinityCore\exefs\Trinity.dll` |
+| EmblemWeave 0.1.43 at `X:\EmblemWeave` | root `Trinity.dll` | `data\play\mods\TrinityCore\exefs\Trinity.dll` |
 
 Every staged copy matched SHA-256
 `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` and
@@ -156,7 +158,13 @@ logged its host identity:
 mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on emblemweave (nxmod-api-4)
 mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3)
 mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on obelisk-chamber (nxmod-api-5)
+mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on emblemweave (nxmod-api-4)  # X:\EmblemWeave
 ```
+
+The `X:\EmblemWeave` runtime had no game INI; a valid one was generated from
+the E configuration, reusing the E dump and pointing mods/saves/work at X. Its
+shader cache was empty, so translated draws were skipped; the load result is
+valid, but it is not a visual result.
 
 The runs were headless. They prove discovery, staging, loading and
 initialization, not panel drawing or gameplay. Full excerpts are in

@@ -51,6 +51,11 @@ The launcher and the game runtime are separate processes. Trinity's launcher sur
 | ObeliskChamber 0.3.2 (API 5) | Windows x64 DLL loaded and initialized headless with the same two published mods; panel registered; first frame reached. | Drawing or interacting with the panel; any save, turn or gameplay action. |
 | Linux x64 | `libTrinity.so` builds as ELF64 x86-64, exports both entry points and passes the native `dlopen` host harness. | Any Linux game launcher or game runtime; Steam Deck and Proton are untested. |
 
+Both installed EmblemWeave 0.1.43 runtimes (`E:\EmblemWeave` and
+`X:\EmblemWeave`) loaded the launcher-staged 0.2.0 payload on API 4. The X runtime
+needed a generated INI and had an empty shader cache, so that run proves loading
+and initialization, not rendering or gameplay.
+
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The full evidence ledger is in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).
 
 ## Installation and downloads

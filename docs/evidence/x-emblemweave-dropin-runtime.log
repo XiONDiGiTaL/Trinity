@@ -1,0 +1,17 @@
+# EmblemWeave runtime at X:\EmblemWeave
+# fefw.exe SHA-256 8a2d0af5392ae8aa93141c4515d5ef5e21dadf5b839286b7dc966f50e8a77ef6
+# Root Trinity.dll SHA-256 f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd
+# Generated fefw.ini: E: exefs/romfs dump, X: mods/save/work; run --headless --max-seconds 10
+# Result: Trinity Core 0.2.0 loaded and initialized; shader cache was empty, so no drawing claim.
+125:[  1.556418 I t25128 -] mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+304:[  6.254941 I t25128 main] mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on emblemweave (nxmod-api-4), host prefix emblemweave., capabilities 0x0000007f
+305:[  6.254953 I t25128 main] mods: TrinityCore/Trinity.dll: prefix accepted: trinity.core.panel -> trinity.
+306:[  6.254956 I t25128 main] mods: TrinityCore/Trinity.dll: prefix accepted: nxp.ui -> nxp.
+307:[  6.254960 I t25128 main] mods: TrinityCore/Trinity.dll: prefix accepted: emblemweave.ui.panel -> emblemweave.
+308:[  6.254962 I t25128 main] mods: TrinityCore/Trinity.dll: prefix accepted: fefw-recomp.ui.panel -> fefw-recomp.
+309:[  6.254965 I t25128 main] mods: TrinityCore/Trinity.dll: prefix accepted: obeliskchamber.ui.panel -> obeliskchamber.
+310:[  6.254967 W t25128 main] mods: TrinityCore/Trinity.dll: prefix rejected: other.ui.panel
+311:[  6.254997 I t25128 main] mods: TrinityCore/Trinity.dll: 5 names accepted, 1 rejected.
+312:[  6.255001 I t25128 main] mods: TrinityCore/Trinity.dll: panel registered
+313:[  6.255012 I t25128 main] mods: TrinityCore/Trinity.dll: code mod started (0 hooks)
+# Runtime ended at the --max-seconds deadline (exit 124).

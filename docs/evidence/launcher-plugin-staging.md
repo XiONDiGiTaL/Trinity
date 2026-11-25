@@ -28,11 +28,14 @@ After every launch, all three staged DLLs matched
 | fefw-recomp, nested package | Staged from `plugins\TrinityCore\exefs\Trinity.dll` |
 | ObeliskChamber, root DLL | Staged from `X:\ObeliskChamber-0.3.2\Trinity.dll` |
 | ObeliskChamber, flat plugin | Staged from `plugins\Trinity.dll` |
-| EmblemWeave at `X:\EmblemWeave`, root DLL | Staged from `X:\EmblemWeave\Trinity.dll`; launcher screenshot captured |
+| EmblemWeave at `X:\EmblemWeave`, root DLL | Staged from `X:\EmblemWeave\Trinity.dll`; launcher screenshot captured, then runtime loaded |
 
 After staging, each game runtime was started headless with
-`--max-seconds 5` and its own INI. Runtime excerpts are in
-`emblemweave-dropin-runtime.log`, `fefw-dropin-runtime.log` and
+`--max-seconds 5` and its own INI. The second EmblemWeave install at
+`X:\EmblemWeave` had no INI, so one was generated from the E configuration,
+keeping the E exefs/ROMFS paths and pointing mods/saves/work at X; it ran with
+`--max-seconds 10`. Runtime excerpts are in `emblemweave-dropin-runtime.log`,
+`x-emblemweave-dropin-runtime.log`, `fefw-dropin-runtime.log` and
 `obelisk-dropin-runtime.log`. They show the expected host identity:
 
 ```text

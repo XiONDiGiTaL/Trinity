@@ -114,7 +114,7 @@ EmblemWeave already checks for an external DLL before its embedded payload in `t
 
 The staging rule is version-aware but not surprising: a package with a manifest newer than the installed copy replaces it; an older package leaves a newer install alone; a bare DLL is staged and receives a minimal manifest if none is installed. `.nxp-settings.ini` is never touched, and the copy goes through a temporary file so a failed write cannot leave a truncated payload.
 
-This path was verified on 25 November 2026 against EmblemWeave 0.1.43 at `E:\EmblemWeave`, fefw-recomp 0.2.13 at `X:\fefw-recomp-0.2.13` and ObeliskChamber 0.3.2 at `X:\ObeliskChamber-0.3.2`. Root and `plugins/` placements (flat and nested package) all restored hash `f873124e...bd81cfd` into the host's mods folder, and each runtime then logged `Trinity Core 0.2.0 on <host>`.
+This path was verified on 25 November 2026 against EmblemWeave 0.1.43 at `E:\EmblemWeave` and `X:\EmblemWeave`, fefw-recomp 0.2.13 at `X:\fefw-recomp-0.2.13` and ObeliskChamber 0.3.2 at `X:\ObeliskChamber-0.3.2`. Root and `plugins/` placements (flat and nested package) all restored hash `f873124e...bd81cfd` into the host's mods folder, and each runtime then logged `Trinity Core 0.2.0 on <host>`. The X:\EmblemWeave runtime needed a generated INI that reused the E: game dump; its empty shader cache skipped translated draws, so that run is a load result, not a visual one.
 
 ## 6. Loading and initialization
 
@@ -190,7 +190,7 @@ Do not promote a host's status on a successful build alone. Record the exact hos
 
 ## 12. Current host notes
 
-- **EmblemWeave:** API 4; `add_panel` and `panel_visible` are present. The installed 0.1.43 runtime at `E:\EmblemWeave` loaded the drop-in 0.2.0 payload, registered the Trinity panel and logged the host identity. The older packaged runtime at `X:\EmblemWeave` was not used for this run.
+- **EmblemWeave:** API 4; `add_panel` and `panel_visible` are present. The installed 0.1.43 runtimes at `E:\EmblemWeave` and `X:\EmblemWeave` loaded the drop-in 0.2.0 payload, registered the Trinity panel and logged the host identity. The X runtime required a generated INI; its empty shader cache skipped translated draws.
 - **fefw-recomp 0.2.13:** API 3; `add_panel` is absent. The plugin runs headless with settings, files and frame. API 4 is planned upstream and should expose the panel when it arrives.
 - **ObeliskChamber 0.3.2:** API 5; the packaged table's `open_list` slot overlaps the other ports' `add_panel`. The adapter's panel registration was observed headless. A native adapter should expose the list screen as an explicit `obeliskchamber.list` interface rather than infer it from the version.
 

@@ -128,6 +128,7 @@ staging path, not a pre-existing file.
 | Staged hash after launch | `f873124e...bd81cfd` | `f873124e...bd81cfd` | `f873124e...bd81cfd` |
 | Manifest after staging | `0.2.0` | `0.2.0` | `0.2.0` |
 | Runtime loaded after staging | L, `Trinity Core 0.2.0 on emblemweave (nxmod-api-4)` | L, `Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3)` | L, `Trinity Core 0.2.0 on obelisk-chamber (nxmod-api-5)` |
+| Second EmblemWeave install runtime | L, `X:\EmblemWeave` loaded the root DLL with a generated INI; empty shader cache prevented translated draws | — | — |
 | Settings preserved | Unit test; no settings file in the fresh install | Existing `.nxp-settings.ini` remained | Existing `.nxp-settings.ini` remained |
 
 Evidence: [emblemweave-dropin-runtime.log](evidence/emblemweave-dropin-runtime.log),
@@ -167,6 +168,7 @@ prove staging, loading and initialization, not panel drawing or gameplay.
 | Launcher recognises a root `Trinity.dll` and stages it | C, R | Root-dropin runs in all three installed launchers, 25 November 2026 |
 | Launcher recognises `plugins/Trinity.dll` (flat and nested) and stages it | C, R | Plugins-dropin runs in all three installed launchers, 25 November 2026 |
 | Staged drop-in loads in the game runtime | L | `emblemweave-dropin-runtime.log`, `fefw-dropin-runtime.log`, `obelisk-dropin-runtime.log` |
+| `X:\EmblemWeave` runtime loads a launcher-staged root DLL | L | `x-emblemweave-dropin-runtime.log` |
 | Launcher change is merged into either host repository | N | Local checkouts only |
 | Native EmblemWeave page | V | `emblemweave-trinity.png`, EmblemWeave 0.1.43 |
 | Linux `.so` builds, exports both entry points and loads | C, L, R | ELF/readelf/nm output; CTest 5/5; native harness PASS |
@@ -180,9 +182,16 @@ prove staging, loading and initialization, not panel drawing or gameplay.
 The installed EmblemWeave 0.1.43 runtime at `E:\EmblemWeave\data\play\fefw.exe`
 loads code mods and was used for the drop-in run: it staged and loaded the 0.2.0
 payload, identified `emblemweave` / `nxmod-api-4`, registered the panel and ran
-the prefix classifier. The older packaged runtime at `X:\EmblemWeave` was not
-used for this run and is not a load result. A future EmblemWeave release must
-keep a runtime with `nxmod_init`; the launcher package alone is not the loader.
+the prefix classifier.
+
+The second 0.1.43 install at `X:\EmblemWeave` has its own `fefw.exe` (SHA-256
+`8a2d0af5...8a77ef6`) and also loads code mods. It had no game INI, so a valid
+INI was generated from the E configuration, reusing the E exefs/ROMFS dump and
+pointing mods/saves/work at X. The runtime loaded the root-staged 0.2.0 payload
+and reported the same API 4 host identity. Its shader cache was empty, so
+translated draws were skipped; that is a rendering setup limit, not a Trinity
+load failure. A future EmblemWeave release must keep a runtime with
+`nxmod_init`; the launcher package alone is not the loader.
 
 ### fefw-recomp API 4
 

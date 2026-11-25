@@ -22,6 +22,7 @@ actual launcher windows, not a browser mock or a dev-server render.
 | `emblemweave-dropin-runtime.log` | The installed EmblemWeave 0.1.43 runtime after staging a `plugins\Trinity.dll` drop-in; load, host identity, panel registration and prefix check are recorded. |
 | `fefw-dropin-runtime.log` | fefw-recomp 0.2.13 after staging a nested `plugins\TrinityCore\exefs\Trinity.dll`; API 3 headless load is recorded. |
 | `obelisk-dropin-runtime.log` | ObeliskChamber 0.3.2 after staging a flat `plugins\Trinity.dll`; API 5 panel registration is recorded. |
+| `x-emblemweave-dropin-runtime.log` | The second EmblemWeave 0.1.43 install at `X:\EmblemWeave`, run with a generated valid INI and the root `Trinity.dll` already staged; API 4 load, host identity and panel registration are recorded. |
 | `launcher-plugin-staging.md` | The root/`plugins` staging matrix, stale hashes, staged hashes and staged paths for all three installed launchers. |
 | `fefw-shutdown-124.md` | Timing and source analysis of `--max-seconds`: the `124` status is the runtime's deliberate deadline exit, not a 120-second hang, and does not involve shader-cache or Trinity shutdown. |
 | `linux-host.txt` | The native Linux x64 build, ELF/export checks and `dlopen` harness result. |
@@ -70,6 +71,13 @@ launchers. Each launcher restored the 0.2.0 payload from a root DLL and from a
 copy. The stale-marker and hash matrix is in
 [launcher-plugin-staging.md](launcher-plugin-staging.md).
 
+The second EmblemWeave install at `X:\EmblemWeave` had no game INI. A valid INI
+was generated from the working `E:\EmblemWeave` configuration, keeping its
+exefs and ROMFS dump paths and pointing mods, saves and work folders at X. The
+X runtime then loaded Trinity Core 0.2.0 on API 4 and registered its panel. Its
+shader cache was empty, so the run skipped translated draws and is not a visual
+result.
+
 The same Windows x64 `Trinity.dll` (SHA-256 `f873124e...bd81cfd`) loaded in all
 three game runtimes:
 
@@ -92,6 +100,17 @@ load result, not a Linux game launch.
 ## Runtime lines
 
 The EmblemWeave drop-in runtime lines were:
+
+```text
+mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on emblemweave
+      (nxmod-api-4), host prefix emblemweave., capabilities 0x0000007f
+mods: TrinityCore/Trinity.dll: panel registered
+mods: TrinityCore/Trinity.dll: code mod started (0 hooks)
+```
+
+The second EmblemWeave install at `X:\EmblemWeave` produced the same load and
+host lines; its excerpt also records the empty shader cache warning:
 
 ```text
 mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
@@ -148,8 +167,10 @@ host's own prepared runtime, a separate save directory and `--headless
 The drop-in runs on 25 November 2026 used each host's installed runtime with
 `--headless --max-seconds 5` and its own INI. The deadline ended the process
 with the runtime's usual non-zero `--max-seconds` status; the Trinity lines
-were already recorded. The excerpts are in the three `*-dropin-runtime.log`
-files.
+were already recorded. The X:\EmblemWeave run used a generated INI and
+`--max-seconds 10`; it reused the E: exefs and ROMFS dump paths because the X
+install has no game files of its own. The excerpts are in the four
+`*-dropin-runtime.log` files.
 
 ## Trinity Core load
 
@@ -185,10 +206,13 @@ panel is still pending.
   game.
 - All three launcher windows are verified. Game runtime loading is verified
   headless on EmblemWeave API 4, fefw-recomp API 3 and ObeliskChamber API 5,
-  including the installed EmblemWeave runtime after a launcher-staged drop-in.
+  including both installed EmblemWeave runtimes after a launcher-staged drop-in.
 - Root and `plugins/` discovery is verified for each launcher; the launcher
   pages themselves do not display the staged path, so the staging evidence is
   the hash matrix and runtime logs, not a screenshot.
+- The X:\EmblemWeave shader cache was empty, so its headless run skipped
+  translated draws. That does not affect the load/init result, and it is not a
+  visual or gameplay result.
 - The Trinity 0.2.0 panel is registered in EmblemWeave and ObeliskChamber but
   has not been drawn or interacted with. fefw-recomp API 3 has no panel slot.
 - No save, load, turn, facility or gameplay action was exercised in any host.

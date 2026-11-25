@@ -59,8 +59,10 @@ preserved. Launcher maintainers can use the prepared module and patches in
 This path was verified on all three hosts on 25 November 2026: root and
 `plugins/` placements (including a nested `TrinityCore/exefs` package) restored
 the 0.2.0 payload, and each game runtime logged `Trinity Core 0.2.0 on
-<host>`. The same EmblemWeave build at `X:\EmblemWeave` staged a root DLL as
-well; that copy has no game INI, so its runtime was not started.
+<host>`. The second EmblemWeave install at `X:\EmblemWeave` also staged a root DLL.
+With a generated valid INI that reuses the E: game dump, its runtime loaded
+Trinity on API 4. Its shader cache was empty, so translated draws were skipped;
+that is not a visual result.
 
 ## fefw-recomp and ObeliskChamber
 
