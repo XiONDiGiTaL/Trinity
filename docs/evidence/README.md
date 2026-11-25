@@ -19,6 +19,7 @@ mock or a dev-server render.
 | `emblemweave-runtime.log` | The host log from a run that loaded the demo, registered its panel, started the code mod and later recorded a settings change. |
 | `trinity-core-runtime.log` | An excerpt from the 25 November 2026 run that loaded Trinity Core, identified `emblemweave` / `nxmod-api-4`, registered the Trinity panel and ran the prefix classifier. It records 0.1.0; the combined 0.2.0 run is below. |
 | `mod-compat-runtime.log` | The 0.2.0 run that loaded the original Quick Save 1.0.0 and Turn Control 0.3.0 binaries alongside Trinity, with all three ready messages. |
+| `fefw-runtime.log` | The prepared fefw-recomp 0.2.13 runtime on the supplied 1.1.1 dump, with the original Quick Save, Turn Control and Trinity 0.2.0 loaded on API 3. |
 | `linux-host.txt` | The native Linux x64 build, ELF/export checks and `dlopen` harness result. |
 | `launcher-fefw-trinity.png` | The actual fefw-recomp 0.2.13 Tauri window with the Trinity page open. Built from the `v0.2.13` tag with the shared surface. Captured with the Windows window API at 1180 x 1000. |
 | `launcher-obelisk-trinity.png` | The actual ObeliskChamber 0.3.2 Tauri window with the Trinity page open. Built from the current 0.3.2 source with the shared surface. Captured with the Windows window API at 1180 x 1000. |
@@ -54,15 +55,17 @@ pushed to either host repository.
 ## Current status
 
 The launcher windows verify that the Trinity page loads, render the catalog and
-read the prefix registry in all three hosts. They do not verify the NXP runtime
-DLL in fefw-recomp or ObeliskChamber. Only EmblemWeave has runtime evidence for
-the NXP plugin.
+read the prefix registry in all three hosts. The runtime DLL is verified in
+EmblemWeave (API 4) and in the prepared fefw-recomp 0.2.13 runtime (API 3).
+ObeliskChamber 0.3.2 has no prepared runtime, so its NXP DLL result is still
+unproven.
 
-The fefw-recomp and ObeliskChamber cards report `Launcher verified`. The
-EmblemWeave card keeps `Runtime verified` because its plugin was loaded by the
-game runtime. Trinity 0.2.0 also loaded with Quick Save 1.0.0 and Turn Control
-0.3.0; this is initialization evidence, not gameplay. The Linux harness is a
-native load result, not a Linux game launch.
+The fefw-recomp run was headless: all three original mods loaded and reached
+their ready messages, but API 3 has no panel and no save, turn or facility
+action was performed. The EmblemWeave card keeps `Runtime verified` because its
+plugin was loaded by the game runtime. Trinity 0.2.0 also loaded with Quick Save
+1.0.0 and Turn Control 0.3.0; this is initialization evidence, not gameplay.
+The Linux harness is a native load result, not a Linux game launch.
 
 ## Runtime lines
 
@@ -119,10 +122,11 @@ panel is still pending.
 - This is one Windows x64 build.
 - The EmblemWeave page capture is a launcher page, not the NXP panel inside the
   game.
-- fefw-recomp and ObeliskChamber launcher windows are verified; their game
-  runtimes and in-game NXP panels were not run.
-- The same DLL is runtime-verified only in EmblemWeave. It is not proven to load
-  in the other two game runtimes.
+- fefw-recomp and ObeliskChamber launcher windows are verified. The fefw-recomp
+  game runtime is now verified headless on API 3; its in-game panel does not
+  exist on that API. ObeliskChamber's game runtime and in-game panel were not run.
+- The same DLL is runtime-verified in EmblemWeave and fefw-recomp. It is not
+  proven to load in ObeliskChamber.
 - The upstream launcher source changes are local and unmerged.
 - The images do not prove gameplay behavior.
 - The Linux `.so` is loaded by a native harness, not a Linux game runtime; no

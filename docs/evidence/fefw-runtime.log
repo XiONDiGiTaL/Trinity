@@ -1,0 +1,78 @@
+# fefw-recomp 0.2.13 runtime evidence
+
+Date: 2026-11-25
+
+Host: `X:\fefw-recomp-0.2.13`
+Game dump: `E:\FEFW` (the supplied `X:\FEFW\Fire Emblem꞉ Fortune's Weave + Update 1.1.1.nup` extracted dump)
+Game build: `DB93B0125F4850601D61C3EDDE012F8EB2ECFE77`, update `131072`
+Runtime: `fefw.exe`, 156,793,344 bytes, built by `fefw-launcher.exe --prepare --game E:\FEFW`
+Runtime ABI: `nxmod` API 3 (`add_panel` absent)
+
+Command:
+
+```text
+cd X:\fefw-recomp-0.2.13
+timeout 120 .\fefw.exe --headless --max-seconds 25 --log "X:/fefw-recomp-0.2.13/fefw-trinity-runtime.log"
+```
+
+The `timeout` wrapper returned 124 because the process did not finish its own
+shutdown within 120 seconds. The runtime log records the actual stop at 25.7
+seconds: `boot: max_seconds reached: the guest is still running; ending the
+process`. The process was gone afterwards. This is a shutdown-timing limitation
+of the headless run, not a plugin initialization failure.
+
+The runtime wrote to the `[log] path` from `fefw.ini` (`fefw.log`); the
+`--log` filename was not created, so the lines below come from `fefw.log`.
+
+## Installed plugins
+
+| MOD folder | Original file | SHA-256 |
+| --- | --- | --- |
+| `QuickSave` | `exefs/quick_save.dll` | `fec36b1da9ae0ce64c59c3e92e0ff6a970189d9d44b6a15161500016b3c0f91e` |
+| `TurnControl` | `exefs/turn_control.dll` | `a9aabf02dc56b53afeda57646d90ff352c4172063ae7d4f01f9c5faacff258c0` |
+| `TrinityCore` | `exefs/Trinity.dll` | `f873124ed90671c961decda9bcd2678269de47ec614379044e89a22e9bd81cfd` |
+
+All three are the original GameBanana binaries. Quick Save and Turn Control use
+`NxModApi` directly. Trinity uses the NXP compatibility adapter.
+
+## Selected runtime lines
+
+```text
+[  0.398765 I t38152 -] mods: mods folder X:\fefw-recomp-0.2.13\mods: 3 installed
+[  0.432788 I t38152 -] mods: QuickSave/quick_save.dll: loaded, starts at the first frame
+[  0.456111 I t38152 -] mods: TrinityCore/Trinity.dll: loaded, starts at the first frame
+[  0.485262 I t38152 -] mods: TurnControl/turn_control.dll: loaded, starts at the first frame
+[  4.653801 I t38152 main] mods: QuickSave/quick_save.dll: [Quick] ready (mod API 3): Shift+F5 quick save, Shift+F9 quick load, controller LT+RT+L3 / R3; quick save file: save folder not found
+[  4.653810 I t38152 main] mods: QuickSave/quick_save.dll: code mod started (0 hooks)
+[  4.653938 W t38152 main] mods: TrinityCore/Trinity.dll: host has no NXP UI capability (nxmod API below 4); plugin will run headless
+[  4.655977 I t38152 main] mods: TrinityCore/Trinity.dll: Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3), host prefix fefw-recomp., capabilities 0x00000073
+[  4.656010 W t38152 main] mods: TrinityCore/Trinity.dll: prefix rejected: other.ui.panel
+[  4.656043 I t38152 main] mods: TrinityCore/Trinity.dll: 5 names accepted, 1 rejected.
+[  4.656051 W t38152 main] mods: TrinityCore/Trinity.dll: host has no nxp.ui interface; Trinity runs headless
+[  4.656071 I t38152 main] mods: TrinityCore/Trinity.dll: code mod started (0 hooks)
+[  4.657003 I t38152 main] mods: TurnControl/turn_control.dll: [Turns] ready (mod API 3, System menu + hotkeys); freeze off
+[  4.657015 I t38152 main] mods: TurnControl/turn_control.dll: code mod started (0 hooks)
+[  6.777350 I t38152 main] mods: TurnControl/turn_control.dll: [Turns] menu: + > System > Turn Control (sub menu)
+[ 25.701390 W t26848 -] boot: max_seconds reached: the guest is still running; ending the process
+```
+
+## Settings written
+
+```text
+QuickSave/settings.ini        created
+TurnControl/settings.ini      created
+TrinityCore/.nxp-settings.ini
+  trinity.enabled=1
+  trinity.prefix_guard=1
+```
+
+## Level and limits
+
+This proves the prepared fefw-recomp game build loaded and initialized all
+three mods, reached the first frame, and created the plugins' settings files.
+Quick Save reported that it could not find the game's save folder in this
+headless profile, so no quick save was exercised. Turn Control registered its
+System submenu. No save, turn, facility, panel or other gameplay action was
+performed. The run was headless, so the panel was not visually inspected; API 3
+has no panel capability and Trinity correctly stayed headless. The shutdown
+timeout above is recorded as a runtime limitation.

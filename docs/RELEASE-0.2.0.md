@@ -38,7 +38,8 @@ not a Windows DLL with a new extension.
 | Windows x64 plugin builds and all 5 CTest cases pass | C, R | `Trinity/build/Trinity.dll`; CTest 5/5 |
 | Linux x64 `.so` builds, exports both entry points and loads | C, L, R | `build-linux/libTrinity.so`; CTest 5/5; native harness PASS |
 | EmblemWeave runtime loads Trinity with two published mods | L, R | `docs/evidence/mod-compat-runtime.log` |
-| EmblemWeave bundle installs, preserves settings and guards versions | C, R | `cargo test -p emblemweave trinity_bundle`: 3 passed |
+| fefw-recomp prepared runtime loads Trinity with the same two mods | L, R | `docs/evidence/fefw-runtime.log` |
+| EmblemWeave bundle installs, preserves settings and guards versions | C, R | `cargo test -p emblemweave trinity_bundle`: 3 passed; release launcher run installed 0.2.0 |
 | Official installer verifies SHA-256 before extraction | C, R | local release-artifact install test |
 
 ## Compatibility limits
@@ -47,11 +48,22 @@ The two published mods, [Quick Save](https://gamebanana.com/mods/742827) and
 [Turn Control](https://gamebanana.com/mods/745602), were tested as their original
 GameBanana DLLs. They use `NxModApi` directly and do not use the NXP
 compatibility adapter. They loaded and initialized alongside Trinity on the
-same game build; no save, turn change or gameplay action was exercised.
+same game build in EmblemWeave (API 4) and in the prepared fefw-recomp 0.2.13
+runtime (API 3). Quick Save reported that it could not find the save folder in
+the headless fefw profile; Turn Control registered its System submenu. No save,
+turn change, panel or gameplay action was exercised.
 
 The Linux result is a native host-harness result. There is no Linux game
 launcher or Linux game runtime in this workspace. The panel registered in the
-Windows headless runtime, but the in-game panel was not visually captured.
+Windows headless EmblemWeave runtime, but the in-game panel was not visually
+captured. The fefw-recomp run was headless on API 3, which has no panel slot.
 
 No gameplay changes are included in Trinity Core. See
 [INSTALL.md](INSTALL.md) and [COMPATIBILITY.md](COMPATIBILITY.md).
+
+## SHA-256
+
+```text
+65ca0e9308570513935f370d095e01e623b8b1bc6d5d18cade7025955a3467c6  Trinity-v0.2.0-windows-x64.zip
+414c7427c1476ca997157a1182b3549264b79facf93ac58c1a93b0a4a0861eed  Trinity-v0.2.0-linux-x64.tar.gz
+```

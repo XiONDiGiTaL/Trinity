@@ -8,6 +8,9 @@
 - The member after `free_mem` is `open_list` in this host and `add_panel` in EmblemWeave. The runtime distinguishes them by the first argument.
 - The exact packaged table layout was not runtime-probed.
 - No prepared game was available, so the Trinity DLL was not loaded.
+- The release installer staged Trinity 0.2.0 at
+  `X:\ObeliskChamber-0.3.2\mods\TrinityCore`; this is an installation check,
+  not a runtime claim.
 - Upstream source is newer than the package. The launcher and API source were inspected, but that is not the packaged binary.
 
 ## Adapter plan

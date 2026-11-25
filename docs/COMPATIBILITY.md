@@ -29,10 +29,10 @@ Compilation is not loading. Loading is not rendering. Rendering is not gameplay.
 | `add_panel` | Present, S and R | Absent in API 3 package, P | Present, P |
 | `panel_visible` | Present, S and R | Absent in package strings, P | Absent from package strings; exact table not verified |
 | `open_list` slot collision | No | No | Yes, API 5; runtime distinguishes by first argument |
-| NXP compatibility adapter | Loaded, R and V | Not loaded, N | Not loaded, N |
+| NXP compatibility adapter | Loaded, R and V | Loaded, R | Not loaded, N |
 | Native NXP adapter | Not implemented | Not implemented | Not implemented |
 | Panel in NXP | Registered; the older demo panel was rendered, the Trinity 0.2.0 panel capture is pending | Unavailable on API 3 | Capability exists in source lineage, not run |
-| Settings persistence through NXP | Checkbox and slider changed file, R | Not run, N | Not run, N |
+| Settings persistence through NXP | Checkbox and slider changed file, R | Settings file created; no UI on API 3, R | Not run, N |
 | Launcher adapter source | Native page in the host tree | Tauri page source in this repo | Tauri page source in this repo |
 | Launcher window verified | Native page captured from the release launcher | Actual 0.2.13 Tauri window built from the tag | Actual 0.3.2 Tauri window built from current source |
 | Gameplay effect | None; Trinity changes no game state | None | None |
@@ -53,11 +53,19 @@ Evidence: [mod-compat-runtime.log](evidence/mod-compat-runtime.log). The game bu
 was `DB93B0125F4850601D61C3EDDE012F8EB2ECFE77` (version 131072). All three mods
 loaded at the first frame and reached their own ready messages; no init declined.
 
+The same three original DLLs were then loaded in the prepared fefw-recomp 0.2.13
+runtime on the same build (API 3). Quick Save and Turn Control both reported
+`ready (mod API 3)`; Trinity reported `0.2.0 on fefw-recomp (nxmod-api-3)` and
+ran headless because that table has no `nxp.ui`. Quick Save also reported that
+its save folder was not found in the headless profile. Turn Control registered
+its System submenu. No save, turn, facility or panel action was performed.
+Evidence: [fefw-runtime.log](evidence/fefw-runtime.log).
+
 ## 2b. Platform matrix
 
 | Platform | Build | Load | Runtime observation |
 | --- | --- | --- | --- |
-| Windows x64 | C | L: EmblemWeave development runtime | R: init with three mods, panel registration, prefix check |
+| Windows x64 | C | L: EmblemWeave development runtime and prepared fefw-recomp 0.2.13 | R: init with three mods on both hosts; first frame; settings written; EmblemWeave panel registration; fefw API 3 headless |
 | Linux x64 | C | L: native `dlopen` harness | R: init, panel, settings, frame and shutdown; no game runtime |
 
 The Linux shared object is ELF64 x86-64 with `nxp_get_plugin` and `nxmod_init`.
@@ -105,8 +113,8 @@ The fefw-recomp v0.2.13 tag and the current ObeliskChamber 0.3.2 source were int
 | Demo panel renders in F1 > Advanced > Mods | V | `docs/evidence/emblemweave-mod-panel.png` |
 | Trinity Core panel renders in F1 > Advanced > Mods | N | Panel registration is logged; a windowed capture is pending |
 | Checkbox and slider persist through the adapter | R | Settings file read back, recorded in evidence README |
-| Same DLL loads in fefw-recomp | N | No prepared runtime |
-| Same DLL loads in ObeliskChamber | N | No prepared runtime |
+| Same DLL loads in fefw-recomp | L, R | `docs/evidence/fefw-runtime.log` |
+| Same DLL loads in ObeliskChamber | N | No prepared runtime; installer staged 0.2.0 only |
 | Launcher page builds in both upstream Tauri sources | C | Vite and Tauri production builds, 25 November 2026 |
 | Trinity page renders in both launcher windows | V | Actual 0.2.13 and 0.3.2 Tauri captures in `docs/evidence/` |
 | Launcher navigation opens the Trinity page | V | Actual window captures, 25 November 2026 |
@@ -132,7 +140,7 @@ The API 5 table places `open_list` where the other ports place `add_panel`, and 
 
 ### Single Windows binary
 
-One Windows x64 plugin built against this header and the compatibility adapter loaded in one EmblemWeave development build alongside two published mods. That does not prove it loads in the other two packaged runtimes. The common ABI makes it plausible; the matrix records it as unproven.
+One Windows x64 plugin built against this header and the compatibility adapter loaded in one EmblemWeave development build and in the prepared fefw-recomp 0.2.13 runtime, alongside the same two published mods. That does not prove it loads in ObeliskChamber 0.3.2; the common ABI makes it plausible, but the matrix records ObeliskChamber as unproven.
 
 ### Linux is not a Linux game result
 
@@ -142,7 +150,7 @@ workspace, so the Linux claim must not be raised to gameplay or a launcher.
 
 ## 7. Next verification steps
 
-1. Load `Trinity.dll` in prepared fefw-recomp and ObeliskChamber game runtimes; record the exact API table and host id.
+1. Load `Trinity.dll` in a prepared ObeliskChamber 0.3.2 game runtime; record the exact API table and host id.
 2. Capture the Trinity panel in a windowed EmblemWeave run; registration is not a visual check.
 3. Run one native Linux host or game runtime against `libTrinity.so`; the harness is not a game.
 4. Add a native EmblemWeave adapter that calls `nxp_get_plugin` directly.

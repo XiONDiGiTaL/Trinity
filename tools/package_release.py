@@ -81,6 +81,12 @@ def stage_common(version: str, plugin_dir: Path) -> None:
         src = ROOT / "docs" / name
         if src.is_file():
             shutil.copy2(src, docs / name)
+    evidence = docs / "evidence"
+    evidence.mkdir(exist_ok=True)
+    for name in ("fefw-runtime.log", "mod-compat-runtime.log", "linux-host.txt"):
+        src = ROOT / "docs" / "evidence" / name
+        if src.is_file():
+            shutil.copy2(src, evidence / name)
 
 
 def build_windows(version: str, dll: Path, out: Path) -> Path:

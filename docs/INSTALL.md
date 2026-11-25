@@ -88,13 +88,17 @@ gameplay. Lua/Python hosts are not supported by this binary.
 
 ## Known limits
 
-- The Windows plugin was loaded by the EmblemWeave development runtime with
-  `Quick Save` 1.0.0 and `Turn Control` 0.3.0; that proves loading and
-  initialization, not gameplay.
+- The Windows plugin was loaded by the EmblemWeave development runtime and the
+  prepared fefw-recomp 0.2.13 runtime with `Quick Save` 1.0.0 and
+  `Turn Control` 0.3.0; that proves loading and initialization, not gameplay.
 - Those two mods target `NxModApi` directly. They do not load through Trinity's
   NXP adapter; they coexist with Trinity under the same host loader.
-- fefw-recomp and ObeliskChamber game runtimes were not available with a
-  prepared game in this workspace.
+- The fefw-recomp run was headless on API 3, so Trinity had no panel and no
+  save, turn or facility action was exercised. Quick Save reported that it could
+  not find the save folder in that profile. See
+  [evidence/fefw-runtime.log](evidence/fefw-runtime.log).
+- An ObeliskChamber game runtime was not prepared, so its 0.3.2 run remains
+  unverified; the installer staged 0.2.0 in its mods folder.
 - The Trinity panel registers, but a windowed capture of the panel is still
   pending.
 - No gameplay hooks, guest memory access or save behavior are added by Trinity.

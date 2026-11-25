@@ -30,14 +30,14 @@ All three images are captured from actual launcher windows. EmblemWeave used its
 | Area | State |
 | --- | --- |
 | Public NXP ABI | Implemented, version 1 |
-| Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build |
-| Reference plugin | 0.2.0 built and loaded by the EmblemWeave development runtime alongside two published code mods |
+| Compatibility adapter for `NxModApi` | Implemented; loaded and exercised in an EmblemWeave development build and the prepared fefw-recomp 0.2.13 runtime |
+| Reference plugin | 0.2.0 built and loaded by the EmblemWeave development runtime and fefw-recomp 0.2.13 alongside two published code mods |
 | Host adapters | Native EmblemWeave page plus Tauri pages for fefw-recomp and ObeliskChamber |
 | Launcher catalog surface | Native EmblemWeave page plus actual fefw-recomp 0.2.13 and ObeliskChamber 0.3.2 Tauri windows; all three captured |
 | fefw-recomp launcher validation | Verified in the actual 0.2.13 window built from the v0.2.13 tag |
-| fefw-recomp runtime validation | Not run; the installed 0.2.13 game runtime is API 3 and has no prepared game in this workspace |
+| fefw-recomp runtime validation | Verified headless on the prepared update-131072 runtime (API 3): Trinity, Quick Save and Turn Control loaded; no panel or gameplay action |
 | ObeliskChamber launcher validation | Verified in the actual 0.3.2 window built from the current source |
-| ObeliskChamber runtime validation | Not run; the installed 0.3.2 game runtime has no prepared game in this workspace |
+| ObeliskChamber runtime validation | Not run; no prepared 0.3.2 game runtime; the installer staged 0.2.0 only |
 | Linux build | x64 `libTrinity.so` built, exports checked and loaded by the native `dlopen` harness; no Linux game launcher was available |
 
 Compilation is not loading. Loading is not rendering. Rendering is not gameplay. The support matrix in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) records each level separately.
@@ -149,7 +149,7 @@ python -m unittest discover -s Trinity/tests -p "test_*.py"
 
 The C++ harness loads the plugin, supplies an NXP host with all four interfaces, checks discovery and panel registration, exercises settings and reset, runs the frame callback, calls shutdown and checks the final flush. Three more CTest cases run the compatibility adapter against simulated `NxModApi` 3, 4 and 5 tables. The same five tests pass on Windows and Linux.
 
-The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/INSTALL.md](docs/INSTALL.md). The development runtime loaded Trinity 0.2.0, [Quick Save](https://gamebanana.com/mods/742827) 1.0.0 and [Turn Control](https://gamebanana.com/mods/745602) 0.3.0 together; the first two are native `NxModApi` plugins and do not pass through Trinity's adapter. Loading is not gameplay.
+The EmblemWeave runtime path is documented in [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/INSTALL.md](docs/INSTALL.md). The development runtime loaded Trinity 0.2.0, [Quick Save](https://gamebanana.com/mods/742827) 1.0.0 and [Turn Control](https://gamebanana.com/mods/745602) 0.3.0 together; the first two are native `NxModApi` plugins and do not pass through Trinity's adapter. The same three original DLLs also loaded in the prepared fefw-recomp 0.2.13 runtime (API 3) and reached the first frame; that run was headless and performed no gameplay action. See [docs/evidence/fefw-runtime.log](docs/evidence/fefw-runtime.log). Loading is not gameplay.
 
 ## Documentation
 
