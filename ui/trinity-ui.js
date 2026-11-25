@@ -11,7 +11,7 @@ import { classifyInterface, validateRegistry } from './prefix-core.mjs';
 
 const HOST_COPY = {
   'fefw-recomp': {
-    intro: 'Cool surfaces, soft corners and the existing fefw-recomp navigation. Trinity adds a room, not a second launcher.',
+    intro: 'Cool surfaces, soft corners and the existing fefw-recomp navigation. Trinity adds a page, not a second launcher.',
     note: 'Built from the upstream launcher source. The packaged 0.2.13 runtime was not rebuilt for this test.'
   },
   'obelisk-chamber': {
@@ -88,7 +88,7 @@ function prefixRows() {
 export function renderTrinity(view, options = {}) {
   const hostId = options.host ?? 'file';
   const copy = HOST_COPY[hostId] ?? {
-    intro: 'One catalog, three native presentations, and a namespace that tells every interface which house it belongs to.',
+    intro: 'One catalog, three native presentations, and a namespace that tells every interface which launcher it belongs to.',
     note: 'Standalone preview of the shared Trinity surface.'
   };
   const current = catalog.houses.find((house) => house.id === hostId);
@@ -102,10 +102,9 @@ export function renderTrinity(view, options = {}) {
       </div>
       <div class="trinity-hero-copy">
         <div class="trinity-eyebrow"><i></i>NXP LAYER ${esc(catalog.version)}</div>
-        <p class="trinity-tagline">${esc(catalog.tagline)}</p>
         <p class="trinity-intro">${esc(copy.intro)}</p>
         <div class="trinity-badges">
-          <span>${icon('cube')} 3 houses</span>
+          <span>${icon('cube')} ${catalog.houses.length} launchers</span>
           <span>${icon('layers')} 1 catalog</span>
           <span>${icon('key')} ${prefixes.hosts.length} prefixes</span>
           <span class="${validation.ok ? 'ok' : 'warn'}">${icon(validation.ok ? 'check' : 'compass')} ${validation.ok ? 'Registry valid' : 'Registry needs attention'}</span>
@@ -115,7 +114,7 @@ export function renderTrinity(view, options = {}) {
     </section>
 
     <section class="trinity-metrics" aria-label="Trinity at a glance">
-      <div><strong>${catalog.houses.length}</strong><span>Houses connected</span><em>one shared contract</em></div>
+      <div><strong>${catalog.houses.length}</strong><span>Launchers connected</span><em>one shared contract</em></div>
       <div><strong>${total}</strong><span>Listings</span><em>runtimes, bridges, standards</em></div>
       <div><strong>${prefixes.hosts.length + prefixes.neutral.length}</strong><span>Owned prefixes</span><em>no silent collisions</em></div>
       <div><strong>${catalog.capabilities.length}</strong><span>Core capabilities</span><em>UI, settings, files, frame</em></div>
@@ -123,8 +122,8 @@ export function renderTrinity(view, options = {}) {
 
     <section class="trinity-section">
       <div class="trinity-section-head">
-        <div><span class="trinity-kicker">Browse by house</span><h2>Three rooms, one door</h2></div>
-        <span class="trinity-count">${catalog.houses.length} hosts <b>one shared catalog</b></span>
+        <div><span class="trinity-kicker">Browse launchers</span><h2>Three launchers, one surface</h2></div>
+        <span class="trinity-count">${catalog.houses.length} launchers <b>one shared catalog</b></span>
       </div>
       <div class="trinity-houses">${catalog.houses.map(hostCard).join('')}</div>
     </section>
@@ -135,7 +134,7 @@ export function renderTrinity(view, options = {}) {
         <span class="trinity-count" id="trinity-result-count">${total} listings</span>
       </div>
       <div class="trinity-toolbar">
-        <label class="trinity-search">${icon('search')}<input id="trinity-search" type="search" placeholder="Search listings, hosts or prefixes" autocomplete="off" spellcheck="false"></label>
+        <label class="trinity-search">${icon('search')}<input id="trinity-search" type="search" placeholder="Search listings, launchers or prefixes" autocomplete="off" spellcheck="false"></label>
         <div class="trinity-filters" role="group" aria-label="Filter listings">
           <button type="button" class="active" data-filter="all">All</button>
           <button type="button" data-filter="runtime">Runtime</button>

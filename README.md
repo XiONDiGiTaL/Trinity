@@ -1,14 +1,10 @@
 <p align="center">
-  <img src="assets/brand/trinity.png" alt="Trinity: The Three Houses Of Innovation" width="360">
+  <img src="assets/brand/trinity.png" alt="Trinity" width="360">
 </p>
 
 # Trinity
 
-**Trinity: The Three Houses Of Innovation**
-
-**Three Houses. One Vision.**
-
-**Three projects. Three launchers. One shared plugin ecosystem.**
+**Shared plugin layer for EmblemWeave, fefw-recomp and ObeliskChamber.**
 
 Trinity is the shared plugin framework for three independent *Fire Emblem: Fortune's Weave* projects:
 
@@ -163,4 +159,4 @@ The three host projects remain independent. Changes to a host repository require
 
 Do not claim support for a host or a platform without a matching entry in the compatibility matrix and evidence for the exact level claimed.
 
-Independent projects, shared innovation, weaved together.
+Independent launchers, one shared plugin layer.

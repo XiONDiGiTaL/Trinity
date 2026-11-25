@@ -22,7 +22,7 @@ mock or a dev-server render.
 | `launcher-obelisk-trinity.png` | The actual ObeliskChamber 0.3.2 Tauri window with the Trinity page open. Built from the current 0.3.2 source with the shared surface. Captured with the Windows window API at 1180 x 1000. |
 
 The three launcher images show the supplied gear-and-ribbon logo at the top of
-the page. The house labels below each launcher name were removed; the launcher
+the page. The old labels below each launcher name were removed; the launcher
 name and its accent color carry the identity instead.
 
 ## How the launcher captures were made
