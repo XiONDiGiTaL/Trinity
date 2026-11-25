@@ -123,8 +123,8 @@ staging path, not a pre-existing file.
 
 | Check | EmblemWeave 0.1.43 | fefw-recomp 0.2.13 | ObeliskChamber 0.3.2 |
 | --- | --- | --- | --- |
-| Root DLL recognised | V, `E:\EmblemWeave\Trinity.dll` and `X:\EmblemWeave\Trinity.dll` | V, root DLL | V, root DLL |
-| `plugins/` DLL recognised | V, flat `plugins\Trinity.dll` | V, nested `plugins\TrinityCore\exefs\Trinity.dll` | V, flat `plugins\Trinity.dll` |
+| Root DLL recognised | C, R; `E:\EmblemWeave\Trinity.dll` and `X:\EmblemWeave\Trinity.dll` | C, R; root DLL | C, R; root DLL |
+| `plugins/` DLL recognised | C, R; flat `plugins\Trinity.dll` | C, R; nested `plugins\TrinityCore\exefs\Trinity.dll` | C, R; flat `plugins\Trinity.dll` |
 | Staged hash after launch | `f873124e...bd81cfd` | `f873124e...bd81cfd` | `f873124e...bd81cfd` |
 | Manifest after staging | `0.2.0` | `0.2.0` | `0.2.0` |
 | Runtime loaded after staging | L, `Trinity Core 0.2.0 on emblemweave (nxmod-api-4)` | L, `Trinity Core 0.2.0 on fefw-recomp (nxmod-api-3)` | L, `Trinity Core 0.2.0 on obelisk-chamber (nxmod-api-5)` |
